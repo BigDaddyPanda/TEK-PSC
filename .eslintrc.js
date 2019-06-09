@@ -50,6 +50,24 @@ module.exports = {
     // allow console.log during development only
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    "no-unused-vars": "off",
+    "quotes": "off",
+    "semi": "off",
+    "space-before-function-paren": "off",
+    "vue/mustache-interpolation-spacing": "off",
+    "vue/html-indent": "off",
+    "vue/html-self-closing": "off",
+    "vue/attribute-hyphenation": "off",
+    "vue/order-in-components": "off",
+    "vue/attributes-order": "off",
+    "vue/max-attributes-per-line": "off",
+    "vue/no-unused-vars": "off",
+    "vue/multiline-html-element-content-newline": "off",
+    "vue/require-default-prop": "off",
+    "vue/name-property-casing": "off",
+    "vue/html-closing-bracket-spacing": "off",
+    "vue/singleline-html-element-content-newline": "off",
+    "vue/v-on-style": "off"
   }
 }
