@@ -1,97 +1,40 @@
 <template>
-  <q-layout view="hHh Lpr fFf"> <!-- Be sure to play with the Layout demo on docs -->
-
-    <!-- (Optional) The Header -->
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          round
-          dense
-          icon="menu"
-          @click="leftDrawer = !leftDrawer"
-        />
+  <q-layout view="hHh lpR fFf">
+    <q-header elevated class="bg-charade text-white">
+      <q-toolbar class="specialheader">
         <q-toolbar-title>
-          Header
+          <q-img src="statics/brand-logo.png" spinner-color="white" style="width:142px"/>
         </q-toolbar-title>
-      </q-toolbar>
 
-      <q-tabs>
-        <q-route-tab
-          icon="map"
-          to="/your/route"
-          replace
-          label="One Tab"
-        />
-        <q-route-tab
-          icon="assignment"
-          to="/some/other/route"
-          replace
-          label="Other Tab"
-        />
-      </q-tabs>
+        <q-space></q-space>
+        <q-btn color="secondary" >Login</q-btn>
+        <q-btn>Register</q-btn>
+      </q-toolbar>
     </q-header>
 
-    <!-- (Optional) The Footer -->
-    <q-footer>
-      <q-tabs switch-indicator>
-        <q-route-tab
-          icon="map"
-          to="/your/route"
-          replace
-          label="One Tab"
-        />
-        <q-route-tab
-          icon="assignment"
-          to="/some/other/route"
-          replace
-          label="Other Tab"
-        />
-      </q-tabs>
-
-      <q-toolbar>
-        <q-btn
-          flat
-          round
-          dense
-          icon="menu"
-          @click="leftDrawer = !leftDrawer"
-        />
-        <q-toolbar-title>
-          Footer
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-footer>
-
-    <!-- (Optional) A Drawer; you can add one more with side="right" or change this one's side -->
-    <q-drawer
-      v-model="leftDrawer"
-      side="left"
-      bordered
-      content-class="bg-grey-2"
-    >
-      <!-- QScrollArea is optional -->
-      <q-scroll-area class="fit q-pa-sm">
-        <!-- Content here -->
-      </q-scroll-area>
-    </q-drawer>
-
     <q-page-container>
-      <!-- This is where pages get injected -->
-      <router-view />
+      <router-view/>
     </q-page-container>
 
+    <q-footer elevated>
+      <q-toolbar class="bg-charade text-white">
+        <div>{{release}}</div>
+        <q-space/>
+        <div>ACM TEK-UP</div>
+      </q-toolbar>
+    </q-footer>
   </q-layout>
 </template>
 
 <script>
 export default {
-  // name: 'LayoutName',
-
-  data () {
+  data() {
     return {
-      leftDrawer: true
-    }
+      release:
+        this.$_.startCase(process.env.NODE_ENV + " release") +
+        " - " +
+        this.$moment().year()
+    };
   }
-}
+};
 </script>

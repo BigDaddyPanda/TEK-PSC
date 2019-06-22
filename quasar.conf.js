@@ -6,7 +6,9 @@ module.exports = function (ctx) {
     // --> boot files are part of "main.js"
     boot: [
       'i18n',
-      'axios'
+      'axios',
+      'lodash',
+      'moment'
     ],
 
     css: [
@@ -23,23 +25,28 @@ module.exports = function (ctx) {
     ],
 
     framework: {
-      // all: true, // --- includes everything; for dev only!
+      all: true, // --- includes everything; for dev only!
 
-      components: [
-        'QLayout',
-        'QHeader',
-        'QDrawer',
-        'QPageContainer',
-        'QPage',
-        'QToolbar',
-        'QToolbarTitle',
-        'QBtn',
-        'QIcon',
-        'QList',
-        'QItem',
-        'QItemSection',
-        'QItemLabel'
-      ],
+      // components: [
+      //   'QLayout',
+      //   'QHeader',
+      //   'QDrawer',
+      //   'QPageContainer',
+      //   'QPage',
+      //   'QToolbar',
+      //   'QToolbarTitle',
+      //   'QBtn',
+      //   'QIcon',
+      //   'QList',
+      //   'QItem',
+      //   'QItemSection',
+      //   'QItemLabel',
+      //   'QSpace',
+      //   'QAjaxBar',
+      //   'QAvatar',
+      //   'QFooter',
+      //   'QParallax'
+      // ],
 
       directives: [
         'Ripple'
@@ -63,7 +70,7 @@ module.exports = function (ctx) {
       // gzip: true,
       // analyze: true,
       // extractCSS: false,
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
         cfg.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -135,7 +142,7 @@ module.exports = function (ctx) {
     electron: {
       // bundler: 'builder', // or 'packager'
 
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
       },
