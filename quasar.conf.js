@@ -8,7 +8,8 @@ module.exports = function (ctx) {
       'i18n',
       'axios',
       'lodash',
-      'moment'
+      'moment',
+      'firebase'
     ],
 
     css: [
@@ -17,10 +18,10 @@ module.exports = function (ctx) {
 
     extras: [
       'roboto-font',
-      'material-icons' // optional, you are not bound to it
+      'fontawesome-v5'
+      // 'material-icons', // optional, you are not bound to it
       // 'ionicons-v4',
       // 'mdi-v3',
-      // 'fontawesome-v5',
       // 'eva-icons'
     ],
 
@@ -55,9 +56,9 @@ module.exports = function (ctx) {
       // Quasar plugins
       plugins: [
         'Notify'
-      ]
+      ],
 
-      // iconSet: 'ionicons-v4'
+      iconSet: 'fontawesome-v5'
       // lang: 'de' // Quasar language
     },
 
