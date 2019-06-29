@@ -8,6 +8,11 @@
 import { mapState, mapActions, mapMutations } from "vuex";
 export default {
   name: "App",
+  computed: {
+    ...mapState({
+      authStore: "authStore"
+    })
+  },
   methods: {
     ...mapActions({
       assignUser: "authStore/assignUser"
@@ -30,6 +35,10 @@ export default {
           this.$q.notify({
             message: `Welcome Back ${user.displayName || user.email}`
           });
+          if (this.$route.path.includes("landing") && this.authStore.user) {
+            // console.log("Helloo");
+            this.$router.push("/psc");
+          }
         } else {
           // User is signed out.
           this.assignUser(null);

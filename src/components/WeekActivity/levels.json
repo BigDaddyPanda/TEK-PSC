@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "name": "level 1",
+        "required xp": 50,
+        "icon": "statics/levels/Asset 0.png",
+        "color": "green",
+        "label": "Mushroom",
+        "description": "Just signed to our platform, you have to work harder to become more than Teemo's ultimate"
+    },
+    {
+        "id": 2,
+        "name": "level 2",
+        "required xp": 100,
+        "icon": "statics/levels/Asset 1.png",
+        "color": "grey",
+        "label": "Novice Solver",
+        "description": "You are to shine even brighter <3 brighter than just a coin!"
+    },
+    {
+        "id": 3,
+        "name": "level 3",
+        "required xp": 230,
+        "icon": "statics/levels/Asset 2.png",
+        "color": "brown",
+        "label": "Solution Charmer",
+        "description": "Nothing can stand between you and the solution, not even tricky problems"
+    },
+    {
+        "id": 4,
+        "name": "level 4",
+        "required xp": 420,
+        "icon": "statics/levels/Asset 3.png",
+        "color": "yellow",
+        "label": "Oracle of TEK-PS",
+        "description": "Unless caught on steriods, you are a promising genius!"
+    },
+    {
+        "id": 5,
+        "name": "level 5",
+        "required xp": 690,
+        "icon": "statics/levels/Asset 4.png",
+        "color": "red",
+        "label": "Problem Born",
+        "description": "Mythic Legend! You know problems more than TEK-Coders team, all combined!"
+    },
+    {
+        "id": 6,
+        "name": "level 6",
+        "required xp": 800,
+        "icon": "statics/levels/Asset 5.png",
+        "color": "purple",
+        "label": "Legendray Tourist",
+        "description": "This whole thing was just a piece of cake! You smashed every problem into sub-problems!"
+    }
+]

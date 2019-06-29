@@ -1,40 +1,71 @@
 <template>
-  <q-page padding>
+  <q-page style="background-color:#000000">
     <q-ajax-bar ref="bar" position="bottom" color="accent" size="10px" skip-hijack/>
     <!-- content -->
-    <div class="q-pa-md">
-      <q-parallax :height="300">
-        <template v-slot:media>
-          <video :poster="yesNoWtf.image" autoplay loop muted>
-            <!-- <source type="video/webm" :src="yesNoWtf.image"> -->
-            <source type="video/webm" src="https://cdn.quasar.dev/img/polina.webm">
-            <source type="video/mp4" src="https://cdn.quasar.dev/img/polina.mp4">
-          </video>
-        </template>
-
-        <h3 class="text-white">{{yesNoWtf.answer}}</h3>
-      </q-parallax>
-      <div class="q-pa-md">
-        <q-btn color="secondary" label="Trigger" @click="trigger"/>
-        <p v-for="i in 50" :key="i">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Quo pariatur obcaecati, voluptatibus rerum ea quos sequi
-          accusamus magni excepturi eligendi vero iste,
-          tempore ab quod libero sit nemo laborum voluptatem.
-        </p>
+    <div class="q-gutter-md">
+      <div class="row justify-between">
+        <q-parallax class="window-height">
+          <template v-slot:media>
+            <video
+              poster="https://cdn.quasar.dev/img/polina.jpg"
+              style="height: 890px;
+                    width: 1582.22px;
+                    transform: translate(-50%, calc(-50% + 100px));"
+              autoplay
+              loop
+              muted
+            >
+              <source type="video/mp4" src="statics/media/montage-acm.mp4">
+            </video>
+            <div class="overlay"></div>
+          </template>
+          <h2 class="text-secondary text-bold">{{$t("landing_1")}}</h2>
+          <h6
+            class="text-white"
+          >{{$t("landing_2")}}</h6>
+          <q-btn color="secondary" text-color="black" size="lg" :label="$t('landing_3')"/>
+        </q-parallax>
       </div>
     </div>
-    <q-dialog v-model="icon">
-      <q-card>
-        <q-card-section class="row items-center">
-          <div class="text-h6">Close icon</div>
-          <q-space/>
-          <q-btn icon="close" flat round dense v-close-popup/>
-        </q-card-section>
 
-        <q-card-section>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.</q-card-section>
-      </q-card>
-    </q-dialog>
+    <div class="q-pa-md q-gutter-md">
+      <div class="row justify-between">
+        <div class="col-6 q-pl-lg">
+          <h2 class="text-secondary text-bold">{{$t("landing_4")}}</h2>
+          <h4 class="text-secondary q-mb-none">{{$t("landing_5")}}</h4>
+          <p
+            class="text-white text-h5"
+          >{{$t("landing_6")}}</p>
+          <h4 class="text-secondary q-mb-none">{{$t("landing_7")}}</h4>
+          <p
+            class="text-white text-h5"
+          >{{$t("landing_8")}}</p>
+          <h4 class="text-secondary q-mb-none">{{$t("landing_9")}}</h4>
+          <p
+            class="text-white text-h5"
+          >{{$t("landing_10")}}</p>
+        </div>
+        <div class="col-6">
+          <q-img :ratio="1" src="statics/media/upsolve-2019.jpg"/>
+          <!-- <q-img src=""/> -->
+        </div>
+      </div>
+    </div>
+    <div class="q-gutter-md">
+      <div class="row justify-between">
+        <q-parallax class="window-height">
+          <template v-slot:media>
+            <img src="statics/media/upsolve-2019-2.jpg"/>
+            <div class="overlay"></div>
+          </template>
+          <h2 class="text-secondary text-bold q-mb-none">{{$t("landing_11")}}</h2>
+          <h6
+            class="text-white text-uppercase"
+          >{{$t("landing_12")}}</h6>
+          <q-btn color="secondary" text-color="black" size="lg" :label="$t('landing_13')"/>
+        </q-parallax>
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -64,4 +95,13 @@ export default {
 </script>
 
 <style>
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #131c25;
+  opacity: 0.5;
+}
 </style>

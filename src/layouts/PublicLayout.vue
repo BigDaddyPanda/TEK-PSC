@@ -7,11 +7,42 @@
         </q-toolbar-title>
 
         <q-space></q-space>
-        <div
-          v-if="authStore.loggedIn"
-          class="text-right"
-          style="flex-basis: 310px;"
-        >{{authStore.user.email}}</div>
+        <div v-if="authStore.loggedIn" class="text-right" style="flex-basis: 310px;">
+          {{authStore.user.email}}
+          <q-btn flat round dense>
+            <q-icon name="more_vert"/>
+            <q-menu>
+              <div class="row no-wrap q-pa-md">
+                <div class="column">
+                  <div class="text-h6 q-mb-md">Settings</div>
+                  <q-toggle v-model="mobileData" label="Use Mobile Data"/>
+                  <q-toggle v-model="bluetooth" label="Bluetooth"/>
+                </div>
+
+                <q-separator vertical inset class="q-mx-lg"/>
+
+                <div class="column items-center">
+                  <q-avatar size="72px" color="primary">
+                    <img :src="authStore.user.photoURL||'statics/white.png'">
+                  </q-avatar>
+
+                  <div
+                    class="text-subtitle1 q-mt-md q-mb-xs"
+                  >{{authStore.user.displayName||authStore.user.email}}</div>
+
+                  <q-btn
+                    color="primary"
+                    label="Logout"
+                    @click="signout()"
+                    push
+                    size="sm"
+                    v-close-popup
+                  />
+                </div>
+              </div>
+            </q-menu>
+          </q-btn>
+        </div>
         <div v-else class="row q-gutter-xs" style="flex-basis: 310px;">
           <q-btn
             class="col justify-between"
@@ -66,6 +97,20 @@ export default {
     setModal: function(e) {
       this.showModal = true;
       this.isLogin = e === "login";
+    },
+    signout() {
+      this.$firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          // Sign-out successful.
+          this.$router.push("/landing");
+          window.location.reload();
+        })
+        .catch(error => {
+          // An error happened.
+          this.$q.notify(error.message);
+        });
     }
   },
   data() {

@@ -1,0 +1,72 @@
+[
+    {
+        "name": "achievement 4",
+        "required": [
+            "Solving first Problem"
+        ],
+        "icon": "statics/achievements/novice_thinker.png",
+        "color": "blue-grey-5",
+        "label": "Novice Thinker",
+        "description": "You proved you have positive iQ by solving first problem"
+    },
+    {
+        "name": "achievement 2",
+        "required": [
+            "Participating and Passing one Contests"
+        ],
+        "icon": "statics/achievements/discovery.png",
+        "color": "yellow-9",
+        "label": "Discovery Novice",
+        "description": "You proved you have positive iQ by solving first problem!"
+    },
+    {
+        "name": "achievement 3",
+        "required": [
+            "Participating and Passing two Contests"
+        ],
+        "icon": "statics/achievements/mystery_buster.png",
+        "color": "green",
+        "label": "Mystery Buster",
+        "description": "You are eligible to work with ease with Sea and defeat Pythons, see what I did there?"
+    },
+    {
+        "name": "achievement 7",
+        "required": [
+            "Participating and Succeeding three Contests"
+        ],
+        "icon": "statics/achievements/trophy_hunter.png",
+        "color": "teal",
+        "label": "Trophy Hunter",
+        "description": "Skills win games. and you are a set of Problem Solving Skills"
+    },
+    {
+        "name": "achievement 6",
+        "required": [
+            "Solving 300 Problems"
+        ],
+        "icon": "statics/achievements/problem_solver.png",
+        "color": "pink-5",
+        "label": "Problem Solver",
+        "description": "Problem Solver is your middle name, or nickname..."
+    },
+    {
+        "name": "achievement 5",
+        "required": [
+            "Solving 500 Problems"
+        ],
+        "icon": "statics/achievements/outstanding.png",
+        "color": "pink-9",
+        "label": "Outstanding",
+        "description": "Now problems have to solve you!"
+    },
+    {
+        "name": "achievement 1",
+        "required": [
+            "Solving 1000 Problem"
+        ],
+        "icon": "statics/achievements/advanced.png",
+        "color": "purple",
+        "label": "Advanced Legend",
+        "description": "You are the most advanced of the TEK-UPPERS Problem Solvers."
+    }
+]

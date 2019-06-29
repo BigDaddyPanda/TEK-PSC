@@ -23,24 +23,17 @@ const routes = [
     ]
   },
   {
-    path: '/auth',
-    meta: { private: true },
-    component: () => import('layouts/AuthLayout.vue'),
-    children: [
-      { path: 'login', component: () => import('pages/Auth/Login.vue') },
-      { path: 'register', component: () => import('pages/Auth/Register.vue') }
-    ]
-  },
-  {
     path: '/psc',
+    meta: { private: true },
     component: () => import('layouts/PSCLayout.vue'),
+    redirect: "/psc/week-activity-overview",
     children: [
       { path: 'rules-desclaimer', component: () => import('pages/PSC/RulesDesclaimer.vue') },
-      { path: 'week-activity-overView', component: () => import('pages/PSC/WeekActivity/WeekActivityOverView.vue') },
+      { path: 'week-activity-overview', component: () => import('pages/PSC/WeekActivity/WeekActivityOverView.vue') },
       { path: 'week-activity-sheets', component: () => import('pages/PSC/WeekActivity/Sheets.vue') },
       { path: 'week-activity-contests', component: () => import('pages/PSC/WeekActivity/Contests.vue') },
       { path: 'week-activity-final-standing', component: () => import('pages/PSC/WeekActivity/FinalStanding.vue') },
-      { path: 'profile-overView', component: () => import('pages/PSC/Profile/ProfileOverView.vue') },
+      { path: 'profile-overview', component: () => import('pages/PSC/Profile/ProfileOverView.vue') },
       { path: 'profile-settings', component: () => import('pages/PSC/Profile/ProfileSettings.vue') },
       { path: 'hall-of-fame', component: () => import('pages/PSC/HallOfFame.vue') }
     ]
