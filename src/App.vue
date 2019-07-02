@@ -1,6 +1,6 @@
 <template>
   <div id="q-app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -32,18 +32,18 @@ export default {
             providerData: user.providerData
           });
           // console.log(user.email);
-          this.$q.notify({
-            message: `Welcome Back ${user.displayName || user.email}`
-          });
           if (this.$route.path.includes("landing") && this.authStore.user) {
             // console.log("Helloo");
             this.$router.push("/psc");
+            this.$q.notify({
+              message: `Welcome Back ${user.displayName || user.email}`
+            });
           }
         } else {
           // User is signed out.
           this.assignUser(null);
           this.$q.notify({
-            message: `Welcome to TEK-PSC`
+            message: `Welcome to TEK-PS`
           });
         }
       },

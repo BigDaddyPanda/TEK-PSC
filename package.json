@@ -1,8 +1,8 @@
 {
-  "name": "tek-psc",
+  "name": "tek-ps",
   "version": "0.0.1",
   "description": "TEK-UP Problem Solving Camp Platform",
-  "productName": "TEK-PSC",
+  "productName": "TEK-PS",
   "cordovaId": "org.cordova.tek_psc",
   "author": "Draegar_home <yassinkisrawi42@gmail.com>",
   "private": true,

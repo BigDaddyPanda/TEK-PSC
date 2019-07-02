@@ -1,5 +1,5 @@
  <template>
-  <q-layout view="hHh lpr fff">
+  <q-layout view="hHh lpR fff">
     <!-- Be sure to play with the Layout demo on docs -->
 
     <!-- (Optional) The Header -->
@@ -21,16 +21,16 @@
         <q-btn
           stretch
           flat
-          to="/psc/profile-overview"
-          :class="'text-'+getActive('/psc/profile-overview')"
-          label="PRACTICE"
+          to="/psc/week-activity-lessons"
+          :class="'text-'+getActive('/psc/week-activity-lessons')"
+          label="Lessons"
         />
         <q-btn
           stretch
           flat
-          to="/psc/profile-settings"
-          :class="'text-'+getActive('/psc/profile-settings')"
-          label="COMPETE"
+          to="/psc/week-activity-sheets"
+          :class="'text-'+getActive('/psc/week-activity-sheets')"
+          label="Training"
         />
 
         <q-space></q-space>
@@ -40,25 +40,34 @@
             <q-icon name="more_vert" />
             <q-menu>
               <div class="row no-wrap q-pa-md">
-                <div class="column">
-                  <div class="text-h6 q-mb-md">Settings</div>
-                  <q-toggle v-model="mobileData" label="Use Mobile Data" />
-                  <q-toggle v-model="bluetooth" label="Bluetooth" />
-                </div>
-
-                <q-separator vertical inset class="q-mx-lg" />
-
-                <div class="column items-center">
+                <div class="column q-pa-md content-center items-center">
                   <q-avatar size="72px" color="primary">
                     <img :src="authStore.user.photoURL||'statics/white.png'" />
                   </q-avatar>
 
                   <div
-                    class="text-subtitle1 q-mt-md q-mb-xs"
+                    class="text-subtitle1 q-ma-md q-mb-xs"
                   >{{authStore.user.displayName||authStore.user.email}}</div>
 
                   <q-btn
                     color="primary"
+                    class="full-width q-mb-xs"
+                    label="Settings"
+                    push
+                    size="sm"
+                    v-close-popup
+                  />
+                  <q-btn
+                    color="primary"
+                    class="full-width q-mb-xs"
+                    label="About"
+                    push
+                    size="sm"
+                    v-close-popup
+                  />
+                  <q-btn
+                    color="negative"
+                    class="full-width q-mb-xs"
                     label="Logout"
                     @click="signout()"
                     push
@@ -92,6 +101,28 @@
       <q-toolbar>
         <q-btn flat round dense icon="menu" @click="rightDrawer = !rightDrawer" />
         <q-toolbar-title>Footer</q-toolbar-title>
+        <q-space />
+        <q-btn
+          stretch
+          flat
+          to="/manager/lesson"
+          :class="'text-'+getActive('/manager/lesson')"
+          label="Manage lesson"
+        />
+        <q-btn
+          stretch
+          flat
+          to="/manager/contest"
+          :class="'text-'+getActive('/manager/contest')"
+          label="Manage contest"
+        />
+        <q-btn
+          stretch
+          flat
+          to="/manager/sheet"
+          :class="'text-'+getActive('/manager/sheet')"
+          label="Manage sheet"
+        />
       </q-toolbar>
     </q-footer>
 

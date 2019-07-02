@@ -21,7 +21,12 @@
           <p
             class="text-bold text-grey-8 text-uppercase text-subtitle1 q-mb-sm q- q-pl-none"
           >Progress</p>
-          <q-item class="bg-grey-2 q-mb-md" clickable @click="level_dialog=!level_dialog" style="height:120px">
+          <q-item
+            class="bg-grey-2 q-mb-md"
+            clickable
+            @click="level_dialog=!level_dialog"
+            style="height:120px"
+          >
             <q-item-section avatar>
               <q-avatar
                 font-size="35px"
@@ -47,7 +52,12 @@
             </q-item-section>
           </q-item>
 
-          <q-item  class="bg-grey-2 q-mb-md" clickable @click="achiev_dialog=!achiev_dialog" style="height:120px">
+          <q-item
+            class="bg-grey-2 q-mb-md"
+            clickable
+            @click="achiev_dialog=!achiev_dialog"
+            style="height:120px"
+          >
             <q-item-section avatar>
               <q-avatar font-size="35px" class="q-pa-none bg-grey text-white" icon="done_outline" />
             </q-item-section>
@@ -57,7 +67,12 @@
               <q-item-label class="text-bold text-h6 q-pb-none text-grey">Achievements</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item class="bg-grey-2 q-mb-md" clickable @click="ranking_dialog=!ranking_dialog" style="height:120px">
+          <q-item
+            class="bg-grey-2 q-mb-md"
+            clickable
+            @click="ranking_dialog=!ranking_dialog"
+            style="height:120px"
+          >
             <q-item-section avatar>
               <q-avatar font-size="35px" class="q-pa-none text-white bg-grey" icon="equalizer" />
             </q-item-section>
@@ -68,18 +83,20 @@
             </q-item-section>
           </q-item>
         </div>
-        <div class="q-pt-md row col-xs-12 col-md-10 q-pl-lg">
-          <p
-            class="full-width text-bold text-grey-8 text-uppercase text-subtitle1 q-mb-sm q-pl-md"
-          >Recent Activity</p>
-          <div class="col-4 q-pl-md">
-            <activity-preview />
-          </div>
-          <div class="col-4 q-pl-md">
-            <activity-preview />
-          </div>
-          <div class="col-4 q-pl-md">
-            <activity-preview />
+        <div class="q-pt-md col-xs-12 col-md-10 q-pl-lg">
+          <div
+            class="q-pl-md text-bold text-grey-8 text-uppercase text-subtitle1 q-mb-sm"
+          >Recent Activity</div>
+          <div class="row">
+            <div class="col-4 q-mt-none q-pl-md">
+              <activity-preview />
+            </div>
+            <div class="col-4 q-pl-md">
+              <activity-preview />
+            </div>
+            <div class="col-4 q-pl-md">
+              <activity-preview />
+            </div>
           </div>
         </div>
       </div>

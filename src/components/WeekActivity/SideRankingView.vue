@@ -4,7 +4,7 @@
       <h5 class="q-mt-none q-mb-none">TEK-PS Ranking</h5>
       <p
         class="text-body-2 text-grey-5"
-      >Your Personal progress tracking through the TEK-PSC courses, training and contests</p>
+      >Your Personal progress tracking through the TEK-PS courses, training and contests</p>
     </q-card-section>
     <q-card-section class="row items-center no-wrap">
       <apexchart width="450" type="bar" :options="options" :series="series"></apexchart>

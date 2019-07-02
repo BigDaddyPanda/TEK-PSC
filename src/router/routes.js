@@ -1,51 +1,111 @@
-
 const routes = [
   {
-    path: '/',
+    path: "/",
     meta: { private: false },
-    component: () => import('layouts/PublicLayout.vue'),
+    component: () => import("layouts/PublicLayout.vue"),
     redirect: "/landing",
     children: [
-      { path: 'landing', component: () => import('pages/Public/Landing.vue') },
-      { path: 'calendar', component: () => import('pages/Public/Calendar.vue') },
-      { path: 'about-us', component: () => import('pages/Public/AboutUs.vue') }
+      {
+        path: "landing",
+        meta: { title: "TEK PS" },
+        component: () => import("pages/Public/Landing.vue")
+      },
+      {
+        path: "calendar",
+        meta: { title: "TEK PS-Calendar" },
+        component: () => import("pages/Public/Calendar.vue")
+      },
+      {
+        path: "about-us",
+        meta: { title: "TEK PS-About Us" },
+        component: () => import("pages/Public/AboutUs.vue")
+      }
     ]
   },
   {
-    path: '/manager',
-    redirect: "/setting-contest",
+    path: "/manager",
+    redirect: "/-contest",
     meta: { private: true },
-    component: () => import('layouts/ManagerLayout.vue'),
+    component: () => import("layouts/PSCLayout.vue"),
     children: [
-      { path: 'setting-contest', component: () => import('pages/Manager/SettingContest.vue') },
-      { path: 'setting-sheets', component: () => import('pages/Manager/SettingSheets.vue') },
-      { path: 'admin-chatbox', component: () => import('pages/Manager/ChatBox.vue') }
+      {
+        path: "lesson",
+        meta: { title: "TEK PS- Lesson" },
+        component: () => import("pages/Manager/Lesson.vue")
+      },
+      {
+        path: "contest",
+        meta: { title: "TEK PS- Contest" },
+        component: () => import("pages/Manager/Contest.vue")
+      },
+      {
+        path: "sheet",
+        meta: { title: "TEK PS- Sheets" },
+        component: () => import("pages/Manager/Sheets.vue")
+      },
+      {
+        path: "admin-chatbox",
+        meta: { title: "TEK PS-Admin Chatbox" },
+        component: () => import("pages/Manager/ChatBox.vue")
+      }
     ]
   },
   {
-    path: '/psc',
+    path: "/psc",
     meta: { private: true },
-    component: () => import('layouts/PSCLayout.vue'),
+    component: () => import("layouts/PSCLayout.vue"),
     redirect: "/psc/week-activity-overview",
     children: [
-      { path: 'rules-desclaimer', component: () => import('pages/PSC/RulesDesclaimer.vue') },
-      { path: 'week-activity-overview', component: () => import('pages/PSC/WeekActivity/WeekActivityOverView.vue') },
-      { path: 'week-activity-sheets', component: () => import('pages/PSC/WeekActivity/Sheets.vue') },
-      { path: 'week-activity-contests', component: () => import('pages/PSC/WeekActivity/Contests.vue') },
-      { path: 'week-activity-final-standing', component: () => import('pages/PSC/WeekActivity/FinalStanding.vue') },
-      { path: 'profile-overview', component: () => import('pages/PSC/Profile/ProfileOverView.vue') },
-      { path: 'profile-settings', component: () => import('pages/PSC/Profile/ProfileSettings.vue') },
-      { path: 'hall-of-fame', component: () => import('pages/PSC/HallOfFame.vue') }
+      {
+        path: "rules-desclaimer",
+        meta: { title: "TEK PS-Rules Desclaimer" },
+        component: () => import("pages/PSC/RulesDesclaimer.vue")
+      },
+      {
+        path: "week-activity-overview",
+        meta: { title: "TEK PS-Week Activity Overview" },
+        component: () => import("pages/PSC/WeekActivity/OverView.vue")
+      },
+      {
+        path: "week-activity-lessons",
+        meta: { title: "TEK PS-Week Activity Lessons" },
+        component: () => import("pages/PSC/WeekActivity/Lesson.vue")
+      },
+      {
+        path: "lesson/:id",
+        meta: { title: "TEK PS-Lesson" },
+        component: () => import("pages/PSC/Content/Lesson.vue")
+      },
+      {
+        path: "week-activity-sheets",
+        meta: { title: "TEK PS-Week Activity Sheets" },
+        component: () => import("pages/PSC/WeekActivity/Sheets.vue")
+      },
+      {
+        path: "week-activity-contests",
+        meta: { title: "TEK PS-Week Activity Contests" },
+        component: () => import("pages/PSC/WeekActivity/Contests.vue")
+      },
+      {
+        path: "week-activity-final-standing",
+        meta: { title: "TEK PS-Week Activity Final Standing" },
+        component: () => import("pages/PSC/WeekActivity/FinalStanding.vue")
+      },
+      {
+        path: "hall-of-fame",
+        meta: { title: "TEK PS-Hall Of Fame" },
+        component: () => import("pages/PSC/HallOfFame.vue")
+      }
     ]
   }
-]
+];
 
 // Always leave this as last one
-if (process.env.MODE !== 'ssr') {
+if (process.env.MODE !== "ssr") {
   routes.push({
-    path: '*',
-    component: () => import('pages/Error404.vue')
-  })
+    path: "*",
+    component: () => import("pages/Error404.vue")
+  });
 }
 
-export default routes
+export default routes;

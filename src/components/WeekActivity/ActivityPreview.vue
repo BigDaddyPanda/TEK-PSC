@@ -1,5 +1,5 @@
 <template>
-  <q-card dark class="bg-grey-9">
+  <q-card dark @click="$router.push('/psc/lesson/lessonId')" class="cursor-pointer bg-grey-9">
     <q-img
       @mouseenter="showLayer=true"
       @mouseleave="showLayer=false"
@@ -7,8 +7,8 @@
     >
       <transition name="fade">
         <div v-if="showLayer" class="absolute-full">
-          <div class="q-ma-md content-center absolute-full text-body2 flex flex-center">
-            <span class="full-width text-h6 q-mb-none text-bold">MIME Type</span>
+          <div class="q-ma-md content-end absolute-full text-body2 flex flex-end">
+            <span class="full-width text-h6 q-mb-none text-bold">Lesson Name</span>
             <span class="full-width q-mb-none text-orange">
               <q-avatar
                 size="18px"

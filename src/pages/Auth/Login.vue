@@ -2,7 +2,7 @@
   <q-card flat padding>
     <!-- content -->
     <q-card-section v-if="!authStore.user">
-      <h5 class="text-center text-bold">SIGN {{isLogin?"IN":"UP"}} AND ENROLL FOR TEK-PSC</h5>
+      <h5 class="text-center text-bold">SIGN {{isLogin?"IN":"UP"}} AND ENROLL FOR TEK-PS</h5>
       <h6>{{status}}</h6>
 
       <div class="row q-gutter-xs justify-center">
@@ -33,7 +33,7 @@
         />
       </div>
       <p class="text-muted text-center">OR</p>
-      <div id="my-auth"/>
+      <div id="my-auth" />
     </q-card-section>
     <q-card-section class="row q-gutter-xs justify-center" v-else>
       <h5
@@ -68,7 +68,7 @@
         class="col-6 q-mt-md"
         :label="$_.startCase('hall-of-fame')"
       />
-      <q-btn class="col-6 q-mt-md" @click="signout" label="SignOut"/>
+      <q-btn class="col-6 q-mt-md" @click="signout" label="SignOut" />
     </q-card-section>
   </q-card>
 </template>

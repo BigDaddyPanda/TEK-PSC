@@ -1,0 +1,138 @@
+[
+    {
+        "label": "Implementation",
+        "value": "implementation"
+    },
+    {
+        "label": "Dynamic Programming",
+        "value": "dp"
+    },
+    {
+        "label": "Math",
+        "value": "math"
+    },
+    {
+        "label": "Greedy",
+        "value": "greedy"
+    },
+    {
+        "label": "Brute force",
+        "value": "brute force"
+    },
+    {
+        "label": "Data structures",
+        "value": "data structures"
+    },
+    {
+        "label": "Constructive algorithms",
+        "value": "constructive algorithms"
+    },
+    {
+        "label": "Dfs and similar",
+        "value": "dfs and similar"
+    },
+    {
+        "label": "Sortings",
+        "value": "sortings"
+    },
+    {
+        "label": "Binary search",
+        "value": "binary search"
+    },
+    {
+        "label": "Graphs",
+        "value": "graphs"
+    },
+    {
+        "label": "Trees",
+        "value": "trees"
+    },
+    {
+        "label": "Strings",
+        "value": "strings"
+    },
+    {
+        "label": "Number theory",
+        "value": "number theory"
+    },
+    {
+        "label": "Geometry",
+        "value": "geometry"
+    },
+    {
+        "label": "Combinatorics",
+        "value": "combinatorics"
+    },
+    {
+        "label": "Two pointers",
+        "value": "two pointers"
+    },
+    {
+        "label": "Dsu",
+        "value": "dsu"
+    },
+    {
+        "label": "Bitmasks",
+        "value": "bitmasks"
+    },
+    {
+        "label": "Probabilities",
+        "value": "probabilities"
+    },
+    {
+        "label": "Shortest paths",
+        "value": "shortest paths"
+    },
+    {
+        "label": "Hashing",
+        "value": "hashing"
+    },
+    {
+        "label": "Divide and conquer",
+        "value": "divide and conquer"
+    },
+    {
+        "label": "Games",
+        "value": "games"
+    },
+    {
+        "label": "Matrices",
+        "value": "matrices"
+    },
+    {
+        "label": "Flows",
+        "value": "flows"
+    },
+    {
+        "label": "String suffix structures",
+        "value": "string suffix structures"
+    },
+    {
+        "label": "Expression parsing",
+        "value": "expression parsing"
+    },
+    {
+        "label": "Graph matchings",
+        "value": "graph matchings"
+    },
+    {
+        "label": "Ternary search",
+        "value": "ternary search"
+    },
+    {
+        "label": "Meet-in-the-middle",
+        "value": "meet-in-the-middle"
+    },
+    {
+        "label": "Fft-sat",
+        "value": "fft-sat"
+    },
+    {
+        "label": "Chinese remainder theorem",
+        "value": "chinese remainder theorem"
+    },
+    {
+        "label": "Schedules",
+        "value": "schedules"
+    }
+]

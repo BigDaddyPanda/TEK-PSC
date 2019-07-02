@@ -2,7 +2,9 @@
   <q-card style="width: 500px">
     <q-card-section>
       <h5 class="q-mt-none q-mb-none">TEK-PS Levels</h5>
-      <p class="text-body-2 text-grey-5">Quick Overview of the levels, each new level is achieved by experience gained through participating in contests</p>
+      <p
+        class="text-body-2 text-grey-5"
+      >Quick Overview of the levels, each new level is achieved by experience gained through participating in contests</p>
     </q-card-section>
     <q-card-section class="row items-center no-wrap">
       <q-list bordered padding>
@@ -10,7 +12,7 @@
           <q-item style="height:70px">
             <q-item-section top avatar>
               <q-avatar rounded text-color="white">
-                <q-img :src="level.icon"/>
+                <q-img :src="level.icon" />
               </q-avatar>
             </q-item-section>
 
@@ -20,10 +22,10 @@
             </q-item-section>
 
             <q-item-section side top>
-              <q-icon name="star" color="grey"/>
+              <q-icon name="star" color="grey" />
             </q-item-section>
           </q-item>
-          <q-separator spaced inset="item"/>
+          <q-separator spaced inset="item" />
         </div>
       </q-list>
     </q-card-section>
@@ -31,7 +33,7 @@
 </template>
 
 <script>
-import Levels from "./levels.json";
+import Levels from "../../utils/levels.json";
 export default {
   mounted() {
     console.log(Levels);

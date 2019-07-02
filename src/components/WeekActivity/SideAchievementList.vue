@@ -36,9 +36,8 @@
     </q-card-section>
   </q-card>
 </template>
-
 <script>
-import Achievements from "./achievements.json";
+import Achievements from "../../utils/achievements.json";
 export default {
   mounted() {
     console.log(Achievements);
