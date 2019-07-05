@@ -1,129 +1,105 @@
 <template>
   <div class="q-pa-md">
-    <q-table
-      title="Lessons"
-      :data="data"
-      :columns="columns"
-      row-key="name"
-      selection="multiple"
-      :selected.sync="selected"
-      :filter="filter"
-      grid
-      hide-header
-    >
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </template>
-
-      <template v-slot:item="Lessons[0]">
-        <div
-          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
-          :style="Lessons[0].selected ? 'transform: scale(0.95);' : ''"
-        >
-          <q-card :class="Lessons[0].selected ? 'bg-grey-2' : ''">
-            <q-card-section>
-              <q-checkbox dense v-model="Lessons[0].selected" :label="Lessons[0].row.name" />
-            </q-card-section>
-            <q-separator />
-            <q-list dense>
-              <q-item
-                v-for="col in Lessons[0].cols.filter(col => col.name !== 'desc')"
-                :key="col.name"
-              >
-                <q-item-section>
-                  <q-item-label>{{ col.label }}</q-item-label>
-                </q-item-section>
-                <q-item-section side>
-                  <q-item-label caption>{{ col.value }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-card>
-        </div>
-      </template>
-    </q-table>
-    <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition">
-      <!-- <q-card>
-        <q-separator />
-        <q-list dense>
-          <q-item v-for="col in Lessons[0].cols.filter(col => col.name !== 'desc')" :key="col.name">
-            <q-item-section>
-              <q-item-label>{{ col.label }}</q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-item-label caption>{{ col.value }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-card> -->
+    <div class="full-width row q-gutter-md">
+      <q-space />
+      <q-input square dense debounce="300" color="primary" v-model="filter">
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
     </div>
+    <div class="fit row">
+      <q-card
+        v-for="(lesson, ind) in Lessons"
+        :key="ind"
+        class="my-card col-md-4 col-xs-6 col-lg-3 q-ma-xs"
+      >
+        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+          <div class="absolute-bottom">
+            <div class="text-h6">{{lesson.name}}</div>
+            <div class="text-subtitle2">by {{lesson.editor}}</div>
+            <div
+              class="text-subtitle2"
+            >Designated Next Lesson: {{$_.startCase(lesson.nextLessonName)}}</div>
+          </div>
+        </q-img>
+
+        <q-card-actions>
+          <q-space />
+          <q-btn flat>Is Overview</q-btn>
+          <q-btn flat>Edit</q-btn>
+          <q-btn flat>Delete</q-btn>
+        </q-card-actions>
+      </q-card>
+    </div>
+    <q-dialog
+      v-model="dialog"
+      persistent
+      :maximized="maximizedToggle"
+      transition-show="slide-up"
+      transition-hide="slide-down"
+    >
+      <lesson-editor
+        :maximizedToggle="maximizedToggle"
+        :toggleMaximizedToggle="toggleMaximizedToggle"
+        :dismissModal="dismissModal"
+      />
+    </q-dialog>
+    <q-page-sticky position="bottom-left" :offset="[18, 18]">
+      <q-btn round color="accent" @click="openModal()" icon="add" />
+    </q-page-sticky>
   </div>
 </template>
 <script>
+import LessonEditor from "../../components/Manager/LessonEditor";
 import Lessons from "../../utils/lessons.json";
+import { mapActions, mapState, mapGetters } from "vuex";
 export default {
+  name: "LessonManager",
+  computed: {
+    ...mapGetters({
+      dialogStore: "lessonStore/dialog"
+    })
+  },
+  components: {
+    LessonEditor
+  },
+  watch: {
+    includesQuiz: function(value) {
+      if (value) {
+        this.addQuizz();
+      } else this.newLesson.quiz = [];
+    }
+  },
+  methods: {
+    toggleMaximizedToggle: function() {
+      this.maximizedToggle = !this.maximizedToggle;
+    },
+    ...mapActions({
+      addNewLesson: "lessonStore/addNewLesson",
+      dismissLesson: "lessonStore/dismissLesson",
+      openLesson: "lessonStore/openLesson"
+    }),
+    openModal(lessson) {
+      if (lessson) {
+        this.openLesson(lessson);
+      } else {
+        this.addNewLesson();
+      }
+      this.dialog = true;
+    },
+    dismissModal() {
+      this.dismissLesson();
+      this.dialog = false;
+    }
+  },
   data() {
     return {
       filter: "",
+      maximizedToggle: true,
       selected: [],
-      columns: [
-        {
-          name: "desc",
-          required: true,
-          label: "Dessert (100g serving)",
-          align: "left",
-          field: "row => row.name",
-          format: val => `${val}`,
-          sortable: true
-        },
-        {
-          name: "calories",
-          align: "center",
-          label: "Calories",
-          field: "calories",
-          sortable: true
-        },
-        {
-          name: "fat",
-          label: "Fat (g)",
-          field: "fat",
-          sortable: true
-        },
-        {
-          name: "carbs",
-          label: "Carbs (g)",
-          field: "carbs"
-        },
-        {
-          name: "protein",
-          label: "Protein (g)",
-          field: "protein"
-        },
-        {
-          name: "sodium",
-          label: "Sodium (mg)",
-          field: "sodium"
-        },
-        {
-          name: "calcium",
-          label: "Calcium (%)",
-          field: "calcium",
-          sortable: true,
-          sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
-        },
-        {
-          name: "iron",
-          label: "Iron (%)",
-          field: "iron",
-          sortable: true,
-          sort: (a, b) => parseInt(a, 10) - parseInt(b, 10)
-        }
-      ],
-      ...Lessons
+      dialog: false,
+      Lessons
     };
   }
 };

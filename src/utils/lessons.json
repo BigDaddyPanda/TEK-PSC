@@ -1,48 +1,48 @@
-{
-    "data": [
-        {
-            "name": "Binary Search",
-            "content": "In computer science, binary search, also known as half-interval search, logarithmic search, or binary chop, is a search algorithm that finds the position of a target value within a sorted array. Binary search compares the target value to the middle element of the array. If they are not equal, the half in which the target cannot lie is eliminated and the search continues on the remaining half, again taking the middle element to compare to the target value, and repeating this until the target value is found. If the search ends with the remaining half being empty, the target is not in the array. Even though the idea is simple, implementing binary search correctly requires attention to some subtleties about its exit conditions and midpoint calculation, particularly if the values in the array are not all of the whole numbers in the range.Binary search runs in logarithmic time in the worst case, making O(log n) comparisons, where n is the number of elements in the array, the O is Big O notation, and log is the logarithm. Binary search takes constant (O(1)) space, meaning that the space taken by the algorithm is the same for any number of elements in the array. Binary search is faster than linear search except for small arrays, but the array must be sorted first. Although specialized data structures designed for fast searching, such as hash tables, can be searched more efficiently, binary search applies to a wider range of problems.There are numerous variations of binary search. In particular, fractional cascading speeds up binary searches for the same value in multiple arrays. Fractional cascading efficiently solves a number of search problems in computational geometry and in numerous other fields. Exponential search extends binary search to unbounded lists. The binary search tree and B-tree data structures are based on binary search.\n\t<pre style='background-color: rgb(248, 249, 250); border: 1px solid rgb(234, 236, 240); padding: 1em; line-height: 1.3em; overflow-x: hidden; overflow-wrap: break-word; font-size: 14px;'><b>function</b> binary_search(A, n, T):\n\tL&nbsp;:= 0\n\tR&nbsp;:= n − 1\n\t<b>while</b> L &lt;= R:\n\t\tm&nbsp;:= floor((L + R) / 2)\n\t\t<b>if</b> A[m] &lt; T:\n\t\t\tL&nbsp;:= m + 1\n\t\t<b>else if</b> A[m] &gt; T:\n\t\t\tR&nbsp;:= m - 1\n\t\t<b>else</b>:\n\t\t\t<b>return</b> m\n\t<b>return</b> unsuccessful</pre>",
-            "quiz": [
-                {
-                    "question": "What is Binary Search?",
-                    "answers": [
-                        "A hologram of the Demon",
-                        "A hero from BNH Academia",
-                        "Algorithm based on duality of the truthness and the falseness",
-                        "No Idea ... I am just a potato around here..."
-                    ],
-                    "correct": 2
-                }
-            ],
-            "nextLessonName": "graph"
-        },
-        {
-            "name": "Graph",
-            "content": "<p style='margin-bottom: 10px; padding: 0px; border: 0px; font-size: 16px; vertical-align: baseline; line-height: 1.71429; color: rgba(0, 0, 0, 0.84); font-family: Roboto, sans-serif;'>Graph is a data structure that consists of following two components:<br><strong style='margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;'>1.</strong>&nbsp;A finite set of vertices also called as nodes.<br><strong style='margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;'>2.</strong>&nbsp;A finite set of ordered pair of the form (u, v) called as edge.&nbsp;The pair is ordered because (u, v) is not same as (v, u) in case of a directed graph(di-graph). The pair of the form (u, v) indicates that there is an edge from vertex u to vertex v. The edges may contain weight/value/cost.</p><p style='margin-bottom: 10px; padding: 0px; border: 0px; font-size: 16px; vertical-align: baseline; line-height: 1.71429; color: rgba(0, 0, 0, 0.84); font-family: Roboto, sans-serif;'>Graphs are used to represent many real-life applications: Graphs are used to represent networks. The networks may include paths in a city or telephone network or circuit network. Graphs are also used in social networks like linkedIn, Facebook. For example, in Facebook, each person is represented with a vertex(or node). Each node is a structure and contains information like person id, name, gender and locale. See&nbsp;<a href='http://en.wikipedia.org/wiki/Graph_theory#Applications' style='margin: 0px; padding: 0px; border: 0px; vertical-align: baseline; outline: none; color: rgb(236, 78, 32); text-decoration-line: none;'>this&nbsp;</a>for more applications of graph.</p><p style='margin-bottom: 10px; padding: 0px; border: 0px; font-size: 16px; vertical-align: baseline; line-height: 1.71429; color: rgba(0, 0, 0, 0.84); font-family: Roboto, sans-serif;'>Following is an example of an undirected graph with 5 vertices.<br><img src='https://cdncontribute.geeksforgeeks.org/wp-content/uploads/undirectedgraph.png' alt='' title='graph_representation1' class='aligncenter size-full wp-image-27196' style='margin: 12px auto; padding: 0px; border: 0px; vertical-align: baseline; display: block; max-width: 100%; height: auto; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;'></p><p style='margin-bottom: 10px; padding: 0px; border: 0px; font-size: 16px; vertical-align: baseline; line-height: 1.71429; color: rgba(0, 0, 0, 0.84); font-family: Roboto, sans-serif;'>Following two are the most commonly used representations of a graph.<br><strong style='margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;'>1.</strong>&nbsp;Adjacency Matrix<br><strong style='margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;'>2.</strong>&nbsp;Adjacency List<br>There are other representations also like, Incidence Matrix and Incidence List. The choice of the graph representation is situation specific. It totally depends on the type of operations to be performed and ease of use.</p><p style='margin-bottom: 10px; padding: 0px; border: 0px; font-size: 16px; vertical-align: baseline; line-height: 1.71429; color: rgba(0, 0, 0, 0.84); font-family: Roboto, sans-serif;'><strong style='margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;'>Adjacency Matrix:</strong><br>Adjacency Matrix is a 2D array of size V x V where V is the number of vertices in a graph. Let the 2D array be adj[][], a slot adj[i][j] = 1 indicates that there is an edge from vertex i to vertex j. Adjacency matrix for undirected graph is always symmetric. Adjacency Matrix is also used to represent weighted graphs. If adj[i][j] = w, then there is an edge from vertex i to vertex j with weight w.</p>",
-            "quiz": [
-                {
-                    "question": "What is DFS Search?",
-                    "answers": [
-                        "Distributed Flash Security",
-                        "Algorithm based on the Child-First approach",
-                        "BFS dumb brother",
-                        "Have mercy upon my potato iQ here..."
-                    ],
-                    "correct": 1
-                },
-                {
-                    "question": "What is Dijkstra Algorithm?",
-                    "answers": [
-                        "An Algorithm",
-                        "A hero from BNH Academia",
-                        "Algorithm based on duality of the truthness and the falseness",
-                        "No Idea ... I am just a potato around here..."
-                    ],
-                    "correct": 2
-                }
-            ],
-            "nextLessonName": "graph"
-        }
-    ]
-}
+[
+    {
+        "name": "Binary Search",
+        "editor": "Amer Hosni",
+        "content": "In computer science, binary search, also known as half-interval search, logarithmic search, or binary chop, is a search algorithm that finds the position of a target value within a sorted array. Binary search compares the target value to the middle element of the array. If they are not equal, the half in which the target cannot lie is eliminated and the search continues on the remaining half, again taking the middle element to compare to the target value, and repeating this until the target value is found. If the search ends with the remaining half being empty, the target is not in the array. Even though the idea is simple, implementing binary search correctly requires attention to some subtleties about its exit conditions and midpoint calculation, particularly if the values in the array are not all of the whole numbers in the range.Binary search runs in logarithmic time in the worst case, making O(log n) comparisons, where n is the number of elements in the array, the O is Big O notation, and log is the logarithm. Binary search takes constant (O(1)) space, meaning that the space taken by the algorithm is the same for any number of elements in the array. Binary search is faster than linear search except for small arrays, but the array must be sorted first. Although specialized data structures designed for fast searching, such as hash tables, can be searched more efficiently, binary search applies to a wider range of problems.There are numerous variations of binary search. In particular, fractional cascading speeds up binary searches for the same value in multiple arrays. Fractional cascading efficiently solves a number of search problems in computational geometry and in numerous other fields. Exponential search extends binary search to unbounded lists. The binary search tree and B-tree data structures are based on binary search.\n\t<pre style='background-color: rgb(248, 249, 250); border: 1px solid rgb(234, 236, 240); padding: 1em; line-height: 1.3em; overflow-x: hidden; overflow-wrap: break-word; font-size: 14px;'><b>function</b> binary_search(A, n, T):\n\tL&nbsp;:= 0\n\tR&nbsp;:= n − 1\n\t<b>while</b> L &lt;= R:\n\t\tm&nbsp;:= floor((L + R) / 2)\n\t\t<b>if</b> A[m] &lt; T:\n\t\t\tL&nbsp;:= m + 1\n\t\t<b>else if</b> A[m] &gt; T:\n\t\t\tR&nbsp;:= m - 1\n\t\t<b>else</b>:\n\t\t\t<b>return</b> m\n\t<b>return</b> unsuccessful</pre>",
+        "quiz": [
+            {
+                "question": "What is Binary Search?",
+                "answers": [
+                    "A hologram of the Demon",
+                    "A hero from BNH Academia",
+                    "Algorithm based on duality of the truthness and the falseness",
+                    "No Idea ... I am just a potato around here..."
+                ],
+                "correct": 2
+            }
+        ],
+        "nextLessonName": "graph"
+    },
+    {
+        "name": "Graph",
+        "editor": "Amine Zarouane",
+        "content": "<p style='margin-bottom: 10px; padding: 0px; border: 0px; font-size: 16px; vertical-align: baseline; line-height: 1.71429; color: rgba(0, 0, 0, 0.84); font-family: Roboto, sans-serif;'>Graph is a data structure that consists of following two components:<br><strong style='margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;'>1.</strong>&nbsp;A finite set of vertices also called as nodes.<br><strong style='margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;'>2.</strong>&nbsp;A finite set of ordered pair of the form (u, v) called as edge.&nbsp;The pair is ordered because (u, v) is not same as (v, u) in case of a directed graph(di-graph). The pair of the form (u, v) indicates that there is an edge from vertex u to vertex v. The edges may contain weight/value/cost.</p><p style='margin-bottom: 10px; padding: 0px; border: 0px; font-size: 16px; vertical-align: baseline; line-height: 1.71429; color: rgba(0, 0, 0, 0.84); font-family: Roboto, sans-serif;'>Graphs are used to represent many real-life applications: Graphs are used to represent networks. The networks may include paths in a city or telephone network or circuit network. Graphs are also used in social networks like linkedIn, Facebook. For example, in Facebook, each person is represented with a vertex(or node). Each node is a structure and contains information like person id, name, gender and locale. See&nbsp;<a href='http://en.wikipedia.org/wiki/Graph_theory#Applications' style='margin: 0px; padding: 0px; border: 0px; vertical-align: baseline; outline: none; color: rgb(236, 78, 32); text-decoration-line: none;'>this&nbsp;</a>for more applications of graph.</p><p style='margin-bottom: 10px; padding: 0px; border: 0px; font-size: 16px; vertical-align: baseline; line-height: 1.71429; color: rgba(0, 0, 0, 0.84); font-family: Roboto, sans-serif;'>Following is an example of an undirected graph with 5 vertices.<br><img src='https://cdncontribute.geeksforgeeks.org/wp-content/uploads/undirectedgraph.png' alt='' title='graph_representation1' class='aligncenter size-full wp-image-27196' style='margin: 12px auto; padding: 0px; border: 0px; vertical-align: baseline; display: block; max-width: 100%; height: auto; box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px;'></p><p style='margin-bottom: 10px; padding: 0px; border: 0px; font-size: 16px; vertical-align: baseline; line-height: 1.71429; color: rgba(0, 0, 0, 0.84); font-family: Roboto, sans-serif;'>Following two are the most commonly used representations of a graph.<br><strong style='margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;'>1.</strong>&nbsp;Adjacency Matrix<br><strong style='margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;'>2.</strong>&nbsp;Adjacency List<br>There are other representations also like, Incidence Matrix and Incidence List. The choice of the graph representation is situation specific. It totally depends on the type of operations to be performed and ease of use.</p><p style='margin-bottom: 10px; padding: 0px; border: 0px; font-size: 16px; vertical-align: baseline; line-height: 1.71429; color: rgba(0, 0, 0, 0.84); font-family: Roboto, sans-serif;'><strong style='margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;'>Adjacency Matrix:</strong><br>Adjacency Matrix is a 2D array of size V x V where V is the number of vertices in a graph. Let the 2D array be adj[][], a slot adj[i][j] = 1 indicates that there is an edge from vertex i to vertex j. Adjacency matrix for undirected graph is always symmetric. Adjacency Matrix is also used to represent weighted graphs. If adj[i][j] = w, then there is an edge from vertex i to vertex j with weight w.</p>",
+        "quiz": [
+            {
+                "question": "What is DFS Search?",
+                "answers": [
+                    "Distributed Flash Security",
+                    "Algorithm based on the Child-First approach",
+                    "BFS dumb brother",
+                    "Have mercy upon my potato iQ here..."
+                ],
+                "correct": 1
+            },
+            {
+                "question": "What is Dijkstra Algorithm?",
+                "answers": [
+                    "An Algorithm",
+                    "A hero from BNH Academia",
+                    "Algorithm based on duality of the truthness and the falseness",
+                    "No Idea ... I am just a potato around here..."
+                ],
+                "correct": 2
+            }
+        ],
+        "nextLessonName": "graph"
+    }
+]

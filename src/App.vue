@@ -15,7 +15,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      assignUser: "authStore/assignUser"
+      assignUser: "authStore/assignUser",
+      loadLessons: "lessonStore/bindLessonsRef"
     })
   },
   mounted() {
@@ -31,10 +32,9 @@ export default {
             phoneNumber: user.phoneNumber,
             providerData: user.providerData
           });
-          // console.log(user.email);
           if (this.$route.path.includes("landing") && this.authStore.user) {
-            // console.log("Helloo");
-            this.$router.push("/psc");
+            // this.$router.push("/psc");
+            this.$router.push("/manager/lesson");
             this.$q.notify({
               message: `Welcome Back ${user.displayName || user.email}`
             });
@@ -52,6 +52,7 @@ export default {
         this.$q.notify({ message: "Error Retrieving data" });
       }
     );
+    this.loadLessons();
   }
 };
 </script>

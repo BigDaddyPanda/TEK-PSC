@@ -88,11 +88,11 @@ export default {
     trigger() {
       const bar = this.$refs.bar;
 
-      bar.start();
-      this.$axios("https://yesno.wtf/api").then(r => {
-        this.yesNoWtf = r.data;
-        this.$refs.bar.stop();
-      });
+      // bar.start();
+      // this.$axios("https://yesno.wtf/api").then(r => {
+      //   this.yesNoWtf = r.data;
+      //   this.$refs.bar.stop();
+      // });
     }
   }
 };

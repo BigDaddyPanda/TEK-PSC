@@ -1,26 +1,33 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
 // import example from './module-example'
-import authStore from './auth-module'
+import authStore from "./auth-module";
+import lessonStore from "./lesson-module";
 
-Vue.use(Vuex)
+import { vuexfireMutations } from "vuexfire";
+Vue.use(Vuex);
 
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation
  */
 
-export default function (/* { ssrContext } */) {
+export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      authStore
+      authStore,
+      lessonStore
+    },
+    mutations: {
+      // other mutations
+      ...vuexfireMutations
     },
 
     // enable strict mode (adds overhead!)
     // for dev mode only
     strict: process.env.DEV
-  })
+  });
 
   // if (process.env.DEV && module.hot) {
   //   module.hot.accept(['./showcase'], () => {
@@ -29,5 +36,5 @@ export default function (/* { ssrContext } */) {
   //   })
   // }
 
-  return Store
+  return Store;
 }

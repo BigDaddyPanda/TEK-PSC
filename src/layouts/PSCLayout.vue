@@ -166,8 +166,6 @@ export default {
   },
   methods: {
     getActive: function(e) {
-      console.log(this.$route.path, e);
-
       return this.$route.path.includes(e) ? "secondary" : "white";
     },
     setModal: function(e) {
