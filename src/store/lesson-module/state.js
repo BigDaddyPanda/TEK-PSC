@@ -3,19 +3,22 @@ export default {
   dialog: false,
   lessons: [],
   lessonPreview: {
+    lessonId: null,
     name: "",
     content: "",
     editor: "",
     isWeekActivity: false,
     addedDate: "",
-    backGroundPhoto: "",
+    coverPhoto: "",
+    isPublic: true,
+    tags: [],
     quiz: [
       {
         question: "",
-        answers: [],
-        correct: []
+        answers: ["", "", "", ""],
+        correct: [2]
       }
     ],
-    nextLessonName: ""
+    nextLesson: ""
   }
 };

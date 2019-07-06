@@ -33,12 +33,12 @@ export default {
             providerData: user.providerData
           });
           if (this.$route.path.includes("landing") && this.authStore.user) {
-            // this.$router.push("/psc");
-            this.$router.push("/manager/lesson");
+            this.$router.push("/psc");
             this.$q.notify({
               message: `Welcome Back ${user.displayName || user.email}`
             });
           }
+          this.loadLessons();
         } else {
           // User is signed out.
           this.assignUser(null);
@@ -52,7 +52,6 @@ export default {
         this.$q.notify({ message: "Error Retrieving data" });
       }
     );
-    this.loadLessons();
   }
 };
 </script>

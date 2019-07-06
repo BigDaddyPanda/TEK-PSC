@@ -1,8 +1,11 @@
 /*
  */
 import _ from "lodash";
-export function dialog(state) {
-  return state.dialog;
+export function LessonsGetter(state) {
+  return state.lessons.filter(e => e.isPublic);
+}
+export function AllLessonsGetter(state) {
+  return state.lessons;
 }
 export function lessonPreview(state) {
   if (_.isEmpty(state.lessonPreview)) {
@@ -12,15 +15,17 @@ export function lessonPreview(state) {
       editor: "",
       isWeekActivity: false,
       addedDate: "",
-      backGroundPhoto: "",
+      coverPhoto: "",
+      isPublic: true,
+      tags: [],
       quiz: [
         {
           question: "",
-          answers: [],
+          answers: ["", "", "", ""],
           correct: []
         }
       ],
-      nextLessonName: ""
+      nextLesson: ""
     };
   }
   return state.lessonPreview;

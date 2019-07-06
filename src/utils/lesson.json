@@ -4,7 +4,7 @@
     "editor": "Amine",
     "isWeekActivity": false,
     "addedDate": "2019-07-02T15:38:15.029Z",
-    "backGroundPhoto": "",
+    "coverPhoto": "",
     "quiz": [
         {
             "question": "What is Binary Search?",
@@ -19,5 +19,5 @@
             ]
         }
     ],
-    "nextLessonName": "graph"
+    "nextLesson": "graph"
 }

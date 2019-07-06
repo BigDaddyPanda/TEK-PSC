@@ -10,25 +10,32 @@
     </div>
     <div class="fit row">
       <q-card
-        v-for="(lesson, ind) in Lessons"
+        v-for="(lesson, ind) in LessonsGetter"
         :key="ind"
-        class="my-card col-md-4 col-xs-6 col-lg-3 q-ma-xs"
+        class="col-md-4 col-xs-6 col-lg-3 q-ma-xs"
       >
-        <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+        <q-img style="height: 80% !important;" :src="lesson.coverPhoto">
           <div class="absolute-bottom">
             <div class="text-h6">{{lesson.name}}</div>
             <div class="text-subtitle2">by {{lesson.editor}}</div>
             <div
               class="text-subtitle2"
-            >Designated Next Lesson: {{$_.startCase(lesson.nextLessonName)}}</div>
+            >Designated Next Lesson: {{$_.startCase(lesson.nextLesson)}}</div>
           </div>
         </q-img>
 
         <q-card-actions>
           <q-space />
-          <q-btn flat>Is Overview</q-btn>
-          <q-btn flat>Edit</q-btn>
-          <q-btn flat>Delete</q-btn>
+          <q-btn
+            flat
+            :icon="lesson.isWeekActivity?'star':'star_outline'"
+            round
+            @click="markAsWeekActivity(lesson)"
+          >
+            <q-tooltip>Mark as week Activity</q-tooltip>
+          </q-btn>
+          <q-btn flat @click="openModal(lesson)">Edit</q-btn>
+          <q-btn flat @click="removeLesson(lesson.lessonId)">Delete</q-btn>
         </q-card-actions>
       </q-card>
     </div>
@@ -52,13 +59,12 @@
 </template>
 <script>
 import LessonEditor from "../../components/Manager/LessonEditor";
-import Lessons from "../../utils/lessons.json";
 import { mapActions, mapState, mapGetters } from "vuex";
 export default {
   name: "LessonManager",
   computed: {
     ...mapGetters({
-      dialogStore: "lessonStore/dialog"
+      LessonsGetter: "lessonStore/LessonsGetter"
     })
   },
   components: {
@@ -71,6 +77,9 @@ export default {
       } else this.newLesson.quiz = [];
     }
   },
+  mounted() {
+    this.loadLessons();
+  },
   methods: {
     toggleMaximizedToggle: function() {
       this.maximizedToggle = !this.maximizedToggle;
@@ -78,8 +87,23 @@ export default {
     ...mapActions({
       addNewLesson: "lessonStore/addNewLesson",
       dismissLesson: "lessonStore/dismissLesson",
-      openLesson: "lessonStore/openLesson"
+      openLesson: "lessonStore/openLesson",
+      loadLessons: "lessonStore/bindLessonsRef",
+      delLesson: "lessonStore/removeLesson",
+      locmarkAsWeekActivity: "lessonStore/markAsWeekActivity"
     }),
+    removeLesson: function(params) {
+      console.log(params);
+
+      this.delLesson(params).then(() => {
+        this.$nextTick(this.loadLessons);
+      });
+    },
+    markAsWeekActivity(lesson) {
+      this.locmarkAsWeekActivity(lesson).then(() => {
+        this.$nextTick(this.loadLessons);
+      });
+    },
     openModal(lessson) {
       if (lessson) {
         this.openLesson(lessson);
@@ -98,8 +122,7 @@ export default {
       filter: "",
       maximizedToggle: true,
       selected: [],
-      dialog: false,
-      Lessons
+      dialog: false
     };
   }
 };
@@ -107,5 +130,8 @@ export default {
 <style lang="stylus">
 .grid-style-transition {
   transition: transform 0.28s, background-color 0.28s;
+}
+
+.my-card {
 }
 </style>

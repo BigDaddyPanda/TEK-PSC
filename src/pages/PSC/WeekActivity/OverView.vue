@@ -1,18 +1,23 @@
 <template>
-  <q-page padding>
+  <q-page padding v-if="loaded">
     <div class="q-pa-lg q-gutter-lg">
       <div class="row content-start">
         <div class="col-12">
           <p
             class="text-bold text-grey-8 text-uppercase text-subtitle1 q-mb-sm q- q-pl-none"
           >CHECK OUT THIS WEEK TOPIC</p>
-          <q-parallax src="statics/covers/binary - Copy.png">
+          <q-parallax :src="weekLesson.coverPhoto">
             <template v-slot:content="scope">
               <div class="full-width full-height q-pa-xl">
                 <br />
                 <br />
-                <h1 class="q-mb-sm text-secondary text-bold">Binary Search</h1>
-                <q-btn color="secondary text-black" size="lg" label="Get Started" />
+                <h1 class="q-mb-sm text-secondary text-bold">{{weekLesson.name}}</h1>
+                <q-btn
+                  color="secondary text-black"
+                  size="lg"
+                  :to="'/psc/lesson/'+weekLesson.lessonId"
+                  label="Get Started"
+                />
               </div>
             </template>
           </q-parallax>
@@ -88,14 +93,8 @@
             class="q-pl-md text-bold text-grey-8 text-uppercase text-subtitle1 q-mb-sm"
           >Recent Activity</div>
           <div class="row">
-            <div class="col-4 q-mt-none q-pl-md">
-              <activity-preview />
-            </div>
-            <div class="col-4 q-pl-md">
-              <activity-preview />
-            </div>
-            <div class="col-4 q-pl-md">
-              <activity-preview />
+            <div class="col-4 q-mt-none q-pl-md" v-for="(item, index) in allLessons" :key="index">
+              <activity-preview :lesson="item" />
             </div>
           </div>
         </div>
@@ -111,6 +110,7 @@
       <side-ranking-view />
     </q-dialog>
   </q-page>
+  <div v-else />
 </template>
 
 <script>
@@ -118,8 +118,21 @@ import SideLevelList from "components/WeekActivity/SideLevelList";
 import SideAchievementList from "components/WeekActivity/SideAchievementList";
 import SideRankingView from "components/WeekActivity/SideRankingView";
 import ActivityPreview from "components/WeekActivity/ActivityPreview";
+import { mapGetters } from "vuex";
 export default {
-  // name: 'PageName',
+  name: "OverView",
+  mounted() {
+    setTimeout(() => {
+      this.weekLesson = this.LessonsGetter.filter(e => e.isWeekActivity)[0];
+      this.allLessons = this.LessonsGetter.filter(e => !e.isWeekActivity);
+      this.loaded = true;
+    }, 500);
+  },
+  computed: {
+    ...mapGetters({
+      LessonsGetter: "lessonStore/LessonsGetter"
+    })
+  },
   components: {
     SideLevelList,
     SideAchievementList,
@@ -131,7 +144,10 @@ export default {
       progress: 0.15,
       level_dialog: false,
       ranking_dialog: false,
-      achiev_dialog: false
+      achiev_dialog: false,
+      weekLesson: {},
+      allLessons: [],
+      loaded: false
     };
   },
   methods: {}
