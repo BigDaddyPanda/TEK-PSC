@@ -123,7 +123,8 @@ export default {
   name: "OverView",
   mounted() {
     setTimeout(() => {
-      this.weekLesson = this.LessonsGetter.filter(e => e.isWeekActivity)[0];
+      this.weekLesson =
+        this.LessonsGetter.filter(e => e.isWeekActivity)[0] || {};
       this.allLessons = this.LessonsGetter.filter(e => !e.isWeekActivity);
       this.loaded = true;
     }, 500);

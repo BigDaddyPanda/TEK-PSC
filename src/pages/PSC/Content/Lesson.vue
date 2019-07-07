@@ -1,8 +1,8 @@
 <template>
   <div class="row justify-center">
+    <fire-works style="z-index:10" v-if="fullyCorrect" />
     <q-parallax :src="lessonModel.coverPhoto"></q-parallax>
     <q-page class="bg-grey-3" style="width:75%;top:-25vh;" padding>
-      <fire-works style="z-index:10" v-if="fullyCorrect" />
       <div class="q-pt-md row">
         <h3 class="q-mb-xs col-12">{{lessonModel.name}}</h3>
         <h5 class="q-mb-xs col-12">Content</h5>
@@ -21,11 +21,10 @@
           </div>
         </div>
         <div v-else></div>
-        <div class="col-12 text-center q-mt-xl q-pa-md">
+        <div class="col-12 text-center q-mt-xl q-pa-md" v-if="fullyCorrect">
           <div class="full-width q-mb-xs">
             Congrats, You have successfully Completed {{lessonModel.name}} Topic.
-            <br />
-            We can Move on now to the next Section {{lessonModel.nextLesson.label}}
+            <br />We can Move on now to the next Lesson
           </div>
           <q-btn
             no-caps
@@ -33,7 +32,8 @@
             text-color="black"
             style="z-index:100;"
             :to="'/psc/lesson/'+lessonModel.nextLesson.value"
-            label="To the Next"
+            replace
+            :label="`Learn ${lessonModel.nextLesson.label}`"
           />
         </div>
       </div>
@@ -52,17 +52,19 @@ export default {
     FireWorks
   },
   methods: {
-    checkAnswer() {
-      this.$q.notify("Hii");
+    reload() {
+      let lessonId = this.$route.params.id;
+      db.collection("lessons")
+        .where("lessonId", "==", lessonId)
+        .get()
+        .then(snapshot =>
+          snapshot.forEach(doc => {
+            this.lessonModel = doc.data();
+            this.userAnswers = Array(this.lessonModel.quiz.length).fill([]);
+          })
+        );
     },
     partiallyCorrect(k) {
-      console.log(
-        this.lessonModel.quiz[k].correct.every(val =>
-          this.userAnswers[k].includes(val)
-        ),
-        k
-      );
-
       if (_.isEmpty(this.userAnswers[k])) {
         return false;
       }
@@ -77,20 +79,19 @@ export default {
     }
   },
   mounted() {
-    let lessonId = this.$route.params.id;
-    console.log(db);
-    db.collection("lessons")
-      .where("lessonId", "==", lessonId)
-      .get()
-      .then(snapshot =>
-        snapshot.forEach(doc => {
-          this.lessonModel = doc.data();
-          this.userAnswers = Array(this.lessonModel.quiz.length).fill([]);
-        })
-      );
+    this.reload();
+  },
+  watch: {
+    myLessonId: function(newVal) {
+      this.reload();
+    }
   },
   computed: {
+    myLessonId: function() {
+      return this.$route.params.id;
+    },
     fullyCorrect: function() {
+      if (_.isEmpty(this.lessonModel.quiz)) return false;
       return _.every(
         this.lessonModel.quiz.map((q, e) => this.partiallyCorrect(e))
       );

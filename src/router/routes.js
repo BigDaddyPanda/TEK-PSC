@@ -77,6 +77,11 @@ const routes = [
         component: () => import("pages/PSC/Content/Lesson.vue")
       },
       {
+        path: "round/:id",
+        meta: { title: "TEK PS- Round" },
+        component: () => import("pages/PSC/Content/Round.vue")
+      },
+      {
         path: "week-activity-sheets",
         meta: { title: "TEK PS-Week Activity Sheets" },
         component: () => import("pages/PSC/WeekActivity/Sheets.vue")

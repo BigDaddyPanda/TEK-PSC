@@ -1,0 +1,19 @@
+{
+    "sheetId": "vomhdqFccqwr4l9vLf2VIJH5KhpQjVdKPVpN",
+    "name": "algorithmics",
+    "description": "Introduction to basic Algorithmics",
+    "author": "Panda",
+    "isPublic": false,
+    "link": "http://codeforces.com/group/Bm8uz7ooRI/contest/247184",
+    "level": "NewBie",
+    "addedDate": "2019/07/22",
+    "tags": [
+        {
+            "label": "Implementation",
+            "value": "implementation"
+        }
+    ],
+    "coverPhoto": "https://www.google.com/images/errors/robot.png",
+    "fromCodeForces": true,
+    "includedProblems": []
+}

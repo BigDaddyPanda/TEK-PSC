@@ -5,7 +5,7 @@
         <template v-slot:header>
           <q-item-section avatar>
             <q-avatar>
-              <img src="statics/media/discord.png">
+              <img src="statics/social/discord.png">
             </q-avatar>
           </q-item-section>
           <q-item-section>Join us on Discord</q-item-section>

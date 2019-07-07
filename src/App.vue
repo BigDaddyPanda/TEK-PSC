@@ -16,6 +16,7 @@ export default {
   methods: {
     ...mapActions({
       assignUser: "authStore/assignUser",
+      loadSheets: "sheetStore/bindSheetsRef",
       loadLessons: "lessonStore/bindLessonsRef"
     })
   },
@@ -39,6 +40,7 @@ export default {
             });
           }
           this.loadLessons();
+          this.loadSheets();
         } else {
           // User is signed out.
           this.assignUser(null);
