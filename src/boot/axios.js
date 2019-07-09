@@ -1,5 +1,7 @@
-import axios from 'axios'
+import axios from "axios";
 
 export default async ({ Vue }) => {
-  Vue.prototype.$axios = axios
-}
+  const instance = axios.create({
+    headers: { "X-Custom-Header": "foobar" }
+  });
+};

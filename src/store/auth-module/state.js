@@ -3,5 +3,6 @@ export default {
   user: null,
   loggedIn: false,
   loading: false,
-  error: null
-}
+  error: null,
+  isAdmin: false
+};

@@ -17,7 +17,8 @@ export default {
     ...mapActions({
       assignUser: "authStore/assignUser",
       loadSheets: "sheetStore/bindSheetsRef",
-      loadLessons: "lessonStore/bindLessonsRef"
+      loadLessons: "lessonStore/bindLessonsRef",
+      getSuccessSubmissions: "progressStore/getSuccessSubmissions"
     })
   },
   mounted() {
@@ -41,6 +42,11 @@ export default {
           }
           this.loadLessons();
           this.loadSheets();
+          const handlePayloadl = {
+            uid: user.uid,
+            codeforcesHandler: "BigDaddyPanda"
+          };
+          this.getSuccessSubmissions(handlePayloadl);
         } else {
           // User is signed out.
           this.assignUser(null);

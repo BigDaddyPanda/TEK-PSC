@@ -5,6 +5,7 @@ import Vuex from "vuex";
 import authStore from "./auth-module";
 import lessonStore from "./lesson-module";
 import sheetStore from "./sheet-module";
+import progressStore from "./progress-module";
 
 import { vuexfireMutations } from "vuexfire";
 Vue.use(Vuex);
@@ -19,6 +20,7 @@ export default function(/* { ssrContext } */) {
     modules: {
       authStore,
       sheetStore,
+      progressStore,
       lessonStore
     },
     mutations: {

@@ -94,7 +94,7 @@
           >Recent Activity</div>
           <div class="row">
             <div class="col-4 q-mt-none q-pl-md" v-for="(item, index) in allLessons" :key="index">
-              <activity-preview :lesson="item" />
+              <activity-preview isPreview :lesson="item" />
             </div>
           </div>
         </div>

@@ -9,7 +9,7 @@
           >Week Activity</p>
           <p
             class="text-italic text-grey-6 text-subtitle2 q-mb-sm q- q-pl-none"
-          >Lessons that will take place during 27-31 July</p>
+          >Lessons that will take place during {{$moment().startOf('week').format("DD MMMM")}} - {{$moment().endOf('week').format("DD MMMM")}}</p>
         </div>
         <activity-preview :lesson="weekLesson" />
       </div>
@@ -27,7 +27,7 @@
           :key="lesInd"
           class="col-md-3 col-xs-12 q-pr-md q-pl-md"
         >
-          <activity-preview :lesson="lesson" />
+          <activity-preview :isPreview="true" :lesson="lesson" />
         </div>
       </div>
     </div>

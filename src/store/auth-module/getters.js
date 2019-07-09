@@ -1,9 +1,12 @@
 export function user(state) {
-  return state.user
-};
+  return state.user;
+}
 export function loading(state) {
-  return state.loading
-};
+  return state.loading;
+}
+export function isAdmin(state) {
+  return state.isAdmin;
+}
 export function error(state) {
-  return state.error
-};
+  return state.error;
+}

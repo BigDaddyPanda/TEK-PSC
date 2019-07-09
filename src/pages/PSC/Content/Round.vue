@@ -33,14 +33,17 @@
             class="q-mb-sm"
             clickable
             v-ripple
-            @click="goTo(problem)"
+            @click="goTo(problem.link)"
           >
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">{{ problemParser(problem).letter }}</q-avatar>
+              <q-avatar color="primary" text-color="white">{{ problemParser(problem.link).letter }}</q-avatar>
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>#{{ problemParser(problem).name }}</q-item-label>
+              <q-item-label>#{{ problemParser(problem.link).name }}</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-badge :label="problem.xp+' XP'" />
             </q-item-section>
           </q-item>
         </q-list>

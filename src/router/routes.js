@@ -2,7 +2,7 @@ const routes = [
   {
     path: "/",
     meta: { private: false },
-    component: () => import("layouts/PublicLayout.vue"),
+    component: () => import("layouts/PSCLayout.vue"),
     redirect: "/landing",
     children: [
       {
@@ -24,8 +24,8 @@ const routes = [
   },
   {
     path: "/manager",
-    redirect: "/-contest",
-    meta: { private: true },
+    redirect: "/manager/contest",
+    meta: { private: true, requiresAdminShip: true },
     component: () => import("layouts/PSCLayout.vue"),
     children: [
       {
@@ -60,6 +60,11 @@ const routes = [
         path: "rules-desclaimer",
         meta: { title: "TEK PS-Rules Desclaimer" },
         component: () => import("pages/PSC/RulesDesclaimer.vue")
+      },
+      {
+        path: "profile",
+        meta: { title: "TEK PS-Rules Desclaimer" },
+        component: () => import("pages/Auth/Profile.vue")
       },
       {
         path: "week-activity-overview",

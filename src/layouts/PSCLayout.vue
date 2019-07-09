@@ -52,8 +52,9 @@
                   <q-btn
                     color="primary"
                     class="full-width q-mb-xs"
-                    label="Settings"
+                    label="Profile"
                     push
+                    to="/psc/profile"
                     size="sm"
                     v-close-popup
                   />
@@ -61,6 +62,7 @@
                     color="primary"
                     class="full-width q-mb-xs"
                     label="About"
+                    to="/about-us"
                     push
                     size="sm"
                     v-close-popup
@@ -102,27 +104,29 @@
         <q-btn flat round dense icon="menu" @click="rightDrawer = !rightDrawer" />
         <q-toolbar-title>Footer</q-toolbar-title>
         <q-space />
-        <q-btn
-          stretch
-          flat
-          to="/manager/lesson"
-          :class="'text-'+getActive('/manager/lesson')"
-          label="Manage lesson"
-        />
-        <q-btn
-          stretch
-          flat
-          to="/manager/contest"
-          :class="'text-'+getActive('/manager/contest')"
-          label="Manage contest"
-        />
-        <q-btn
-          stretch
-          flat
-          to="/manager/sheet"
-          :class="'text-'+getActive('/manager/sheet')"
-          label="Manage sheet"
-        />
+        <template v-if="isAdmin">
+          <q-btn
+            stretch
+            flat
+            to="/manager/lesson"
+            :class="'text-'+getActive('/manager/lesson')"
+            label="Manage lesson"
+          />
+          <q-btn
+            stretch
+            flat
+            to="/manager/contest"
+            :class="'text-'+getActive('/manager/contest')"
+            label="Manage contest"
+          />
+          <q-btn
+            stretch
+            flat
+            to="/manager/sheet"
+            :class="'text-'+getActive('/manager/sheet')"
+            label="Manage sheet"
+          />
+        </template>
       </q-toolbar>
     </q-footer>
 
@@ -134,6 +138,13 @@
       </q-scroll-area>
     </q-drawer>
 
+    <q-dialog v-model="showModal">
+      <q-card>
+        <q-card-section>
+          <login :isLogin="isLogin" />
+        </q-card-section>
+      </q-card>
+    </q-dialog>
     <q-page-container>
       <!-- This is where pages get injected -->
       <router-view />
@@ -152,16 +163,19 @@
 
 <script>
 import ChatRooms from "../components/ChatRooms";
-// import Login from "../pages/Auth/Login";
-import { mapState } from "vuex";
+import Login from "../pages/Auth/Login";
+import { mapState, mapGetters } from "vuex";
 export default {
   computed: {
     ...mapState({
       authStore: "authStore"
+    }),
+    ...mapGetters({
+      isAdmin: "authStore/isAdmin"
     })
   },
   components: {
-    // Login,
+    Login,
     ChatRooms
   },
   methods: {

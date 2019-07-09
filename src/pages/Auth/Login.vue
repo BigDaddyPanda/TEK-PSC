@@ -3,7 +3,7 @@
     <!-- content -->
     <q-card-section v-if="!authStore.user">
       <h5 class="text-center text-bold">SIGN {{isLogin?"IN":"UP"}} AND ENROLL FOR TEK-PS</h5>
-      <h6>{{status}}</h6>
+      <!-- <h6>{{status}}</h6> -->
 
       <div class="row q-gutter-xs justify-center">
         <q-input
@@ -34,6 +34,32 @@
       </div>
       <p class="text-muted text-center">OR</p>
       <div id="my-auth" />
+      <div class="full-width text-center">
+        <q-btn label="Forgot my credentials" flat @click="resetDialog=true" />
+        <q-dialog v-model="resetDialog" persistent>
+          <q-card style="min-width: 400px" class="q-pa-md">
+            <q-card-section>
+              <div class="text-h6">Your Email Address</div>
+            </q-card-section>
+
+            <q-card-section>
+              <q-input
+                dense
+                v-model="resetEmail"
+                type="email"
+                autofocus
+                @keyup.enter="resetPassword()"
+                :rules="[(val => isEmail(val) || 'Invalid Email'),val => !!val || 'Field is required']"
+              />
+            </q-card-section>
+
+            <q-card-actions align="right" class="text-primary">
+              <q-btn flat label="Cancel" v-close-popup />
+              <q-btn flat label="Reset Password" @click="resetPassword()" />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
+      </div>
     </q-card-section>
     <q-card-section class="row q-gutter-xs justify-center" v-else>
       <h5
@@ -43,9 +69,9 @@
       <q-btn
         size="md"
         color="primary"
-        to="/psc/rules-desclaimer"
+        to="/about-us"
         class="col-6 q-mt-md"
-        :label="$_.startCase('rules-desclaimer')"
+        :label="$_.startCase('about-us')"
       />
       <q-btn
         size="md"
@@ -76,7 +102,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 export default {
-  // name: 'cardName',
+  name: 'LoginView',
   computed: {
     ...mapState({
       authStore: "authStore"
@@ -87,7 +113,9 @@ export default {
       myUser: null,
       email: "",
       password: "",
-      status: ""
+      status: "",
+      resetDialog: false,
+      resetEmail: ""
     };
   },
   props: {
@@ -222,6 +250,20 @@ export default {
           // An error happened.
           this.$q.notify(error.message);
         });
+    },
+    resetPassword() {
+      if (this.isEmail(this.resetEmail)) {
+        this.$firebase
+          .auth()
+          .sendPasswordResetEmail(this.resetEmail)
+          .then(() => {
+            this.$q.notify("Reset Email sent!");
+            this.resetDialog = false;
+          })
+          .catch(error => {
+            this.$q.notify({ message: error, color: "negative" });
+          });
+      }
     }
   }
 };

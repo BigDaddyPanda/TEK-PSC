@@ -95,8 +95,8 @@
         />
         <div v-if="!sheetModel.fromCodeForces" class="col-12">
           <q-list dense bordered separator>
-            <q-item v-ripple>
-              <q-item-section>
+            <q-item v-ripple class="row">
+              <q-item-section class="col-10">
                 <q-input
                   dense
                   v-model="newProblemLink"
@@ -105,9 +105,24 @@
                   @keyup.enter="addNewProblem()"
                 />
               </q-item-section>
+              <q-item-section class="col-2">
+                <q-input
+                  dense
+                  v-model="newProblemXP"
+                  type="number"
+                  label="XP"
+                  hint="50-100 XP"
+                  @keyup.enter="addNewProblem()"
+                />
+              </q-item-section>
             </q-item>
-            <q-item v-for="(problemLink, i) in sheetModel.includedProblems" :key="i" v-ripple>
-              <q-item-section>{{problemLink}}</q-item-section>
+            <q-item v-for="(pb, i) in sheetModel.includedProblems" :key="i" v-ripple>
+              <q-item-section>
+                <span class>
+                  {{pb.link}}-
+                  <span class="text-bold">[ {{pb.xp}}XP ]</span>
+                </span>
+              </q-item-section>
               <q-item-section side>
                 <q-btn
                   color="blue"
@@ -176,6 +191,7 @@ export default {
     return {
       sheetModel: _.cloneDeep(this.sheet),
       newProblemLink: "",
+      newProblemXP: 50,
       tags
     };
   },
@@ -188,8 +204,12 @@ export default {
       if (_.isEmpty(this.sheetModel.includedProblems)) {
         this.sheetModel.includedProblems = [];
       }
-      this.sheetModel.includedProblems.push(this.newProblemLink.trim());
+      this.sheetModel.includedProblems.push({
+        link: this.newProblemLink.trim(),
+        xp: this.newProblemXP
+      });
       this.newProblemLink = "";
+      this.newProblemXP = 50;
     },
     save() {
       if (this.sheetModel.sheetId) {
