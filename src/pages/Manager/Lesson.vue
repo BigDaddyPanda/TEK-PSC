@@ -1,43 +1,46 @@
 <template>
   <div class="q-pa-md">
-    <div class="full-width row q-gutter-md">
+    <!-- <div class="full-width row q-gutter-md">
       <q-space />
       <q-input square dense debounce="300" color="primary" v-model="filter">
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
-    </div>
+    </div>-->
     <div class="fit row">
-      <q-card
+      <div
+        class="col-md-4 col-xs-12 col-lg-3 q-pa-xs"
         v-for="(lesson, ind) in LessonsGetter"
         :key="ind"
-        class="col-md-4 col-xs-6 col-lg-3 q-ma-xs"
+        style="height:33vh;"
       >
-        <q-img style="height: 80% !important;" :src="lesson.coverPhoto">
-          <div class="absolute-bottom">
-            <div class="text-h6">{{lesson.name}}</div>
-            <div class="text-subtitle2">by {{lesson.editor}}</div>
-            <div
-              class="text-subtitle2"
-            >Designated Next Lesson: {{$_.startCase(lesson.nextLesson)}}</div>
-          </div>
-        </q-img>
+        <q-card class="fit">
+          <q-img style="height: 80% !important;" :src="lesson.coverPhoto">
+            <div class="absolute-bottom">
+              <div class="text-h6">{{lesson.name}}</div>
+              <div class="text-subtitle2">by {{lesson.editor}}</div>
+              <div
+                class="text-subtitle2"
+              >Designated Next Lesson: {{$_.startCase(lesson.nextLesson.label)}}</div>
+            </div>
+          </q-img>
 
-        <q-card-actions>
-          <q-space />
-          <q-btn
-            flat
-            :icon="lesson.isWeekActivity?'star':'star_outline'"
-            round
-            @click="markAsWeekActivity(lesson)"
-          >
-            <q-tooltip>Mark as week Activity</q-tooltip>
-          </q-btn>
-          <q-btn flat @click="openModal(lesson)">Edit</q-btn>
-          <q-btn flat @click="removeLesson(lesson.lessonId)">Delete</q-btn>
-        </q-card-actions>
-      </q-card>
+          <q-card-actions>
+            <q-space />
+            <q-btn
+              flat
+              :icon="lesson.isWeekActivity?'star':'star_outline'"
+              round
+              @click="markAsWeekActivity(lesson)"
+            >
+              <q-tooltip>Mark as week Activity</q-tooltip>
+            </q-btn>
+            <q-btn flat @click="openModal(lesson)">Edit</q-btn>
+            <q-btn flat @click="removeLesson(lesson.lessonId)">Delete</q-btn>
+          </q-card-actions>
+        </q-card>
+      </div>
     </div>
     <q-dialog
       v-model="dialog"

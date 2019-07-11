@@ -2,6 +2,7 @@ import axios from "axios";
 import { db, firebase } from "boot/firebase";
 import { Notify } from "quasar";
 import _ from "lodash";
+import DefaultProgress from "./state";
 
 /**
  * to be used as the first step to load
@@ -12,7 +13,6 @@ import _ from "lodash";
 
 export function loadProgress(context) {
   const user = firebase.auth().currentUser;
-  const newProgress = require("./state");
   db.collection("progress")
     .doc(user.uid)
     .get()
@@ -21,19 +21,26 @@ export function loadProgress(context) {
       if (!snapshot.exists) {
         db.collection("progress")
           .doc(user.uid)
-          .set(newProgress.progress)
-          .the(() => {
-            Notify.create("Please consider updating your CodeForces");
+          .set({
+            progress: DefaultProgress.progress,
+            successfullSubmissions: DefaultProgress.successfullSubmissions,
+            joinTimeSeconds: Math.floor(new Date().valueOf() / 1000)
+          })
+          .then(() => {
+            Notify.create({
+              color: "warning",
+              message: "Please consider updating your CodeForces"
+            });
             db.collection("progress")
               .doc(user.uid)
               .then(r => {
                 progress = r.data();
-                context.commit("setProgress", progress);
+                context.commit("setProgress", progress.progress);
               });
           });
       } else {
         progress = snapshot.data();
-        context.commit("setProgress", progress);
+        context.commit("setProgress", progress.progress);
       }
     })
     .catch(error => {
@@ -45,7 +52,7 @@ export function loadProgress(context) {
  * get the user submissions from firebase/firesotre
  * used in the history tracker
  * @param {*} context
- * @param {*} payload
+ * @param {*} payload containing user uid and codeforcesHandler
  */
 
 export function getSuccessSubmissions(context, payload) {
@@ -64,7 +71,7 @@ export function getSuccessSubmissions(context, payload) {
  * any new updates
  * to be used for data refreshing
  * @param {*} context
- * @param {*} payload
+ * @param {*} payload containing user uid and codeforcesHandler
  */
 export function updateMySuccessfulSubmissions(context, payload) {
   let success = [];
@@ -76,11 +83,15 @@ export function updateMySuccessfulSubmissions(context, payload) {
       axios
         .get(
           "https://codeforces.com/api/user.status?handle=" +
-            payload.codeforcesHandler
+            payload.codeforcesHandle
         )
         .then(response => {
           success = response.data.result
-            .filter(e => e["verdict"] === "OK")
+            .filter(
+              e =>
+                e["verdict"] === "OK" &&
+                e["creationTimeSeconds"] > profile.joinTimeSeconds
+            )
             .map(e => ({
               contestId: e.contestId,
               problem: e.problem,
@@ -88,6 +99,7 @@ export function updateMySuccessfulSubmissions(context, payload) {
                 e.contestId
               }/${e.problem.index}`,
               verdict: e.verdict,
+              creationTimeSeconds: e.creationTimeSeconds,
               programmingLanguage: e.programmingLanguage
             }));
           const allSuccessSubmission = _.uniqWith(

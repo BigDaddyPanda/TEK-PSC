@@ -70,6 +70,10 @@
         <q-separator spaced />
       </q-list>
     </div>
+    <!-- for debugging because dialog doesn't show its content in debugger -->
+    <!-- <div v-if="sheetView" class="fit row justify-center">
+      <sheet-editor :dismissModal="dismissModal" :sheet="demandedSheet" />
+    </div>-->
     <q-dialog v-model="sheetView" persistent>
       <q-card style="min-width: 400px">
         <sheet-editor :dismissModal="dismissModal" :sheet="demandedSheet" />

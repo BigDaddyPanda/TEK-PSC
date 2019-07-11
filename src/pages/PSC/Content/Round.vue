@@ -33,14 +33,17 @@
             class="q-mb-sm"
             clickable
             v-ripple
-            @click="goTo(problem.link)"
+            @click="goTo(problem.problem.link)"
           >
             <q-item-section avatar>
-              <q-avatar color="primary" text-color="white">{{ problemParser(problem.link).letter }}</q-avatar>
+              <q-avatar color="teal-7" text-color="white">{{ (problem.problem.index) }}</q-avatar>
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>#{{ problemParser(problem.link).name }}</q-item-label>
+              <q-item-label>{{ problem.problem.name }}</q-item-label>
+              <q-item-label caption>
+                <q-badge class="q-mr-xs" v-for="tag in problem.problem.tags" :key="tag.id">{{ tag }}</q-badge>
+              </q-item-label>
             </q-item-section>
             <q-item-section side>
               <q-badge :label="problem.xp+' XP'" />
@@ -55,18 +58,19 @@
 <script>
 import { db } from "boot/firebase";
 import _ from "lodash";
-
+//  "contestId": 77,
+//  "index": "B",
+//  "name": "Falling Anvils",
+//  "type": "PROGRAMMING",
+//  "points": 1000,
+//  "rating": 1800,
+//  "tags": [
+//      "math",
+//      "probabilities"
+//  ]
 export default {
   name: "SheetRound",
   methods: {
-    problemParser(prb) {
-      // prb shout be like
-      // http://codeforces.com/problemset/problem/1189/C
-      return {
-        name: prb.split("/").slice(-2)[0],
-        letter: prb.split("/").slice(-2)[1]
-      };
-    },
     goTo(prb) {
       window.open(prb, "_blank");
     },

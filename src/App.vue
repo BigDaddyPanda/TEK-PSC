@@ -18,6 +18,7 @@ export default {
       assignUser: "authStore/assignUser",
       loadSheets: "sheetStore/bindSheetsRef",
       loadLessons: "lessonStore/bindLessonsRef",
+      loadProgress: "progressStore/loadProgress",
       getSuccessSubmissions: "progressStore/getSuccessSubmissions"
     })
   },
@@ -42,9 +43,10 @@ export default {
           }
           this.loadLessons();
           this.loadSheets();
+          this.loadProgress();
           const handlePayloadl = {
             uid: user.uid,
-            codeforcesHandler: "BigDaddyPanda"
+            codeforcesHandle: "BigDaddyPanda"
           };
           this.getSuccessSubmissions(handlePayloadl);
         } else {

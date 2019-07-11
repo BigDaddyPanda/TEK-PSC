@@ -7,7 +7,13 @@
       <q-toolbar class="specialheader">
         <q-img
           src="statics/brand-modern-alt-w.png"
-          class="q-mr-sm"
+          class="q-mr-sm gt-xs inline"
+          spinner-color="white"
+          style="width:112px"
+        />
+        <q-img
+          src="statics/white.png"
+          class="q-mr-sm lt-sm inline"
           spinner-color="white"
           style="width:112px"
         />
@@ -35,7 +41,13 @@
 
         <q-space></q-space>
         <div v-if="authStore.loggedIn" class="text-right" style="flex-basis: 310px;">
-          {{authStore.user.email}}
+          <q-btn
+            flat
+            :label="authStore.user.displayName||authStore.user.email"
+            push
+            to="/psc/profile"
+            class="gt-sm inline"
+          />
           <q-btn flat round dense>
             <q-icon name="more_vert" />
             <q-menu>
@@ -101,8 +113,8 @@
     <!-- (Optional) The Footer -->
     <q-footer>
       <q-toolbar>
-        <q-btn flat round dense icon="menu" @click="rightDrawer = !rightDrawer" />
-        <q-toolbar-title>Footer</q-toolbar-title>
+        <!-- <q-btn flat round dense icon="menu" @click="rightDrawer = !rightDrawer" /> -->
+        <q-toolbar-title class="text-h6">&#0169; TEK-UP</q-toolbar-title>
         <q-space />
         <template v-if="isAdmin">
           <q-btn
@@ -112,13 +124,13 @@
             :class="'text-'+getActive('/manager/lesson')"
             label="Manage lesson"
           />
-          <q-btn
+          <!-- <q-btn
             stretch
             flat
             to="/manager/contest"
             :class="'text-'+getActive('/manager/contest')"
             label="Manage contest"
-          />
+          />-->
           <q-btn
             stretch
             flat

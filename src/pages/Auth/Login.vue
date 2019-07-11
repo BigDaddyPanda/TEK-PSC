@@ -102,7 +102,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 export default {
-  name: 'LoginView',
+  name: "LoginView",
   computed: {
     ...mapState({
       authStore: "authStore"
@@ -227,7 +227,6 @@ export default {
       return re.test(val);
     },
     clickAuth() {
-      console.log(this.email, this.password);
       const payload = {
         email: this.email,
         password: this.password

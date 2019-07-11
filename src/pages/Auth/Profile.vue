@@ -24,16 +24,17 @@
       <q-btn v-else color="positive" @click="saveChanges" label="Save changes" />
     </div>
     <div style="top:-25vh;position:relative" class="fit row bg-grey-1 q-mx-xl q-px-xl">
-      <div class="col-xs-5 col-md-2 q-py-md q-pr-md">
+      <div class="col-xs-12 col-sm-6 col-md-2 q-py-md q-pr-md">
         <q-avatar size="150px">
-          <q-img :src="userCredentials.photoURL">
+          <q-img :src="userCredentials.photoURL||'statics/transparent-bg.png'">
             <div v-if="changingData" class="absolute-full text-subtitle2 flex flex-center">
-              <q-btn label="upload" />
+              <input type="file" ref="file" style="display: none" @change="uploadFile" />
+              <q-btn @click="$refs.file.click()" label="upload" flat />
             </div>
           </q-img>
         </q-avatar>
       </div>
-      <div class="col-xs-7 col-md-10 row">
+      <div class="col-xs-12 col-sm-6 col-md-10 row">
         <q-input
           :borderless="!changingData"
           class="col-md-4 col-xs-12 q-px-md"
@@ -51,13 +52,13 @@
         <!-- <q-input
           v-if="changingData"
           class="col-6 q-px-md"
-          v-model="userCredentials.codeforcesHandler"
+          v-model="codeforcesHandle"
           label="Display Name"
         />-->
         <q-input
           :borderless="!changingData"
           class="col-md-4 col-xs-12 q-px-md"
-          v-model="userCredentials.codeforcesHandler"
+          v-model="codeforcesHandle"
           debounce="1000"
           @input="linkWithCodeForces"
           :readonly="!changingData"
@@ -111,31 +112,144 @@
           @click="authentificateWithPlatform('google')"
         />
       </div>
+
+      <div class="q-pa-md flex flex-center full-width">
+        <q-knob
+          disable
+          v-model="value1"
+          show-value
+          size="90px"
+          :thickness="0.22"
+          color="primary"
+          track-color="grey-3"
+          class="text-primary q-ma-md"
+        />
+        <q-knob
+          disable
+          v-model="value2"
+          show-value
+          size="90px"
+          :thickness="0.22"
+          color="primary"
+          track-color="grey-3"
+          class="text-primary q-ma-md"
+        />
+
+        <q-knob
+          readonly
+          v-model="value3"
+          show-value
+          size="90px"
+          :thickness="0.22"
+          color="orange"
+          track-color="orange-3"
+          class="text-orange q-ma-md"
+        />
+      </div>
+      <div class="full-width text-h3 row">
+        <span>History</span>
+        <q-space />
+        <q-btn
+          icon="refresh"
+          :loading="refreshing"
+          round
+          size="lg"
+          flat
+          outline
+          @click="refresh(()=>{})"
+        />
+      </div>
+      <div class="full-width row justify-center">
+        <div
+          class="q-pa-md col-xs-12 col-md-9 justify-center scroll bg-grey-3"
+          style="min-height:40vh"
+        >
+          <q-pull-to-refresh @refresh="refresh" class="full-height">
+            <q-list
+              v-if="!$_.isEmpty(successfullSubmissionsGetter)"
+              padding
+              class="rounded-borders"
+            >
+              <q-item
+                v-for="(submission, index) in successfullSubmissionsGetter"
+                :key="index"
+                clickable
+                @click="goTo(submission.problemLink)"
+                v-ripple
+              >
+                <q-item-section>
+                  <q-item-label
+                    class="text-italic text-capitalize text-bold"
+                  >{{submission.problem.name}}</q-item-label>
+                  <q-item-label caption>
+                    tags:
+                    <q-badge
+                      v-for="(tgSb,key) in submission.problem.tags"
+                      :key="key"
+                      :label="tgSb"
+                      class="q-ml-xs"
+                      color="teal-7"
+                    />
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section side top>
+                  <q-item-label caption>
+                    <q-badge :label="submission.programmingLanguage" />
+                  </q-item-label>
+                  <q-item-label caption>
+                    <q-icon name="check_circle" color="yellow-8" />
+                    {{$moment(submission.creationTimeSeconds*1000).fromNow()}}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+            <div v-else class="text-center text-bold text-secondary text-h5 row">
+              <span class="full-width">No recent Submissions</span>
+              <span
+                class="full-width disable-selection"
+                v-if="!codeforcesHandle"
+              >Please consider assigning your codeforces handler</span>
+            </div>
+          </q-pull-to-refresh>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { db } from "boot/firebase";
+import axios from "axios";
+import nanoid from "nanoid";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "ProfileEditor",
   mounted() {
     this.loadData();
     this.linkWithCodeForces();
-    var user = this.$firebase.auth().currentUser;
-    console.log(user.uid);
+    this.codeforcesHandle = this.progressGetter.codeforcesHandle || "";
   },
   data() {
     return {
+      refreshing: false,
       showLayer: false,
       changingData: false,
       changingPassword: false,
       userCredentials: {},
+      codeforcesHandle: "",
       password: "",
       confirmPassword: "",
-      resp: false
+      resp: false,
+      value1: 19,
+      value2: 49,
+      value3: 69
     };
   },
   computed: {
+    ...mapGetters({
+      progressGetter: "progressStore/progressGetter",
+      successfullSubmissionsGetter: "progressStore/successfullSubmissionsGetter"
+    }),
     safeToSubmit() {
       return (
         ((this.changingPassword && !!this.password && !!this.confirmPassword) ||
@@ -145,6 +259,60 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      updateMySuccessfulSubmissions:
+        "progressStore/updateMySuccessfulSubmissions",
+      loadProgress: "progressStore/loadProgress",
+      refreshUserCredentials: "authStore/refreshUserCredentials"
+    }),
+    uploadFile(e) {
+      var user = this.$firebase.auth().currentUser;
+      const file = e.target.files[0];
+      this.$storage
+        .ref("profiles/" + user.email + "-" + nanoid(3))
+        .put(file)
+        .then(response => {
+          response.ref
+            .getDownloadURL()
+            .then(downloadURL => {
+              user
+                .updateProfile({
+                  photoURL: downloadURL
+                })
+                .then(() => {
+                  // Update successful.
+                  this.$q.notify("Successfully updated your Profile Photo");
+                  this.userCredentials.photoURL = downloadURL;
+                  this.$nextTick(this.refreshUserCredentials);
+                })
+                .catch(error => {
+                  // An error happened.
+                  this.$q.notify({
+                    color: "negative",
+                    messag: error.toString()
+                  });
+                });
+            })
+            .catch(err => console.log(err));
+        });
+    },
+
+    goTo(link) {
+      window.open(link, "_blank");
+    },
+    refresh(done) {
+      var user = this.$firebase.auth().currentUser;
+      this.refreshing = true;
+      let myProfile = {
+        codeforcesHandle: this.codeforcesHandle,
+        uid: user.uid
+      };
+      setTimeout(() => {
+        this.updateMySuccessfulSubmissions(myProfile);
+        this.refreshing = false;
+        done();
+      }, 1000);
+    },
     saveChanges() {
       var user = this.$firebase.auth().currentUser;
       if (this.safeToSubmit) {
@@ -175,10 +343,7 @@ export default {
               });
             });
         }
-        if (
-          user.displayName !== this.userCredentials.displayName ||
-          user.codeforcesHandler !== this.userCredentials.codeforcesHandler
-        ) {
+        if (user.displayName !== this.userCredentials.displayName) {
           user
             .updateProfile({
               displayName: this.userCredentials.displayName
@@ -195,7 +360,25 @@ export default {
               });
             });
         }
-
+        if (this.codeforcesHandle !== this.progressGetter.codeforcesHandle) {
+          db.collection("progress")
+            .doc(user.uid)
+            .update({
+              "progress.codeforcesHandle": this.codeforcesHandle,
+              "progress.userId": user.uid
+            })
+            .then(() => {
+              let myProfile = {
+                codeforcesHandle: this.codeforcesHandle,
+                uid: user.uid
+              };
+              this.updateMySuccessfulSubmissions(myProfile);
+            })
+            .then(() => {
+              this.loadProgress();
+            });
+        }
+        this.$nextTick(this.refreshUserCredentials);
         this.changingData = false;
       } else {
         this.$q.notify({
@@ -235,7 +418,7 @@ export default {
           email: user.email,
           photoURL: user.photoURL,
           emailVerified: user.emailVerified,
-          codeforcesHandler: user.codeforcesHandler,
+          codeforcesHandle: user.codeforcesHandle,
           providerData: user.providerData.map(profile => ({
             providerId: profile.providerID,
             Name: profile.displayName,
@@ -291,11 +474,11 @@ export default {
         );
     },
     linkWithCodeForces: async function() {
-      if (!this.$_.isEmpty(this.userCredentials.codeforcesHandler)) {
-        await this.$axios
+      if (!this.$_.isEmpty(this.codeforcesHandle)) {
+        await axios
           .get(
             "https://codeforces.com/api/user.info?handles=" +
-              this.userCredentials.codeforcesHandler
+              this.codeforcesHandle
           )
           .then(r => {
             this.resp = r.data.status === "OK";
@@ -320,4 +503,11 @@ export default {
 </script>
 
 <style>
+.disable-selection {
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer */
+  -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+  -webkit-user-select: none; /* Chrome, Safari, and Opera */
+  -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+}
 </style>

@@ -95,31 +95,72 @@
         />
         <div v-if="!sheetModel.fromCodeForces" class="col-12">
           <q-list dense bordered separator>
-            <q-item v-ripple class="row">
-              <q-item-section class="col-10">
-                <q-input
+            <q-item>
+              <q-item-section>
+                <q-select
+                  filled
                   dense
-                  v-model="newProblemLink"
-                  label="Problem link"
-                  hint="Press enter to add it"
-                  @keyup.enter="addNewProblem()"
-                />
+                  use-input
+                  new-value-mode="add"
+                  hide-selected
+                  label="Problem"
+                  fill-input
+                  input-debounce="0"
+                  :options="options"
+                  :option-value="o=>o"
+                  :option-label="opt => opt === null ? '- Null -' : opt.name"
+                  clearable
+                  v-model="newProblemObject"
+                  @filter="filterFn"
+                  @new-value="createNewProblem"
+                  hint="Start typing Problem index, contest, name or tags. ie: greedy "
+                >
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps" v-on="scope.itemEvents">
+                      <q-item-section>
+                        <q-item-label
+                          v-html="scope.opt.contestId+'/'+scope.opt.index+': '+scope.opt.name"
+                        />
+                        <q-item-label caption>
+                          <q-badge
+                            :label="problemTag"
+                            v-for="(problemTag, index) in scope.opt.tags"
+                            :key="index"
+                          />
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section
+                        class="text-grey"
+                      >No results, if it is a link for a non-codeforces problem, press enter to add it</q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </q-item-section>
-              <q-item-section class="col-2">
-                <q-input
+              <q-item-section side top>
+                <q-knob
                   dense
                   v-model="newProblemXP"
+                  show-value
                   type="number"
                   label="XP"
-                  hint="50-100 XP"
-                  @keyup.enter="addNewProblem()"
-                />
+                  class="text-blue"
+                  track-color="grey-4"
+                >
+                  {{5*newProblemXP}}XP
+                  <q-tooltip>0-500 XP</q-tooltip>
+                </q-knob>
+                <q-btn round color="primary" flat icon="add" size="md" @click="addNewProblem()" />
               </q-item-section>
             </q-item>
             <q-item v-for="(pb, i) in sheetModel.includedProblems" :key="i" v-ripple>
               <q-item-section>
-                <span class>
-                  {{pb.link}}-
+                <span>
+                  <span class="text-bold">{{pb.problem.name}} -</span>
+                  {{pb.problem.link}}-
                   <span class="text-bold">[ {{pb.xp}}XP ]</span>
                 </span>
               </q-item-section>
@@ -152,8 +193,10 @@
 
 <script>
 import tags from "../../utils/tags.json";
+import problemSet from "../../utils/problems.json";
 import _ from "lodash";
 import { mapActions } from "vuex";
+import { type } from "os";
 export default {
   name: "SheetEditor",
   props: {
@@ -190,8 +233,10 @@ export default {
   data() {
     return {
       sheetModel: _.cloneDeep(this.sheet),
-      newProblemLink: "",
-      newProblemXP: 50,
+      newProblemObject: {},
+      newProblemXP: 10,
+      problemSet,
+      options: [],
       tags
     };
   },
@@ -200,17 +245,80 @@ export default {
       saveSheet: "sheetStore/saveSheet",
       updateSheet: "sheetStore/updateSheet"
     }),
+    createNewProblem(val, done = null) {
+      let model = {},
+        value = "";
+      if (typeof val === "string") {
+        if (val.match(/\/\/\S+/gi)) {
+          value = val.match(/\/\/\S+/gi).slice(2);
+        } else {
+          value = val;
+        }
+        model = {
+          contestId: "000",
+          index: "X",
+          name: "Unknown Problem",
+          type: "PROGRAMMING",
+          points: 1000,
+          rating: 1000,
+          tags: []
+        };
+      } else {
+        value = `https://codeforces.com/problemset/problem/${val.contestId}/${val.index}`;
+        model = val;
+      }
+      model.link = value;
+      this.newProblemObject = model;
+      console.log(model);
+      if (done) {
+        done(model);
+      }
+    },
     addNewProblem() {
       if (_.isEmpty(this.sheetModel.includedProblems)) {
         this.sheetModel.includedProblems = [];
       }
+      if (_.isEmpty(this.newProblemObject)) {
+        return;
+      }
+      this.newProblemObject.link = `https://codeforces.com/problemset/problem/${this.newProblemObject.contestId}/${this.newProblemObject.index}`;
       this.sheetModel.includedProblems.push({
-        link: this.newProblemLink.trim(),
-        xp: this.newProblemXP
+        problem: this.newProblemObject,
+        xp: 5 * this.newProblemXP
       });
-      this.newProblemLink = "";
-      this.newProblemXP = 50;
+      this.newProblemObject = {};
+      this.newProblemXP = 10;
     },
+    filterFn(val, update, abort) {
+      if (!val.length) {
+        abort();
+        return;
+      }
+      if (val.length === 1) {
+        update(() => {
+          const needle = val.toLowerCase().trim();
+          this.options = problemSet.filter(
+            v => v.index.toLowerCase() === needle
+          );
+        });
+        return;
+      }
+      update(() => {
+        const needle = val.toLowerCase().trim();
+        this.options = problemSet.filter(
+          v =>
+            `http://codeforces.com/problemset/problem/${v.contestId}/${v.index}`
+              .toLowerCase()
+              .includes(needle) ||
+            `https://codeforces.com/problemset/problem/${v.contestId}/${v.index}`
+              .toLowerCase()
+              .includes(needle) ||
+            v.tags.includes(needle) ||
+            v.name.toLowerCase().includes(needle)
+        );
+      });
+    },
+
     save() {
       if (this.sheetModel.sheetId) {
         this.updateSheet(this.sheetModel);

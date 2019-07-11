@@ -5,7 +5,7 @@
         <template v-slot:header>
           <q-item-section avatar>
             <q-avatar>
-              <img src="statics/social/discord.png">
+              <img src="statics/social/discord.png" />
             </q-avatar>
           </q-item-section>
           <q-item-section>Join us on Discord</q-item-section>
@@ -29,15 +29,11 @@
       </q-expansion-item>
 
       <q-bar style="min-width: 250px;" class="bg-teal text-white rounded-borders">
-        <q-btn label="General" flat @click="tab='General'"/>
-        <q-btn label="Edit" flat @click="tab='Edit'"/>
-        <q-btn label="Edit" flat @click="tab='Edit'"/>
-        <q-btn label="Edit" flat @click="tab='Edit'"/>
-        <q-btn label="Edit" flat @click="tab='Edit'"/>
+        <q-btn label="General" flat @click="tab='General'" />
       </q-bar>
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="General">
-          <chat-tab/>
+          <chat-tab />
         </q-tab-panel>
       </q-tab-panels>
     </div>
@@ -46,10 +42,19 @@
 
 <script>
 import ChatTab from "./ChatTab";
+import { mapActions } from "vuex";
 export default {
   name: "chat-rooms",
   components: {
     ChatTab
+  },
+  mounted() {
+    this.bindGeneralChat();
+  },
+  methods: {
+    ...mapActions({
+      bindGeneralChat: "chatStore/bindGeneralChat"
+    })
   },
   data() {
     return {

@@ -174,7 +174,7 @@
         </q-stepper-navigation>
       </q-step>
     </q-stepper>
-    <q-card-actions class="absolute-bottom">
+    <q-card-actions>
       <q-btn
         v-if="lessonModel.lessonId!=null"
         class="q-pa-md full-width"

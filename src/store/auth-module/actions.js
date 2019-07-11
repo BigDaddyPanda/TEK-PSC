@@ -14,7 +14,21 @@ export function checkAdminRole({ commit }) {
     commit("setRole", false);
   }
 }
-
+export function refreshUserCredentials({ commit }) {
+  const user = firebase.auth().currentUser;
+  if (user) {
+    let myCred = {
+      displayName: user.displayName,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      phoneNumber: user.phoneNumber,
+      photoURL: user.photoURL,
+      providerData: user.providerData,
+      uid: user.uid
+    };
+    commit("setUser", myCred);
+  }
+}
 export function assignUser({ commit }, payload) {
   commit("setLoading", false);
   commit("setUser", payload);

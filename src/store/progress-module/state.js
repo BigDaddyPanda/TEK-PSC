@@ -4,38 +4,44 @@ export default {
     codeforcesHandle: "",
     level: {
       totalXP: 0,
-      level: 1
+      level: 0,
+      lessons: [
+        // {
+        //   lessonId: "",
+        //   gainedXP: 30,
+        //   passed: true
+        // }
+      ]
     },
     achievements: [
-      {
-        id: "",
-        aquiredOn: ""
-      }
-    ],
-    successfullSubmissions: [
-      {
-        contestId: "",
-        problem: "",
-        problemLink: "",
-        verdict: "",
-        programmingLanguage: ""
-      }
+      // {
+      //   id: "",
+      //   aquiredOn: ""
+      // }
     ],
     contestStandings: [
-      {
-        contestId: "",
-        contestName: "",
-        isLocal: false,
-        standing: 3,
-        solved: [
-          {
-            problemId: "",
-            tries: 3,
-            verdict: "solved"
-          }
-        ]
-      }
+      // {
+      //   contestId: "",
+      //   contestName: "",
+      //   isLocal: false,
+      //   standing: 3,
+      //   solved: [
+      //     {
+      //       problemId: "",
+      //       tries: 3,
+      //       verdict: "solved"
+      //     }
+      //   ]
+      // }
     ]
   },
-  userSubmissions: []
+  successfullSubmissions: [
+    // {
+    //   contestId: "",
+    //   problem: "",
+    //   problemLink: "",
+    //   verdict: "",
+    //   programmingLanguage: ""
+    // }
+  ]
 };

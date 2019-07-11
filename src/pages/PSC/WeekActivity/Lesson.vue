@@ -2,13 +2,13 @@
   <q-page padding>
     <!-- content -->
     <div class="row justify-center q-pa-lg">
-      <div class="col-6 q-pl-md q-pr-md q-mb-lg">
+      <div class="col-xs-12 col-md-6 q-pl-md q-pr-md q-mb-lg">
         <div class="full-width text-center">
           <p
             class="text-bold text-grey-8 text-uppercase text-subtitle1 q-mb-none q- q-pl-none"
           >Week Activity</p>
           <p
-            class="text-italic text-grey-6 text-subtitle2 q-mb-sm q- q-pl-none"
+            class="text-italic text-grey-6 text-subtitle2 q-mb-sm q-pl-none"
           >Lessons that will take place during {{$moment().startOf('week').format("DD MMMM")}} - {{$moment().endOf('week').format("DD MMMM")}}</p>
         </div>
         <activity-preview :lesson="weekLesson" />
@@ -25,7 +25,7 @@
         <div
           v-for="(lesson, lesInd) in allLessons"
           :key="lesInd"
-          class="col-md-3 col-xs-12 q-pr-md q-pl-md"
+          class="col-md-3 col-xs-12 q-pa-md"
         >
           <activity-preview :isPreview="true" :lesson="lesson" />
         </div>

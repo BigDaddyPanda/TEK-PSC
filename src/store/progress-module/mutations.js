@@ -1,7 +1,18 @@
 import _ from "lodash";
+/**
+ *
+ * @param {*} state
+ * @param {*} payload denoting the user progress
+ */
 export function setProgress(state, payload) {
-  state.profile = _.cloneDeep(payload);
+  state.progress = _.cloneDeep(payload);
 }
+
+/**
+ *
+ * @param {*} state
+ * @param {*} payload denoting the user successfull submissions
+ */
 export function setSubmissions(state, payload) {
-  state.userSubmissions = _.cloneDeep(payload);
+  state.successfullSubmissions = _.cloneDeep(payload);
 }

@@ -1,6 +1,5 @@
 <template>
   <div class="row justify-center">
-    <fire-works style="z-index:10" v-if="fullyCorrect" />
     <q-parallax :src="lessonModel.coverPhoto"></q-parallax>
     <q-page class="bg-grey-3" style="width:75%;top:-25vh;" padding>
       <div class="q-pt-md row">
@@ -8,6 +7,7 @@
         <h5 class="q-mb-xs col-12">Content</h5>
         <div class="col-12" v-html="lessonModel.content"></div>
         <div class="col-12" v-if="lessonModel.quiz">
+          <fire-works style="z-index:10;height:100%;width:100%;" v-if="fullyCorrect" />
           <h5 class="q-mb-xs">Quizz</h5>
           <div class="row" v-for="(qz, k) in lessonModel.quiz" :key="k">
             <div class="col-12">{{qz.question}}</div>
@@ -21,7 +21,10 @@
           </div>
         </div>
         <div v-else></div>
-        <div class="col-12 text-center q-mt-xl q-pa-md" v-if="fullyCorrect">
+        <div
+          class="col-12 text-center q-mt-xl q-pa-md"
+          v-if="fullyCorrect||$_.isEmpty(this.lessonModel.quiz)"
+        >
           <div class="full-width q-mb-xs">
             Congrats, You have successfully Completed {{lessonModel.name}} Topic.
             <br />We can Move on now to the next Lesson
@@ -68,14 +71,11 @@ export default {
       if (_.isEmpty(this.userAnswers[k])) {
         return false;
       }
-      if (
-        this.lessonModel.quiz[k].correct.every(val =>
-          this.userAnswers[k].includes(val)
-        )
-      ) {
-        return true;
-      }
-      return false;
+
+      return _.isEqual(
+        _.sortBy(this.lessonModel.quiz[k].correct),
+        _.sortBy(this.userAnswers[k])
+      );
     }
   },
   mounted() {
