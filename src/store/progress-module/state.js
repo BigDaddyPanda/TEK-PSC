@@ -4,7 +4,7 @@ export default {
     codeforcesHandle: "",
     level: {
       totalXP: 0,
-      level: 0,
+      // level: to be counted here,
       lessons: [
         // {
         //   lessonId: "",
@@ -16,7 +16,7 @@ export default {
     achievements: [
       // {
       //   id: "",
-      //   aquiredOn: ""
+      //   claimedOn: ""
       // }
     ],
     contestStandings: [

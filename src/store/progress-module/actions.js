@@ -1,8 +1,21 @@
 import axios from "axios";
 import { db, firebase } from "boot/firebase";
-import { Notify } from "quasar";
+import { Notify, Dialog } from "quasar";
+import AchievementDialog from "../../components/WeekActivity/AchievementDialog";
 import _ from "lodash";
 import DefaultProgress from "./state";
+import achievement from "../../utils/achievements";
+// import { firestoreAction } from "vuexfire";
+
+// export const setProgressRef = firestoreAction(context => {
+//   let user = firebase.auth().currentUser;
+//   if (user) {
+//     return context.bindFirestoreRef(
+//       "onlineProgress",
+//       db.collection("progress").doc(user.uid)
+//     );
+//   }
+// });
 
 /**
  * to be used as the first step to load
@@ -24,7 +37,7 @@ export function loadProgress(context) {
           .set({
             progress: DefaultProgress.progress,
             successfullSubmissions: DefaultProgress.successfullSubmissions,
-            joinTimeSeconds: Math.floor(new Date().valueOf() / 1000)
+            joinTimeSeconds: new Date().valueOf()
           })
           .then(() => {
             Notify.create({
@@ -90,7 +103,7 @@ export function updateMySuccessfulSubmissions(context, payload) {
             .filter(
               e =>
                 e["verdict"] === "OK" &&
-                e["creationTimeSeconds"] > profile.joinTimeSeconds
+                e["creationTimeSeconds"] > profile.joinTimeSeconds / 1000
             )
             .map(e => ({
               contestId: e.contestId,
@@ -99,7 +112,7 @@ export function updateMySuccessfulSubmissions(context, payload) {
                 e.contestId
               }/${e.problem.index}`,
               verdict: e.verdict,
-              creationTimeSeconds: e.creationTimeSeconds,
+              creationTimeSeconds: e.creationTimeSeconds * 1000,
               programmingLanguage: e.programmingLanguage
             }));
           const allSuccessSubmission = _.uniqWith(
@@ -115,4 +128,123 @@ export function updateMySuccessfulSubmissions(context, payload) {
             });
         });
     });
+}
+
+/**
+ *
+ * given the progress.level schema, we add the received
+ * lesson id to the progress, if not existing,
+ * and increase the overall xp and level
+ *
+ * level: {
+ *   totalXP: 0,
+ *   level: 0,
+ *   lessons: [
+ *      {
+ *        lessonId,
+ *        lessonName,
+ *        lessonTags,
+ *        gainedXP
+ *      }
+ *   ]
+ * @param {*} context
+ */
+export function submitUnlockingNewLesson(context, lessonSchema) {
+  const user = firebase.auth().currentUser;
+  db.collection("progress")
+    .doc(user.uid)
+    .get()
+    .then(resp => {
+      if (resp.exists) {
+        let userData = resp.data();
+        let solvedLessons = userData.progress.level.lessons;
+        let alreadySolved = !!_.find(solvedLessons, [
+          "lesson",
+          lessonSchema.lessonId
+        ]);
+        if (!alreadySolved) {
+          db.collection("progress")
+            .doc(user.uid)
+            .update({
+              "progress.level.lessons": firebase.firestore.FieldValue.arrayUnion(
+                lessonSchema
+              ),
+              "progress.level.totalXP": firebase.firestore.FieldValue.increment(
+                lessonSchema.gainedXP
+              )
+            });
+        }
+      }
+    });
+}
+/**
+ * once any of my counters increases, I submit the changes to my
+ * profile on firebase
+ * uuid>progress>achievements
+ * @param {*} context
+ * @param {*} update ={lessonCount,problemCount,contestsCount}
+ */
+export function updateMyAchievements(context) {
+  let candidateAchievements = [],
+    progress,
+    user = firebase.auth().currentUser,
+    lessonsCount = 0,
+    problemsCount = 0,
+    contestsCount = 0;
+  if (user) {
+    db.collection("progress")
+      .doc(user.uid)
+      .get()
+      .then(snap => {
+        if (snap.exists) {
+          let snapshot = snap.data();
+          progress = snapshot.progress;
+          problemsCount = snapshot.successfullSubmissions.length;
+          lessonsCount = progress.level.lessons.length;
+          contestsCount = progress.contestStandings.length;
+          candidateAchievements = achievement.filterAchievements(
+            lessonsCount,
+            problemsCount,
+            contestsCount
+          );
+          let newAchievements = _.uniqBy(
+            _.differenceBy(
+              candidateAchievements,
+              progress.achievements,
+              "name"
+            ),
+            "name"
+          );
+          let claimedAchievements = _.map(
+            _.unionBy(newAchievements, progress.achievements, "name"),
+            e => ({ ...e, claimedOn: new Date().valueOf() })
+          );
+          if (!_.isEmpty(newAchievements)) {
+            db.collection("progress")
+              .doc(user.uid)
+              .update({
+                "progress.achievements": claimedAchievements
+              })
+              .then(() => {
+                newAchievements.map(e => {
+                  Dialog.create({
+                    component: AchievementDialog,
+                    achievement: e
+                    // ...more.props...
+                  })
+                    .onOk(() => {
+                      console.log("OK");
+                    })
+                    .onCancel(() => {
+                      console.log("Cancel");
+                    })
+                    .onDismiss(() => {
+                      console.log("Called on OK or Cancel");
+                    });
+                });
+              });
+          }
+        }
+      });
+  }
 }

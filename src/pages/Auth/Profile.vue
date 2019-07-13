@@ -113,38 +113,12 @@
         />
       </div>
 
-      <div class="q-pa-md flex flex-center full-width">
-        <q-knob
-          disable
-          v-model="value1"
-          show-value
-          size="90px"
-          :thickness="0.22"
-          color="primary"
-          track-color="grey-3"
-          class="text-primary q-ma-md"
-        />
-        <q-knob
-          disable
-          v-model="value2"
-          show-value
-          size="90px"
-          :thickness="0.22"
-          color="primary"
-          track-color="grey-3"
-          class="text-primary q-ma-md"
-        />
-
-        <q-knob
-          readonly
-          v-model="value3"
-          show-value
-          size="90px"
-          :thickness="0.22"
-          color="orange"
-          track-color="orange-3"
-          class="text-orange q-ma-md"
-        />
+      <div class="q-pa-md row justify-around flex flex-center full-width">
+        <div class="col-4">
+          <h5 class="q-my-none text-center">My Level</h5>
+          <level-summuary isknob />
+        </div>
+        <achievement-summuary class="col-4" isknob />
       </div>
       <div class="full-width text-h3 row">
         <span>History</span>
@@ -198,7 +172,7 @@
                   </q-item-label>
                   <q-item-label caption>
                     <q-icon name="check_circle" color="yellow-8" />
-                    {{$moment(submission.creationTimeSeconds*1000).fromNow()}}
+                    {{$moment(submission.creationTimeSeconds).fromNow()}}
                   </q-item-label>
                 </q-item-section>
               </q-item>
@@ -218,12 +192,18 @@
 </template>
 
 <script>
+import LevelSummuary from "components/WeekActivity/LevelSummuary";
+import AchievementSummuary from "components/WeekActivity/AchievementSummuary";
 import { db } from "boot/firebase";
 import axios from "axios";
 import nanoid from "nanoid";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "ProfileEditor",
+  components: {
+    LevelSummuary,
+    AchievementSummuary
+  },
   mounted() {
     this.loadData();
     this.linkWithCodeForces();

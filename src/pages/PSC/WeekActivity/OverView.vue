@@ -6,16 +6,16 @@
           <p
             class="text-bold text-grey-8 text-uppercase text-subtitle1 q-mb-sm q- q-pl-none"
           >CHECK OUT THIS WEEK TOPIC</p>
-          <q-parallax :src="weekLesson.coverPhoto">
+          <q-parallax :src="weekActivity.coverPhoto">
             <template v-slot:content="scope">
               <div class="full-width full-height q-pa-xl">
                 <br />
                 <br />
-                <h1 class="q-mb-sm text-secondary text-bold">{{weekLesson.name}}</h1>
+                <h1 class="q-mb-sm text-secondary text-bold">{{weekActivity.name}}</h1>
                 <q-btn
                   color="secondary text-black"
                   size="lg"
-                  :to="'/psc/lesson/'+weekLesson.lessonId"
+                  :to="'/psc/lesson/'+weekActivity.lessonId"
                   label="Get Started"
                 />
               </div>
@@ -26,52 +26,9 @@
           <p
             class="text-bold text-grey-8 text-uppercase text-subtitle1 q-mb-sm q- q-pl-none"
           >Progress</p>
-          <q-item
-            class="bg-grey-2 q-mb-md"
-            clickable
-            @click="level_dialog=!level_dialog"
-            style="height:120px"
-          >
-            <q-item-section avatar>
-              <q-avatar
-                font-size="35px"
-                rounded
-                class="q-pa-none bg-green text-white"
-                icon="clear_all"
-              />
-            </q-item-section>
+          <level-summuary />
+          <achievement-summuary />
 
-            <q-item-section>
-              <q-item-label class="text-green text-h6 q-pb-none q-mb-none text-green">Level 1</q-item-label>
-              <q-item-label caption>
-                <div style="position:relative;">
-                  <q-linear-progress
-                    style="height: 20px;"
-                    :value="progress"
-                    color="green"
-                    class="q-mt-none"
-                  />
-                  <div class="text-white text-bold set-position">7/100</div>
-                </div>
-              </q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item
-            class="bg-grey-2 q-mb-md"
-            clickable
-            @click="achiev_dialog=!achiev_dialog"
-            style="height:120px"
-          >
-            <q-item-section avatar>
-              <q-avatar font-size="35px" class="q-pa-none bg-grey text-white" icon="done_outline" />
-            </q-item-section>
-
-            <q-item-section>
-              <q-item-label class="text-bold text-h5 q-pb-none text-grey">3 / 7</q-item-label>
-              <q-item-label class="text-bold text-h6 q-pb-none text-grey">Achievements</q-item-label>
-            </q-item-section>
-          </q-item>
           <q-item
             class="bg-grey-2 q-mb-md"
             clickable
@@ -93,19 +50,17 @@
             class="q-pl-md text-bold text-grey-8 text-uppercase text-subtitle1 q-mb-sm"
           >Recent Activity</div>
           <div class="row">
-            <div class="col-4 q-mt-none q-pl-md" v-for="(item, index) in allLessons" :key="index">
+            <div
+              class="col-4 q-mt-none q-pl-md"
+              v-for="(item, index) in allPublicLessons"
+              :key="index"
+            >
               <activity-preview isPreview :lesson="item" />
             </div>
           </div>
         </div>
       </div>
     </div>
-    <q-dialog v-model="level_dialog" position="right">
-      <side-level-list />
-    </q-dialog>
-    <q-dialog v-model="achiev_dialog" position="right">
-      <side-achievement-list />
-    </q-dialog>
     <q-dialog v-model="ranking_dialog" position="right">
       <side-ranking-view />
     </q-dialog>
@@ -114,44 +69,41 @@
 </template>
 
 <script>
-import SideLevelList from "components/WeekActivity/SideLevelList";
-import SideAchievementList from "components/WeekActivity/SideAchievementList";
+import LevelSummuary from "components/WeekActivity/LevelSummuary";
+import AchievementSummuary from "components/WeekActivity/AchievementSummuary";
 import SideRankingView from "components/WeekActivity/SideRankingView";
 import ActivityPreview from "components/WeekActivity/ActivityPreview";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "OverView",
-  mounted() {
-    setTimeout(() => {
-      this.weekLesson =
-        this.LessonsGetter.filter(e => e.isWeekActivity)[0] || {};
-      this.allLessons = this.LessonsGetter.filter(e => !e.isWeekActivity);
-      this.loaded = true;
-    }, 500);
-  },
   computed: {
     ...mapGetters({
-      LessonsGetter: "lessonStore/LessonsGetter"
+      allPublicLessons: "lessonStore/allPublicLessonsGetter",
+      weekActivity: "lessonStore/weekActivityGetter"
     })
   },
   components: {
-    SideLevelList,
-    SideAchievementList,
+    LevelSummuary,
+    AchievementSummuary,
     SideRankingView,
     ActivityPreview
+  },
+  methods: {
+    ...mapActions({
+      loadProgress: "progressStore/loadProgress"
+    })
+  },
+  mounted() {
+    this.loadProgress();
   },
   data() {
     return {
       progress: 0.15,
-      level_dialog: false,
       ranking_dialog: false,
-      achiev_dialog: false,
-      weekLesson: {},
-      allLessons: [],
-      loaded: false
+      loaded: true
     };
-  },
-  methods: {}
+  }
 };
 </script>
 

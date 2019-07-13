@@ -88,8 +88,10 @@ export default {
     },
     getName(name) {
       const user = this.$firebase.auth().currentUser;
-      if (name === user.displayName || name === user.email) {
-        return "Me";
+      if (user) {
+        if (name === user.displayName || name === user.email) {
+          return "Me";
+        }
       }
       return name;
     }

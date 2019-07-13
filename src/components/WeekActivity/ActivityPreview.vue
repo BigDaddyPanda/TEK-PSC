@@ -43,7 +43,7 @@
           :key="i"
         >{{ tag.label }} {{1+i==lesson.tags.length?"":', '}}</span>
       </div>
-      <div>Added on: {{$moment(lesson.addedDate).format("MMM Do YY")}}</div>
+      <div>Added on: {{$moment(new Date(lesson.addedDate)).format("MMM Do YY")}}</div>
     </q-card-section>
   </q-card>
 </template>

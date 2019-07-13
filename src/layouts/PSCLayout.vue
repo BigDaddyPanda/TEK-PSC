@@ -5,19 +5,17 @@
     <!-- (Optional) The Header -->
     <q-header elevated>
       <q-toolbar class="specialheader">
-        <q-img
-          src="statics/brand-modern-alt-w.png"
-          class="q-mr-sm gt-xs inline"
-          spinner-color="white"
-          style="width:112px"
-        />
-        <q-img
-          src="statics/white.png"
-          class="q-mr-sm lt-sm inline"
-          spinner-color="white"
-          style="width:112px"
-        />
+        <q-btn stretch class="q-mr-sm gt-xs inline" flat to="/landing">
+          <q-img src="statics/brand-modern-alt-w.png" spinner-color="white" style="width:112px" />
+        </q-btn>
+        <q-btn round class="q-mr-sm lt-sm inline" flat to="/landing">
+          <q-avatar size="42px">
+            <q-img src="statics/white.png" spinner-color="white" />
+          </q-avatar>
+        </q-btn>
+
         <q-btn
+          v-if="authStore.loggedIn"
           stretch
           flat
           to="/psc/week-activity-overview"
@@ -25,6 +23,7 @@
           label="Week Activity"
         />
         <q-btn
+          v-if="authStore.loggedIn"
           stretch
           flat
           to="/psc/week-activity-lessons"
@@ -32,6 +31,7 @@
           label="Lessons"
         />
         <q-btn
+          v-if="authStore.loggedIn"
           stretch
           flat
           to="/psc/week-activity-sheets"
@@ -94,6 +94,7 @@
           </q-btn>
         </div>
         <div v-else class="row q-gutter-xs" style="flex-basis: 310px;">
+          <q-btn to="/about-us" icon="info" round flat style="background-color: #c4cbff29;"></q-btn>
           <q-btn
             class="col justify-between"
             @click="setModal('login')"

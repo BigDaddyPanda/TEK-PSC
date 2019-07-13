@@ -1,46 +1,49 @@
 <template>
-  <div class="row justify-center">
-    <q-parallax :src="lessonModel.coverPhoto"></q-parallax>
-    <q-page class="bg-grey-3" style="width:75%;top:-25vh;" padding>
-      <div class="q-pt-md row">
-        <h3 class="q-mb-xs col-12">{{lessonModel.name}}</h3>
-        <h5 class="q-mb-xs col-12">Content</h5>
-        <div class="col-12" v-html="lessonModel.content"></div>
-        <div class="col-12" v-if="lessonModel.quiz">
-          <fire-works style="z-index:10;height:100%;width:100%;" v-if="fullyCorrect" />
-          <h5 class="q-mb-xs">Quizz</h5>
-          <div class="row" v-for="(qz, k) in lessonModel.quiz" :key="k">
-            <div class="col-12">{{qz.question}}</div>
-            <q-option-group
-              v-model="userAnswers[k]"
-              type="checkbox"
-              :disable="partiallyCorrect(k)"
-              :options="qz.answers.map((e,ii)=>({label:e,value:ii}))"
-              :color="partiallyCorrect(k)?'green':'pink'"
+  <div class="fit">
+    <div v-if="loaded" class="row justify-center">
+      <q-parallax :src="lessonModel.coverPhoto"></q-parallax>
+      <q-page class="bg-grey-3" style="width:75%;top:-25vh;" padding>
+        <div class="q-pt-md row">
+          <h3 class="q-mb-xs col-12">{{lessonModel.name}}</h3>
+          <h5 class="q-mb-xs col-12">Content</h5>
+          <div class="col-12" v-html="lessonModel.content"></div>
+          <div class="col-12" v-if="lessonModel.quiz">
+            <fire-works style="z-index:10;height:100%;width:100%;" v-if="fullyCorrect" />
+            <h5 class="q-mb-xs">Quizz</h5>
+            <div class="row" v-for="(qz, k) in lessonModel.quiz" :key="k">
+              <div class="col-12">{{qz.question}}</div>
+              <q-option-group
+                v-model="userAnswers[k]"
+                type="checkbox"
+                :disable="partiallyCorrect(k)"
+                :options="qz.answers.map((e,ii)=>({label:e,value:ii}))"
+                :color="partiallyCorrect(k)?'green':'pink'"
+              />
+            </div>
+          </div>
+          <div v-else></div>
+          <div
+            class="col-12 text-center q-mt-xl q-pa-md"
+            v-if="fullyCorrect||$_.isEmpty(lessonModel.quiz)"
+          >
+            <div class="full-width q-mb-xs">
+              Congrats, You have successfully Completed {{lessonModel.name}} Topic.
+              <br />We can Move on now to the next Lesson
+            </div>
+            <q-btn
+              no-caps
+              color="secondary"
+              text-color="black"
+              style="z-index:100;"
+              :to="'/psc/lesson/'+lessonModel.nextLesson.value"
+              replace
+              :label="`Learn ${lessonModel.nextLesson.label}`"
             />
           </div>
         </div>
-        <div v-else></div>
-        <div
-          class="col-12 text-center q-mt-xl q-pa-md"
-          v-if="fullyCorrect||$_.isEmpty(this.lessonModel.quiz)"
-        >
-          <div class="full-width q-mb-xs">
-            Congrats, You have successfully Completed {{lessonModel.name}} Topic.
-            <br />We can Move on now to the next Lesson
-          </div>
-          <q-btn
-            no-caps
-            color="secondary"
-            text-color="black"
-            style="z-index:100;"
-            :to="'/psc/lesson/'+lessonModel.nextLesson.value"
-            replace
-            :label="`Learn ${lessonModel.nextLesson.label}`"
-          />
-        </div>
-      </div>
-    </q-page>
+      </q-page>
+    </div>
+    <div v-else></div>
   </div>
 </template>
 
@@ -49,13 +52,21 @@ import { db } from "boot/firebase";
 import FireWorks from "components/FireWorks.vue";
 import lessonModel from "../../../utils/lesson.json";
 import _ from "lodash";
+import { mapActions } from "vuex";
 export default {
   name: "LessonPreview",
   components: {
     FireWorks
   },
   methods: {
+    ...mapActions({
+      submitUnlockingNewLesson: "progressStore/submitUnlockingNewLesson"
+    }),
     reload() {
+      this.loaded = false;
+      this.$q.loading.show({
+        message: this.$lessonJoke()
+      });
       let lessonId = this.$route.params.id;
       db.collection("lessons")
         .where("lessonId", "==", lessonId)
@@ -64,6 +75,8 @@ export default {
           snapshot.forEach(doc => {
             this.lessonModel = doc.data();
             this.userAnswers = Array(this.lessonModel.quiz.length).fill([]);
+            this.loaded = true;
+            this.$q.loading.hide();
           })
         );
     },
@@ -91,14 +104,29 @@ export default {
       return this.$route.params.id;
     },
     fullyCorrect: function() {
-      if (_.isEmpty(this.lessonModel.quiz)) return false;
-      return _.every(
+      if (_.isEmpty(this.lessonModel) || _.isEmpty(this.lessonModel.quiz)) {
+        return false;
+      }
+      let fullness = _.every(
         this.lessonModel.quiz.map((q, e) => this.partiallyCorrect(e))
       );
+      if (fullness) {
+        let lessonSchema = {
+          lessonId: this.lessonModel.lessonId,
+          lessonName: this.lessonModel.name,
+          lessonTags: this.lessonModel.tags,
+          gainedXP: Number(this.lessonModel.xp)
+        };
+        console.log(lessonSchema);
+
+        this.submitUnlockingNewLesson(lessonSchema);
+      }
+      return fullness;
     }
   },
   data() {
     return {
+      loaded: false,
       userAnswers: [],
       lessonModel: {}
     };

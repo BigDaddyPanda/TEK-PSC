@@ -23,7 +23,7 @@
           <h6 class="text-white">{{$t("landing_2")}}</h6>
           <q-btn
             color="secondary"
-            to="/psc/week-activity-overview"
+            @click="goTo('/psc/week-activity-overview')"
             text-color="black"
             size="lg"
             replace
@@ -61,7 +61,7 @@
           <h6 class="text-white text-uppercase">{{$t("landing_12")}}</h6>
           <q-btn
             color="secondary"
-            to="/psc/week-activity-overview"
+            @click="goTo('/psc/week-activity-overview')"
             replace
             text-color="black"
             size="lg"
@@ -74,8 +74,14 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
-  // name: 'PageName',
+  name: "LandingPage",
+  computed: {
+    ...mapState({
+      authStore: "authStore"
+    })
+  },
   data() {
     return {
       icon: false,
@@ -93,6 +99,13 @@ export default {
       //   this.yesNoWtf = r.data;
       //   this.$refs.bar.stop();
       // });
+    },
+    goTo(link) {
+      if (this.authStore.loggedIn) {
+        this.$router.push("link");
+      } else {
+        this.$q.notify("Login to Proceed");
+      }
     }
   }
 };

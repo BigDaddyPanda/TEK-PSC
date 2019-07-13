@@ -4,6 +4,14 @@ import _ from "lodash";
 export function LessonsGetter(state) {
   return state.lessons.filter(e => e.isPublic);
 }
+
+export function weekActivityGetter(state) {
+  return state.lessons.filter(e => e.isWeekActivity)[0] || {};
+}
+export function allPublicLessonsGetter(state) {
+  return state.lessons.filter(e => !e.isWeekActivit);
+}
+
 export function AllLessonsGetter(state) {
   return state.lessons;
 }
