@@ -73,8 +73,10 @@ export default {
           }
         },
         error => {
-          console.log(error);
-          this.$q.notify({ message: "Error Retrieving data" });
+          // console.log(error);
+          this.$q.notify({
+            message: "Error Retrieving data, " + error.toString()
+          });
         }
       );
     }

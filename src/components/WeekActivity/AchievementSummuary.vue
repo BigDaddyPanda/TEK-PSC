@@ -6,17 +6,19 @@
     :style="[isknob?'':'height:120px']"
   >
     <q-item-section v-if="!isknob" avatar>
-      <q-avatar font-size="35px" class="q-pa-none bg-grey text-white" icon="done_outline" />
+      <q-avatar size="5vh">
+        <q-img ratio="1" :src="getAchievementLogo(achievementsGetter.length)" />
+      </q-avatar>
     </q-item-section>
 
     <q-item-section v-if="!isknob">
-      <q-item-label class="text-bold text-h5 q-pb-none text-grey">{{achiev}}</q-item-label>
+      <q-item-label class="text-bold text-h5 q-pb-none text-grey">{{achiev.text}}</q-item-label>
       <q-item-label class="text-bold text-h6 q-pb-none text-grey">Achievements</q-item-label>
     </q-item-section>
     <q-knob
       v-if="isknob"
       readonly
-      v-model="achiev"
+      v-model="achiev.number"
       show-value
       size="25vh"
       :thickness="0.22"
@@ -24,8 +26,8 @@
       track-color="grey-3"
       class="text-orange q-ma-md"
     >
-      <q-avatar size="20vh">
-        <q-img ratio="1" :src="getAchievementLogo(3)" />
+      <q-avatar size="15vh">
+        <q-img ratio="1" :src="getAchievementLogo(achievementsGetter.length)" />
       </q-avatar>
     </q-knob>
     <q-dialog v-model="achiev_dialog" position="right">
@@ -97,7 +99,11 @@ export default {
       achievementsGetter: "progressStore/achievementsGetter"
     }),
     achiev() {
-      return `${this.achievementsGetter.length} / ${this.achievementsList.length}`;
+      return {
+        text: `${this.achievementsGetter.length} / ${this.achievementsList.length}`,
+        number:
+          100 * (this.achievementsGetter.length / this.achievementsList.length)
+      };
     }
   },
   mounted() {},

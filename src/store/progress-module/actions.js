@@ -233,13 +233,13 @@ export function updateMyAchievements(context) {
                     // ...more.props...
                   })
                     .onOk(() => {
-                      console.log("OK");
+                      // console.log("OK");
                     })
                     .onCancel(() => {
-                      console.log("Cancel");
+                      // console.log("Cancel");
                     })
                     .onDismiss(() => {
-                      console.log("Called on OK or Cancel");
+                      // console.log("Called on OK or Cancel");
                     });
                 });
               });

@@ -1,11 +1,11 @@
 import _ from "lodash";
 
 const lessonLoadingJokes = [
-  "Getting random content from GFG",
+  "If it seems hard, Dynamically Program it...",
   "Tourist is over rated, you are better",
-  "Reporting Czerny for picking Quinn top",
-  "Loading Content",
-  "Rendering 2KB of 4K Memes ..."
+  "Loading Content from localhost",
+  "Screaming to help Goku defeat Freeza",
+  "Getting random Quiz from Google"
 ];
 
 export default async ({ Vue }) => {

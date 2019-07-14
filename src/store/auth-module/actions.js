@@ -48,7 +48,7 @@ export function signUserUp({ commit }, payload) {
     .catch(error => {
       commit("setLoading", false);
       commit("setError", error);
-      console.log(error);
+      // console.log(error);
     });
 }
 export function signUserIn({ commit }, payload) {
@@ -65,7 +65,7 @@ export function signUserIn({ commit }, payload) {
     .catch(error => {
       commit("setLoading", false);
       commit("setError", error);
-      console.log(error);
+      // console.log(error);
     });
 }
 export function clearError({ commit }) {

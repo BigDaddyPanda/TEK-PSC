@@ -132,6 +132,9 @@ export default {
    * @param {*} a achievements count
    */
   getAchievementLogo(a) {
-    return `statics/achievements/logo/ach-logo (${a}).png`;
+    let v = 1;
+    if (a < 1) v = 1;
+    if (a > 7) v = 7;
+    return `statics/achievements/logo/ach-logo (${v}).png`;
   }
 };

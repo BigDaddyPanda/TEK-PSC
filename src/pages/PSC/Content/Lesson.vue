@@ -67,18 +67,24 @@ export default {
       this.$q.loading.show({
         message: this.$lessonJoke()
       });
-      let lessonId = this.$route.params.id;
-      db.collection("lessons")
-        .where("lessonId", "==", lessonId)
-        .get()
-        .then(snapshot =>
-          snapshot.forEach(doc => {
-            this.lessonModel = doc.data();
-            this.userAnswers = Array(this.lessonModel.quiz.length).fill([]);
-            this.loaded = true;
-            this.$q.loading.hide();
-          })
-        );
+      setTimeout(() => {
+        let lessonId = this.$route.params.id;
+        db.collection("lessons")
+          .where("lessonId", "==", lessonId)
+          .get()
+          .then(snapshot =>
+            snapshot.forEach(doc => {
+              this.lessonModel = doc.data();
+              this.userAnswers = Array(this.lessonModel.quiz.length).fill([]);
+              this.loaded = true;
+              this.$q.loading.hide();
+            })
+          )
+          .catch(error => {
+            this.loaded = false;
+            this.$q.notify(error.toString());
+          });
+      }, 1500);
     },
     partiallyCorrect(k) {
       if (_.isEmpty(this.userAnswers[k])) {
@@ -117,8 +123,6 @@ export default {
           lessonTags: this.lessonModel.tags,
           gainedXP: Number(this.lessonModel.xp)
         };
-        console.log(lessonSchema);
-
         this.submitUnlockingNewLesson(lessonSchema);
       }
       return fullness;

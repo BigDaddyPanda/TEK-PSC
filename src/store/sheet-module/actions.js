@@ -67,7 +67,7 @@ export const togglePublic = firestoreAction((context, payload) => {
 
 export const removeSheet = firestoreAction((context, payload) => {
   let sheetId = null;
-  console.log(payload.sheetId);
+  // console.log(payload.sheetId);
   return db
     .collection("sheets")
     .where("sheetId", "==", payload.sheetId)

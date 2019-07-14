@@ -158,7 +158,11 @@ export default {
         // signInFailure callback must be provided to handle merge conflicts which
         // occur when an existing credential is linked to an anonymous user.
         signInFailure: error => {
-          console.log("error", error);
+          this.$q.notify({
+            color: "negative",
+            message: error.toString
+          });
+          // console.log("error", error);
 
           // For merge conflicts, the error.code will be
           // 'firebaseui/anonymous-upgrade-merge-conflict'.
@@ -247,7 +251,7 @@ export default {
         })
         .catch(error => {
           // An error happened.
-          this.$q.notify(error.message);
+          this.$q.notify(error.toString());
         });
     },
     resetPassword() {
@@ -260,7 +264,7 @@ export default {
             this.resetDialog = false;
           })
           .catch(error => {
-            this.$q.notify({ message: error, color: "negative" });
+            this.$q.notify({ message: error.toString(), color: "negative" });
           });
       }
     }

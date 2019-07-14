@@ -16,6 +16,7 @@
           dense
           class="col-xs-12 col-md-6 q-pl-xs q-pr-xs"
           filled
+          autogrow
           v-model="sheetModel.description"
           label="Description"
           lazy-rules
@@ -269,7 +270,7 @@ export default {
       }
       model.link = value;
       this.newProblemObject = model;
-      console.log(model);
+      // console.log(model);
       if (done) {
         done(model);
       }

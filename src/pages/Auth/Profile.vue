@@ -114,11 +114,14 @@
       </div>
 
       <div class="q-pa-md row justify-around flex flex-center full-width">
-        <div class="col-4">
-          <h5 class="q-my-none text-center">My Level</h5>
+        <div class="col-xs-12 col-md-4">
+          <h5 class="q-my-none text-center">Level</h5>
           <level-summuary isknob />
         </div>
-        <achievement-summuary class="col-4" isknob />
+        <div class="col-xs-12 col-md-4">
+          <h5 class="q-my-none text-center">Achievements</h5>
+          <achievement-summuary isknob />
+        </div>
       </div>
       <div class="full-width text-h3 row">
         <span>History</span>
@@ -207,6 +210,7 @@ export default {
   mounted() {
     this.loadData();
     this.linkWithCodeForces();
+    this.refresh(() => {});
     this.codeforcesHandle = this.progressGetter.codeforcesHandle || "";
   },
   data() {
@@ -273,7 +277,13 @@ export default {
                   });
                 });
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+              this.$q.notify({
+                color: "negative",
+                messag: err.toString()
+              });
+              // console.log(err);
+            });
         });
     },
 

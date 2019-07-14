@@ -58,7 +58,7 @@
                   </q-avatar>
 
                   <div
-                    class="text-subtitle1 q-ma-md q-mb-xs"
+                    class="text-subtitle1 justify-center text-center q-ma-md q-mb-none"
                   >{{authStore.user.displayName||authStore.user.email}}</div>
 
                   <q-btn
@@ -161,7 +161,7 @@
     <q-page-container>
       <!-- This is where pages get injected -->
       <router-view />
-      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-page-sticky v-if="authStore.loggedIn" position="bottom-right" :offset="[18, 18]">
         <q-btn
           size="md"
           round

@@ -6,36 +6,28 @@
       <div class="row justify-between">
         <q-parallax class="window-height">
           <template v-slot:media>
-            <video
-              poster="statics/brand-modern-alt.png"
-              style="height: 890px;
-                    width: 1582.22px;
-                    transform: translate(-50%, calc(-50% + 100px));"
-              autoplay
-              loop
-              muted
-            >
+            <video poster="statics/brand-modern-alt.png" style="width:100vh; " autoplay loop muted>
               <source type="video/mp4" src="statics/media/montage-acm.mp4" />
             </video>
             <div class="overlay"></div>
           </template>
-          <h2 class="text-secondary text-bold">{{$t("landing_1")}}</h2>
-          <h6 class="text-white">{{$t("landing_2")}}</h6>
-          <q-btn
+          <h2 class="q-mx-xl q-mb-none text-secondary text-bold">{{$t("landing_1")}}</h2>
+          <h4 class="q-mx-xl q-mb-none text-white">{{$t("landing_2")}}</h4>
+          <!-- <q-btn
             color="secondary"
             @click="goTo('/psc/week-activity-overview')"
             text-color="black"
             size="lg"
             replace
             :label="$t('landing_3')"
-          />
+          />-->
         </q-parallax>
       </div>
     </div>
 
     <div class="q-pa-md q-gutter-md">
       <div class="row justify-between">
-        <div class="col-6 q-pa-xl">
+        <div class="col-xs-12 col-md-6 q-pa-xl">
           <h2 class="text-secondary text-bold">{{$t("landing_4")}}</h2>
           <h4 class="text-secondary q-mb-none">{{$t("landing_5")}}</h4>
           <p class="text-white text-h5">{{$t("landing_6")}}</p>
@@ -44,7 +36,7 @@
           <h4 class="text-secondary q-mb-none">{{$t("landing_9")}}</h4>
           <p class="text-white text-h5">{{$t("landing_10")}}</p>
         </div>
-        <div class="col-6">
+        <div class="col-xs-12 col-md-6">
           <q-img :ratio="1" src="statics/media/upsolve-2019.jpg" />
           <!-- <q-img src=""/> -->
         </div>
@@ -57,16 +49,16 @@
             <img src="statics/media/upsolve-2019-2.jpg" />
             <div class="overlay"></div>
           </template>
-          <h2 class="text-secondary text-bold q-mb-none">{{$t("landing_11")}}</h2>
-          <h6 class="text-white text-uppercase">{{$t("landing_12")}}</h6>
-          <q-btn
+          <h2 class="q-mx-xl q-mb-none text-secondary text-bold">{{$t("landing_11")}}</h2>
+          <h4 class="q-mx-xl q-mb-none text-white text-uppercase">{{$t("landing_12")}}</h4>
+          <!-- <q-btn
             color="secondary"
             @click="goTo('/psc/week-activity-overview')"
             replace
             text-color="black"
             size="lg"
             :label="$t('landing_13')"
-          />
+          />-->
         </q-parallax>
       </div>
     </div>

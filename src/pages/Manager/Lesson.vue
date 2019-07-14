@@ -96,7 +96,7 @@ export default {
       locmarkAsWeekActivity: "lessonStore/markAsWeekActivity"
     }),
     removeLesson: function(params) {
-      console.log(params);
+      // console.log(params);
 
       this.delLesson(params).then(() => {
         this.$nextTick(this.loadLessons);
