@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 import { db } from "boot/firebase";
-
+import { Notify } from "quasar";
 export function checkAdminRole({ commit }) {
   const user = firebase.auth().currentUser;
   if (user) {
@@ -47,7 +47,12 @@ export function signUserUp({ commit }, payload) {
     })
     .catch(error => {
       commit("setLoading", false);
-      commit("setError", error);
+      Notify.create({
+        color: "negative",
+        message: "Error signing up: " + error.toString(),
+        timeout: 3
+      });
+      // commit("setError", error);
       // console.log(error);
     });
 }
@@ -64,7 +69,11 @@ export function signUserIn({ commit }, payload) {
     })
     .catch(error => {
       commit("setLoading", false);
-      commit("setError", error);
+      Notify.create({
+        color: "negative",
+        message: "Error signing-in: " + error.toString()
+      });
+      // commit("setError", error);
       // console.log(error);
     });
 }

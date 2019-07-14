@@ -30,7 +30,7 @@ export default {
       assignUser: "authStore/assignUser",
       loadSheets: "sheetStore/bindSheetsRef",
       loadLessons: "lessonStore/bindLessonsRef",
-      loadProgress: "progressStore/loadProgress",
+      // loadProgress: "progressStore/loadProgress",
       getSuccessSubmissions: "progressStore/getSuccessSubmissions",
       updateMyAchievements: "progressStore/updateMyAchievements"
     }),
@@ -47,7 +47,7 @@ export default {
               phoneNumber: user.phoneNumber,
               providerData: user.providerData
             });
-            if (this.$route.path.includes("landing") && this.authStore.user) {
+            if (this.$route.path.includes("landing")) {
               this.$router.push("/psc");
               this.$q.notify({
                 message: `Welcome Back ${user.displayName || user.email}`
@@ -55,7 +55,7 @@ export default {
             }
             this.loadLessons();
             this.loadSheets();
-            this.loadProgress();
+            // this.loadProgress();
             const handlePayloadl = {
               uid: user.uid,
               codeforcesHandle: "BigDaddyPanda"

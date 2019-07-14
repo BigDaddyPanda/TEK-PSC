@@ -36,9 +36,9 @@
           >Recent Activity</div>
           <div class="row">
             <div
-              class="col-4 q-mt-none q-pl-md"
-              v-for="(item, index) in allPublicLessons"
-              :key="index"
+              class="col-4 q-mt-none q-pb-md q-pl-md"
+              v-for="(item, index) in allPublicLessons.slice(0,3)"
+              :key="item.order||index"
             >
               <activity-preview isPreview :lesson="item" />
             </div>

@@ -160,7 +160,7 @@ export default {
         signInFailure: error => {
           this.$q.notify({
             color: "negative",
-            message: error.toString
+            message: error
           });
           // console.log("error", error);
 
@@ -207,7 +207,7 @@ export default {
               // resolves.
               // signInSuccessWithAuthResult will not run. Successful sign-in
               // logic has to be run explicitly.
-              this.$router.push("/calendar");
+              this.$router.push("/");
             });
         }
       }

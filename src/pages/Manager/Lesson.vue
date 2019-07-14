@@ -8,10 +8,15 @@
         </template>
       </q-input>
     </div>-->
-    <div class="fit row">
+    <draggable
+      :disabled="!toggleOrdrer"
+      :list="allOfLessons"
+      class="list-group fit row"
+      ghost-class="bg-red"
+    >
       <div
         class="col-md-4 col-xs-12 col-lg-3 q-pa-xs"
-        v-for="(lesson, ind) in LessonsGetter"
+        v-for="(lesson, ind) in allOfLessons"
         :key="ind"
         style="height:33vh;"
       >
@@ -21,6 +26,7 @@
               <div class="text-h6">{{lesson.name}}</div>
               <div class="text-subtitle2">by {{lesson.editor}}</div>
               <div
+                v-if="!$_.isEmpty(lesson.nextLesson)"
                 class="text-subtitle2"
               >Designated Next Lesson: {{$_.startCase(lesson.nextLesson.label)}}</div>
             </div>
@@ -41,7 +47,7 @@
           </q-card-actions>
         </q-card>
       </div>
-    </div>
+    </draggable>
     <q-dialog
       v-model="dialog"
       persistent
@@ -58,20 +64,44 @@
     <q-page-sticky position="bottom-left" :offset="[18, 18]">
       <q-btn round color="accent" @click="openModal()" icon="add" />
     </q-page-sticky>
+    <q-page-sticky v-if="toggleOrdrer" position="top-right" :offset="[18, 18]">
+      <q-btn
+        round
+        color="green-6"
+        @click="confirmResort()"
+        :loading="loadingOrderSubmission"
+        icon="gavel"
+      />
+    </q-page-sticky>
+    <q-page-sticky position="top-left" :offset="[18, 18]">
+      <q-btn
+        round
+        color="accent"
+        @click="toggleOrdrer=!toggleOrdrer"
+        :icon="toggleOrdrer?'close':'view_carousel'"
+      />
+    </q-page-sticky>
   </div>
 </template>
 <script>
 import LessonEditor from "../../components/Manager/LessonEditor";
+import draggable from "vuedraggable";
 import { mapActions, mapState, mapGetters } from "vuex";
+import { db } from "boot/firebase";
+
 export default {
   name: "LessonManager",
   computed: {
     ...mapGetters({
       LessonsGetter: "lessonStore/LessonsGetter"
-    })
+    }),
+    allOfLessonsKeyIndex() {
+      return this.$_.times(this.allOfLessons.length, i => i);
+    }
   },
   components: {
-    LessonEditor
+    LessonEditor,
+    draggable
   },
   watch: {
     includesQuiz: function(value) {
@@ -87,17 +117,48 @@ export default {
     toggleMaximizedToggle: function() {
       this.maximizedToggle = !this.maximizedToggle;
     },
+    confirmResort() {
+      const _ = this.$_;
+      this.loadingOrderSubmission = true;
+      let newUpdatedOrder = _.map(this.allOfLessons, (e, i) => ({
+        ...e,
+        order: i
+      }));
+      _.differenceBy(newUpdatedOrder, this.LessonsGetter, "order").forEach(
+        element => {
+          db.collection("lessons")
+            .where("lessonId", "==", element.lessonId)
+            .get()
+            .then(snapshot => {
+              snapshot.forEach(doc => {
+                db.collection("lessons")
+                  .doc(doc.id)
+                  .update({
+                    order: element.order
+                  });
+              });
+            })
+            .then(() => {
+              this.toggleOrdrer = false;
+              this.loadingOrderSubmission = false;
+            });
+        }
+      );
+    },
+    loadLessons: function() {
+      this.bindLessonsRef().then(() => {
+        this.allOfLessons = this.$_.cloneDeep(this.LessonsGetter);
+      });
+    },
     ...mapActions({
       addNewLesson: "lessonStore/addNewLesson",
       dismissLesson: "lessonStore/dismissLesson",
       openLesson: "lessonStore/openLesson",
-      loadLessons: "lessonStore/bindLessonsRef",
+      bindLessonsRef: "lessonStore/bindLessonsRef",
       delLesson: "lessonStore/removeLesson",
       locmarkAsWeekActivity: "lessonStore/markAsWeekActivity"
     }),
     removeLesson: function(params) {
-      // console.log(params);
-
       this.delLesson(params).then(() => {
         this.$nextTick(this.loadLessons);
       });
@@ -122,6 +183,9 @@ export default {
   },
   data() {
     return {
+      allOfLessons: [],
+      loadingOrderSubmission: false,
+      toggleOrdrer: false,
       filter: "",
       maximizedToggle: true,
       selected: [],

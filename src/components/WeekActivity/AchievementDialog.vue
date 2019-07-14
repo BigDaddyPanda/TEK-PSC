@@ -2,16 +2,18 @@
   <q-dialog ref="dialog" @hide="onDialogHide">
     <q-card class="q-dialog-plugin">
       <q-card-section class="row justify-center">
-        <q-avatar size="25vh">
+        <q-avatar rounded size="25vh">
           <q-img :src="achievement.icon" />
         </q-avatar>
       </q-card-section>
       <q-card-section class="row justify-center text-center">
-        <h6 class="col-12">Hurray!! new achievement!!</h6>
-        <h5 class="col-12 text-secondary" v-html="achievement.label"></h5>
+        <h6 class="col-12 q-my-xs">Hurray!! new achievement!!</h6>
+        <h4 class="col-12 text-secondary q-my-md" v-html="achievement.label"></h4>
         <span class="col-12 text-italic text-teal" v-html="achievement.description"></span>
         <div class="col-12 text-center">
-          <h6>Gracefully unlocked by your effort doing the following milestones:</h6>
+          <h6
+            class="text-caption"
+          >Gracefully unlocked by your effort doing the following milestones:</h6>
           <q-badge
             v-for="(item, index) in achievement.required"
             :key="index"

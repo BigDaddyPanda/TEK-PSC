@@ -24,7 +24,7 @@
         </div>
         <div
           v-for="(lesson, lesInd) in allLessons"
-          :key="lesInd"
+          :key="getOne(lesson.order,lesInd)"
           class="col-md-3 col-xs-12 q-pa-md"
         >
           <activity-preview :isPreview="true" :lesson="lesson" />
@@ -44,6 +44,13 @@ export default {
     ...mapGetters({
       LessonsGetter: "lessonStore/LessonsGetter"
     })
+  },
+  methods: {
+    getOne(order, lesInd) {
+      console.log(order, lesInd);
+      if (order) return order;
+      return lesInd;
+    }
   },
   components: {
     ActivityPreview

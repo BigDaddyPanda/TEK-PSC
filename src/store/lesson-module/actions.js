@@ -37,6 +37,7 @@ export const openLesson = function(context, payload) {
 
 export const saveLesson = firestoreAction((context, payload) => {
   payload.lessonId = nanoid();
+  payload.order = -new Date().valueOf();
   return db.collection("lessons").add(payload);
 });
 export const updateLesson = firestoreAction((context, payload) => {
