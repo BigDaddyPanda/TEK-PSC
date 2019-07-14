@@ -20,10 +20,13 @@
                 text-color="white"
                 class="text-center text-bold"
                 color="orange"
-              >XP</q-avatar>+50 XP
+              >XP</q-avatar>
+              +{{lesson.xp}} XP
             </span>
-            <span class="full-width q-mb-none">Completed by {{$_.random(10,30)}} other TEK-UPpers</span>
-            <div class="full-width q-mb-none" style="position:relative;">
+            <span
+              class="full-width q-mb-none"
+            >Completed by {{lesson.completedBy.length||"0"}} other TEK-UPpers</span>
+            <!-- <div class="full-width q-mb-none" style="position:relative;">
               <q-linear-progress
                 style="height: 20px;"
                 :value="0.5"
@@ -31,7 +34,7 @@
                 class="q-mt-none"
               />
               <div class="text-white text-bold set-position">50/100</div>
-            </div>
+            </div>-->
           </div>
         </div>
       </transition>

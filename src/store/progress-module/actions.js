@@ -117,7 +117,7 @@ export function updateMySuccessfulSubmissions(context, payload) {
             }));
           const allSuccessSubmission = _.uniqWith(
             [...profile.successfullSubmissions, ...success],
-            _.isEqual
+            (sx, sy) => sx.problemLink === sy.problemLink
           );
 
           db.collection("progress")
@@ -158,11 +158,31 @@ export function submitUnlockingNewLesson(context, lessonSchema) {
       if (resp.exists) {
         let userData = resp.data();
         let solvedLessons = userData.progress.level.lessons;
-        let alreadySolved = !!_.find(solvedLessons, [
+        let alreadySolved = _.find(solvedLessons, [
           "lesson",
           lessonSchema.lessonId
         ]);
+
         if (!alreadySolved) {
+          let newCompleter = {
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL
+          };
+          db.collection("lessons")
+            .where("lessonId", "==", lessonSchema.lessonId)
+            .get()
+            .then(snapshot => {
+              snapshot.forEach(doc => {
+                db.collection("lessons")
+                  .doc(doc.id)
+                  .update({
+                    completedBy: firebase.firestore.FieldValue.arrayUnion(
+                      newCompleter
+                    )
+                  });
+              });
+            });
           db.collection("progress")
             .doc(user.uid)
             .update({

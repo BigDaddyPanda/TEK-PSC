@@ -18,7 +18,8 @@ const newLesson = {
       correct: [2]
     }
   ],
-  nextLesson: ""
+  nextLesson: "",
+  completedBy: []
 };
 export const bindLessonsRef = firestoreAction(context => {
   return context.bindFirestoreRef("lessons", db.collection("lessons"));

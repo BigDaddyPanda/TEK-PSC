@@ -125,18 +125,20 @@
         <q-stepper-navigation>
           <q-card-section v-if="!$_.isEmpty(lessonModel.quiz)" class="q-ma-md">
             <div v-for="(qz, quizIndex) in lessonModel.quiz" :key="quizIndex">
-              <q-input
-                outlined
+              <h6 class="q-my-none">Quizz Statement</h6>
+              <q-editor
                 v-model="lessonModel.quiz[quizIndex].question"
-                label="Question"
-                class="q-pr-md"
-                dense
+                class="text-black"
+                :dense="$q.screen.lt.md"
+                :toolbar="EditorOptions.toolbar"
+                :fonts="EditorOptions.fonts"
               />
+              <h6 class="q-mt-xs q-mb-none">Quizz Answers</h6>
               <div class="row">
                 <q-input
                   v-for="(qst, ansInd) in lessonModel.quiz[quizIndex].answers"
                   :key="ansInd"
-                  class="col-xs-12 col-md-6 q-pa-md"
+                  class="col-xs-12 col-md-6 q-px-md q-pb-md"
                   label="Answer"
                   outlined
                   v-model="lessonModel.quiz[quizIndex].answers[ansInd]"

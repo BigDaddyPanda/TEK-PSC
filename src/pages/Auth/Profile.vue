@@ -113,7 +113,7 @@
         />
       </div>
 
-      <div class="q-pa-md row justify-around flex flex-center full-width">
+      <div class="row q-pa-md justify-around flex flex-center full-width">
         <div class="col-xs-12 col-md-4">
           <h5 class="q-my-none text-center">Level</h5>
           <level-summuary isknob />
@@ -121,6 +121,10 @@
         <div class="col-xs-12 col-md-4">
           <h5 class="q-my-none text-center">Achievements</h5>
           <achievement-summuary isknob />
+        </div>
+        <div class="col-xs-12">
+          <h5 class="q-my-none text-center">Skills and Ranking</h5>
+          <ranking-view isknob />
         </div>
       </div>
       <div class="full-width text-h3 row">
@@ -196,6 +200,7 @@
 
 <script>
 import LevelSummuary from "components/WeekActivity/LevelSummuary";
+import RankingView from "components/WeekActivity/SideRankingView";
 import AchievementSummuary from "components/WeekActivity/AchievementSummuary";
 import { db } from "boot/firebase";
 import axios from "axios";
@@ -205,7 +210,8 @@ export default {
   name: "ProfileEditor",
   components: {
     LevelSummuary,
-    AchievementSummuary
+    AchievementSummuary,
+    RankingView
   },
   mounted() {
     this.loadData();
@@ -293,6 +299,11 @@ export default {
     refresh(done) {
       var user = this.$firebase.auth().currentUser;
       this.refreshing = true;
+      if (this.$_.isEmpty(this.codeforcesHandle)) {
+        this.refreshing = false;
+        done();
+        return;
+      }
       let myProfile = {
         codeforcesHandle: this.codeforcesHandle,
         uid: user.uid

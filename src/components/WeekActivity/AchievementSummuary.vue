@@ -6,7 +6,7 @@
     :style="[isknob?'':'height:120px']"
   >
     <q-item-section v-if="!isknob" avatar>
-      <q-avatar size="5vh">
+      <q-avatar rounded size="5vh">
         <q-img ratio="1" :src="getAchievementLogo(achievementsGetter.length)" />
       </q-avatar>
     </q-item-section>
@@ -26,7 +26,7 @@
       track-color="grey-3"
       class="text-orange q-ma-md"
     >
-      <q-avatar size="15vh">
+      <q-avatar rounded size="15vh">
         <q-img ratio="1" :src="getAchievementLogo(achievementsGetter.length)" />
       </q-avatar>
     </q-knob>

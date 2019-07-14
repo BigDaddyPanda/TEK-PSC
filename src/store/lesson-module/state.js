@@ -19,6 +19,7 @@ export default {
         correct: [2]
       }
     ],
-    nextLesson: ""
+    nextLesson: "",
+    completedBy: []
   }
 };

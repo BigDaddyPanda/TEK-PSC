@@ -28,22 +28,7 @@
           >Progress</p>
           <level-summuary />
           <achievement-summuary />
-
-          <q-item
-            class="bg-grey-2 q-mb-md"
-            clickable
-            @click="ranking_dialog=!ranking_dialog"
-            style="height:120px"
-          >
-            <q-item-section avatar>
-              <q-avatar font-size="35px" class="q-pa-none text-white bg-grey" icon="equalizer" />
-            </q-item-section>
-
-            <q-item-section>
-              <q-item-label class="text-bold text-h5 q-pb-none text-grey">10th</q-item-label>
-              <q-item-label class="text-bold text-h6 q-pb-none text-grey">Overall Ranking</q-item-label>
-            </q-item-section>
-          </q-item>
+          <side-ranking-view />
         </div>
         <div class="q-pt-md col-xs-12 col-md-10 q-pl-lg">
           <div
@@ -61,9 +46,6 @@
         </div>
       </div>
     </div>
-    <q-dialog v-model="ranking_dialog" position="right">
-      <side-ranking-view />
-    </q-dialog>
   </q-page>
   <div v-else />
 </template>

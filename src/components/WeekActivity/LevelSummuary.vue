@@ -6,7 +6,7 @@
     :style="[isknob?'height:300px':'height:120px']"
   >
     <q-item-section v-if="!isknob" avatar>
-      <q-avatar size="5vh" rounded class="text-white">
+      <q-avatar square size="5vh" rounded class="text-white">
         <q-img :src="levelGetter.level_state.icon" />
       </q-avatar>
     </q-item-section>
@@ -42,7 +42,7 @@
       track-color="grey-3"
       class="text-orange q-ma-md"
     >
-      <q-avatar size="15vh">
+      <q-avatar square size="15vh">
         <img :src="levelGetter.level_state.icon" />
       </q-avatar>
     </q-knob>

@@ -8,8 +8,10 @@
       </q-card-section>
       <q-card-section class="row justify-center text-center">
         <h6 class="col-12">Hurray!! new achievement!!</h6>
-        <h5 class="col-12" v-html="achievement.label"></h5>
-        <div class="col-12">
+        <h5 class="col-12 text-secondary" v-html="achievement.label"></h5>
+        <span class="col-12 text-italic text-teal" v-html="achievement.description"></span>
+        <div class="col-12 text-center">
+          <h6>Gracefully unlocked by your effort doing the following milestones:</h6>
           <q-badge
             v-for="(item, index) in achievement.required"
             :key="index"
