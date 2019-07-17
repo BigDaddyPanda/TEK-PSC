@@ -7,6 +7,7 @@ import lessonStore from "./lesson-module";
 import sheetStore from "./sheet-module";
 import chatStore from "./chat-store";
 import progressStore from "./progress-module";
+import contestStore from "./contest-module";
 
 import { vuexfireMutations } from "vuexfire";
 Vue.use(Vuex);
@@ -23,10 +24,11 @@ export default function(/* { ssrContext } */) {
       sheetStore,
       chatStore,
       progressStore,
-      lessonStore
+      lessonStore,
+      contestStore
     },
     mutations: {
-      // other mutations
+      // firebase mutation required for functionality
       ...vuexfireMutations
     },
 

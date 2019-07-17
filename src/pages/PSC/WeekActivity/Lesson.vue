@@ -22,11 +22,7 @@
             class="text-italic text-grey-6 text-subtitle2 q-mb-sm q- q-pl-none"
           >Definition, guidelines and source codes for major Algorithms.</p>
         </div>
-        <div
-          v-for="(lesson, lesInd) in allLessons"
-          :key="getOne(lesson.order,lesInd)"
-          class="col-md-3 col-xs-12 q-pa-md"
-        >
+        <div v-for="lesson in allLessons" :key="lesson.order" class="col-md-3 col-xs-12 q-pa-md">
           <activity-preview :isPreview="true" :lesson="lesson" />
         </div>
       </div>
@@ -57,7 +53,7 @@ export default {
   },
   mounted() {
     this.weekLesson = this.LessonsGetter.filter(e => e.isWeekActivity)[0] || {};
-    this.allLessons = this.LessonsGetter.filter(e => !e.isWeekActivity) || [];
+    this.allLessons = _.sortBy(this.LessonsGetter, "order") || [];
     this.loaded = true;
   },
   data() {

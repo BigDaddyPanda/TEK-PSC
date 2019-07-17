@@ -63,7 +63,7 @@ const routes = [
       },
       {
         path: "profile",
-        meta: { title: "TEK PS-Rules Desclaimer" },
+        meta: { title: "TEK PS-Profile" },
         component: () => import("pages/Auth/Profile.vue")
       },
       {
@@ -92,14 +92,19 @@ const routes = [
         component: () => import("pages/PSC/WeekActivity/Sheets.vue")
       },
       {
-        path: "week-activity-contests",
+        path: "contests",
         meta: { title: "TEK PS-Week Activity Contests" },
         component: () => import("pages/PSC/WeekActivity/Contests.vue")
       },
       {
-        path: "week-activity-final-standing",
-        meta: { title: "TEK PS-Week Activity Final Standing" },
+        path: "contest/:id",
+        meta: { title: "TEK PS-Contests Final Standing" },
         component: () => import("pages/PSC/WeekActivity/FinalStanding.vue")
+      },
+      {
+        path: "ratings",
+        meta: { title: "TEK PS-Weekly Ratings" },
+        component: () => import("pages/PSC/WeekActivity/Ratings.vue")
       },
       {
         path: "hall-of-fame",

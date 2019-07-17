@@ -59,7 +59,7 @@
                 dense
                 round
                 @click="myTogglePublic(sheet)"
-                :icon="sheet.isPubluc?'visibility':'visibility_off'"
+                :icon="sheet.isPublic?'visibility':'visibility_off'"
               />
               <q-btn size="12px" flat dense round @click="modifySheet(sheet)" icon="settings" />
               <q-btn size="12px" flat dense round @click="deleteSheet(sheet)" icon="delete" />
@@ -153,8 +153,9 @@ export default {
       this.$nextTick(this.loadSheets);
     },
     myTogglePublic(sh) {
-      this.togglePublic(sh);
-      this.$nextTick(this.loadSheets);
+      this.togglePublic(sh).then(() => {
+        this.$nextTick(this.loadSheets);
+      });
     }
   },
   data() {

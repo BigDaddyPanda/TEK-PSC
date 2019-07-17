@@ -31,6 +31,7 @@ export default {
       loadSheets: "sheetStore/bindSheetsRef",
       loadLessons: "lessonStore/bindLessonsRef",
       // loadProgress: "progressStore/loadProgress",
+      loadContests: "contestStore/bindContestsRef",
       getSuccessSubmissions: "progressStore/getSuccessSubmissions",
       updateMyAchievements: "progressStore/updateMyAchievements"
     }),
@@ -56,6 +57,7 @@ export default {
             this.loadLessons();
             this.loadSheets();
             // this.loadProgress();
+            this.loadContests();
             const handlePayloadl = {
               uid: user.uid,
               codeforcesHandle: "BigDaddyPanda"

@@ -7,7 +7,7 @@
           <h3 class="q-mb-xs col-12">{{lessonModel.name}}</h3>
           <h5 class="q-mb-xs col-12">Content</h5>
           <div class="col-12" v-html="lessonModel.content"></div>
-          <div class="col-12" v-if="lessonModel.quiz">
+          <div class="col-12" v-if="!$_.isEmpty(lessonModel.quiz)">
             <fire-works style="z-index:10;height:100%;width:100%;" v-if="fullyCorrect" />
             <h5 class="q-mb-xs">Quizz</h5>
             <div class="row" v-for="(qz, k) in lessonModel.quiz" :key="k">

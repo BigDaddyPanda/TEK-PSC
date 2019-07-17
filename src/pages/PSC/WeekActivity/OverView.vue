@@ -37,8 +37,8 @@
           <div class="row">
             <div
               class="col-4 q-mt-none q-pb-md q-pl-md"
-              v-for="(item, index) in allPublicLessons.slice(0,3)"
-              :key="item.order||index"
+              v-for="(item) in allPublicLessons.slice(0,3)"
+              :key="item.order"
             >
               <activity-preview isPreview :lesson="item" />
             </div>

@@ -13,13 +13,59 @@
             <q-img src="statics/white.png" spinner-color="white" />
           </q-avatar>
         </q-btn>
+        <q-btn class="lt-md" flat>
+          <q-icon name="book" />
+          <q-menu>
+            <div class="fit row">
+              <q-btn
+                v-if="authStore.loggedIn"
+                stretch
+                flat
+                to="/psc/week-activity-overview"
+                :class="'col-12 bg-primary text-'+getActive('/psc/week-activity-overview')"
+                label="Week Activity"
+              />
+              <q-btn
+                v-if="authStore.loggedIn"
+                stretch
+                flat
+                to="/psc/week-activity-lessons"
+                :class="'col-12 bg-primary text-'+getActive('/psc/week-activity-lessons')"
+                label="Lessons"
+              />
+            </div>
+          </q-menu>
+        </q-btn>
+        <q-btn class="lt-md" flat>
+          <q-icon name="table_chart" />
+          <q-menu class="q-pa-md">
+            <div class="fit row">
+              <q-btn
+                v-if="authStore.loggedIn"
+                stretch
+                flat
+                to="/psc/week-activity-sheets"
+                :class="'col-12 bg-primary text-'+getActive('/psc/week-activity-sheets')"
+                label="Training"
+              />
+              <q-btn
+                v-if="authStore.loggedIn"
+                stretch
+                flat
+                to="/psc/contests"
+                :class="'col-12 bg-primary text-'+getActive('/psc/contests')"
+                label="Contests"
+              />
+            </div>
+          </q-menu>
+        </q-btn>
 
         <q-btn
           v-if="authStore.loggedIn"
           stretch
           flat
           to="/psc/week-activity-overview"
-          :class="'text-'+getActive('/psc/week-activity-overview')"
+          :class="'gt-sm text-'+getActive('/psc/week-activity-overview')"
           label="Week Activity"
         />
         <q-btn
@@ -27,7 +73,7 @@
           stretch
           flat
           to="/psc/week-activity-lessons"
-          :class="'text-'+getActive('/psc/week-activity-lessons')"
+          :class="'gt-sm text-'+getActive('/psc/week-activity-lessons')"
           label="Lessons"
         />
         <q-btn
@@ -35,8 +81,16 @@
           stretch
           flat
           to="/psc/week-activity-sheets"
-          :class="'text-'+getActive('/psc/week-activity-sheets')"
+          :class="'gt-sm text-'+getActive('/psc/week-activity-sheets')"
           label="Training"
+        />
+        <q-btn
+          v-if="authStore.loggedIn"
+          stretch
+          flat
+          to="/psc/contests"
+          :class="'gt-sm text-'+getActive('/psc/contests')"
+          label="Contests"
         />
 
         <q-space></q-space>
@@ -125,13 +179,13 @@
             :class="'text-'+getActive('/manager/lesson')"
             label="Manage lesson"
           />
-          <!-- <q-btn
+          <q-btn
             stretch
             flat
             to="/manager/contest"
             :class="'text-'+getActive('/manager/contest')"
             label="Manage contest"
-          />-->
+          />
           <q-btn
             stretch
             flat

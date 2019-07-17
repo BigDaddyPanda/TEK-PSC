@@ -11,18 +11,24 @@
     <draggable
       :disabled="!toggleOrdrer"
       :list="allOfLessons"
-      class="list-group fit row"
-      ghost-class="bg-red"
+      class="fit list-group row"
+      ghost-class="bg-teal-5"
     >
       <div
         class="col-md-4 col-xs-12 col-lg-3 q-pa-xs"
-        v-for="(lesson, ind) in allOfLessons"
-        :key="ind"
+        v-for="(lesson) in allOfLessons"
+        :key="lesson.order"
         style="height:33vh;"
       >
         <q-card class="fit">
           <q-img style="height: 80% !important;" :src="lesson.coverPhoto">
-            <div class="absolute-bottom">
+            <div
+              class="fit items-center content-center justify-center row dragged"
+              v-if="toggleOrdrer"
+            >
+              <q-icon size="3rem" name="pages" />
+            </div>
+            <div class="absolute-bottom" v-else>
               <div class="text-h6">{{lesson.name}}</div>
               <div class="text-subtitle2">by {{lesson.editor}}</div>
               <div
@@ -94,10 +100,7 @@ export default {
   computed: {
     ...mapGetters({
       LessonsGetter: "lessonStore/LessonsGetter"
-    }),
-    allOfLessonsKeyIndex() {
-      return this.$_.times(this.allOfLessons.length, i => i);
-    }
+    })
   },
   components: {
     LessonEditor,
@@ -119,35 +122,39 @@ export default {
     },
     confirmResort() {
       const _ = this.$_;
+
       this.loadingOrderSubmission = true;
-      let newUpdatedOrder = _.map(this.allOfLessons, (e, i) => ({
-        ...e,
-        order: i
-      }));
-      _.differenceBy(newUpdatedOrder, this.LessonsGetter, "order").forEach(
-        element => {
-          db.collection("lessons")
-            .where("lessonId", "==", element.lessonId)
-            .get()
-            .then(snapshot => {
-              snapshot.forEach(doc => {
-                db.collection("lessons")
-                  .doc(doc.id)
-                  .update({
-                    order: element.order
-                  });
-              });
-            })
-            .then(() => {
-              this.toggleOrdrer = false;
-              this.loadingOrderSubmission = false;
+      _.map(this.allOfLessons, async (element, i) => {
+        await db
+          .collection("lessons")
+          .where("lessonId", "==", element.lessonId)
+          .get()
+          .then(snapshot => {
+            snapshot.forEach(doc => {
+              db.collection("lessons")
+                .doc(doc.id)
+                .update({
+                  order: i
+                });
             });
-        }
-      );
+          })
+          .catch(err => {
+            this.$q.notify({
+              color: "negative",
+              message: err.toString()
+            });
+          });
+      });
+      this.$q.notify("Done with Reorder");
+      this.toggleOrdrer = false;
+      this.loadingOrderSubmission = false;
     },
     loadLessons: function() {
       this.bindLessonsRef().then(() => {
-        this.allOfLessons = this.$_.cloneDeep(this.LessonsGetter);
+        this.allOfLessons = this.$_.sortBy(
+          this.$_.cloneDeep(this.LessonsGetter),
+          "order"
+        );
       });
     },
     ...mapActions({

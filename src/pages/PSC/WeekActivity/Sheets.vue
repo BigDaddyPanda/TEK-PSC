@@ -67,12 +67,16 @@ export default {
   name: "Sheets",
   computed: {
     ...mapGetters({
-      allSheets: "sheetStore/getAllSheets"
-    })
+      getAll: "sheetStore/getAllSheets"
+    }),
+    allSheets() {
+      return this.getAll.filter(e => e.isPublic);
+    }
   },
   mounted() {
-    this.loadSheets();
-    this.shownSheets = this.allSheets;
+    this.loadSheets().then(() => {
+      this.shownSheets = this.allSheets;
+    });
   },
   watch: {
     filterName: function(newVal) {
@@ -122,7 +126,6 @@ export default {
       checkedTags: [],
       filterName: "",
       shownSheets: [],
-      Sheets: [],
       Tags
     };
   }

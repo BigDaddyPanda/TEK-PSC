@@ -159,7 +159,7 @@ export function submitUnlockingNewLesson(context, lessonSchema) {
         let userData = resp.data();
         let solvedLessons = userData.progress.level.lessons;
         let alreadySolved = _.find(solvedLessons, [
-          "lesson",
+          "lessonId",
           lessonSchema.lessonId
         ]);
 
