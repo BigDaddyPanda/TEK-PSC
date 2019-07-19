@@ -16,3 +16,6 @@ export function setProgress(state, payload) {
 export function setSubmissions(state, payload) {
   state.successfullSubmissions = _.cloneDeep(payload);
 }
+export function setContestSubmissions(state, payload) {
+  state.contestSubmissions = _.cloneDeep(payload);
+}

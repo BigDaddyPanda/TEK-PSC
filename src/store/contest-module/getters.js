@@ -2,8 +2,11 @@
  */
 import _ from "lodash";
 export function allContestsGetter(state) {
-  return state.contests;
+  return _.sortBy(state.contests, ["name", "addedDate"]);
 }
 export function getContestGroupList(state) {
-  return _.groupBy(state.contests, "groupName");
+  return _.groupBy(
+    _.sortBy(state.contests, ["name", "addedDate"]),
+    "groupName"
+  );
 }

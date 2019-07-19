@@ -18,7 +18,7 @@
         </q-timeline-entry>
 
         <q-timeline-entry title="ACM TEK-UP" subtitle="Hosting Club" icon="thumbs_up_down">
-          <div>{{AboutUS.acm_tek_up}}</div>
+          <div v-html="AboutUS.tek_ps"></div>
         </q-timeline-entry>
 
         <q-timeline-entry heading>About TEK-PS BootCamp</q-timeline-entry>

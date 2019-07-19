@@ -23,9 +23,9 @@ export default {
         }
       ],
       icon: "statics/achievements/discovery.png",
-      color: "yellow-9",
+      color: "green-9",
       label: "Discovery Novice",
-      description: "You proved you have positive iQ by solving first problem!"
+      description: "You gained this by participating in the first Contest!"
     },
     {
       name: "achievement 3",
@@ -39,7 +39,7 @@ export default {
       color: "green",
       label: "Mystery Buster",
       description:
-        "You are a Sea monster and Python slayer! see what I did there? :D"
+        "Nice Participation! You are a Sea monster and Python slayer! see what I did there? :D"
     },
     {
       name: "achievement 7",

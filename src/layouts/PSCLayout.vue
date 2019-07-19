@@ -54,7 +54,7 @@
                 flat
                 to="/psc/contests"
                 :class="'col-12 bg-primary text-'+getActive('/psc/contests')"
-                label="Contests"
+                label="Standings"
               />
             </div>
           </q-menu>
@@ -90,7 +90,7 @@
           flat
           to="/psc/contests"
           :class="'gt-sm text-'+getActive('/psc/contests')"
-          label="Contests"
+          label="Standings"
         />
 
         <q-space></q-space>

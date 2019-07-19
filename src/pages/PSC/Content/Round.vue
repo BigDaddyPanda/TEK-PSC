@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-center">
-    <q-parallax :src="sheetModel.coverPhoto"></q-parallax>
+    <q-parallax :src="sheetModel.coverPhoto||'statics/covers/online_rounds_cover.png'"></q-parallax>
     <q-page class="bg-grey-3" style="width:75%;top:-25vh;" padding>
       <div class="q-pt-md row">
         <h3 class="q-mb-xs col-12">{{sheetModel.name}}</h3>
@@ -38,8 +38,8 @@
               <q-btn
                 round
                 flat
-                :color="pindex>5?'secondary':'grey'"
-                :icon="pindex>5?'star':'star_outline'"
+                :color="did_i_solve_it(problem.name).color"
+                :icon="did_i_solve_it(problem.name).icon"
               />
             </q-item-section>
           </q-item>
@@ -84,6 +84,7 @@
 <script>
 import { db } from "boot/firebase";
 import _ from "lodash";
+import { mapGetters } from "vuex";
 //  "contestId": 77,
 //  "index": "B",
 //  "name": "Falling Anvils",
@@ -97,12 +98,29 @@ import _ from "lodash";
 export default {
   name: "SheetRound",
   methods: {
+    did_i_solve_it(problem) {
+      let normalizedName = problem;
+      let res = {
+        icon: "star_outline",
+        color: "primary"
+      };
+      if (!this.sheetModel.fromCodeForces) {
+        normalizedName = `${problem.index} - ${problem.name}`;
+      }
+      let seekingHope = _.some(this.allSolved, e => normalizedName.includes(e));
+      if (seekingHope) {
+        res = {
+          icon: "star",
+          color: "secondary"
+        };
+      }
+      return res;
+    },
     goTo(prb) {
       window.open(prb, "_blank");
     },
     reload() {
       this.$q.loading.show();
-
       let sheetId = this.$route.params.id;
       db.collection("sheets")
         .where("sheetId", "==", sheetId)
@@ -131,6 +149,24 @@ export default {
   computed: {
     mySheetId: function() {
       return this.$route.params.id;
+    },
+    ...mapGetters({
+      contestSubGetter: "progressStore/contestSuccessfullSubmissionsGetter",
+      successSubGetter: "progressStore/successfullSubmissionsGetter"
+    }),
+    /**
+     * normalize all solved problem names to the following format
+     * "B - Stones on the Table"
+     * index - name
+     */
+    allSolved() {
+      return _.concat(
+        _.map(this.contestSubGetter, "Problem"),
+        _.map(
+          this.successSubGetter,
+          e => `${e.problem.index} - ${e.problem.name}`
+        )
+      );
     }
   }
 };

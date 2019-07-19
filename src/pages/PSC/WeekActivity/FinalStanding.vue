@@ -3,7 +3,7 @@
     <div class="q-pa-md">
       <q-table
         :loading="!standingsLoaded"
-        title="Standings"
+        :title="'Standings for '+contestToPreview.name"
         :data="data"
         :columns="standingsColumns"
         row-key="name"

@@ -3,11 +3,20 @@ export default {
 is an institution that offers the opportunity to benefit from an 
 academic education which is able to equip students with the knowledge, 
 skills and the know-how needed to be a successful Engineer in the near future`,
-  acm_tek_up: `
-A competitive programming club that aims to prepare TEK-UP students 
-for problem-solving competitions, where they will represent their 
-university at the national level and Tunisia at the international level
-`,
+  tek_ps: `
+TEK-UP Problem Solving Bootcamp is a whole month of competitive programming training starting July 22nd at TEK-UP University.
+
+The bootcamp is divided into 3 levels:
+- Beginner (0)
+- Intermediate (1) 
+- Advanced (2)
+
+Each day, we will be discussing a certain topic and solving some problems. Each night, there will be an online contest based on that topic.
+
+Each week will be concluded on Saturday by a local contest hosted at TEK-UP.
+
+
+  `,
   why_ps: `
 Because we all 
 have to make decisions. Whether you're a student, an engineer, a businessperson,

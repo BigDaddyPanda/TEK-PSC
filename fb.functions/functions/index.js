@@ -40,56 +40,28 @@ exports.scrapStatus = functions.https.onRequest((request, response) => {
       let handles = _.map(resGroupByHandle, submissions => {
         let cfhandle = submissions[0].Contestant;
         console.log(_.size(submissions), "submissions to save for ", cfhandle);
-        // admin
-        //   .firestore()
-        //   .collection("progress")
-        //   .where("progress.codeforcesHandle", "==", cfhandle)
-        //   .get()
-        //   .then(snapshot => {
-        //     snapshot.forEach(doc => {
-        //       console.log("writing to", doc.id);
-        //       admin
-        //         .firestore()
-        //         .doc("progress/" + doc.id)
-        //         .update({
-        //           contestSubmissions: admin.firestore.FieldValue.arrayUnion(
-        //             submissions
-        //           )
-        //         });
-        //     });
-        //   });
         admin
           .firestore()
           .collection("progress")
           .where("progress.codeforcesHandle", "==", cfhandle)
           .get()
           .then(snapshot => {
+            console.log(snapshot.size, "profiles matched");
             snapshot.forEach(doc => {
-              if (snapshot.exists) {
-                console.log("Document exists");
-                admin
-                  .firestore()
-                  .collection("progress")
-                  .doc(doc.id)
-                  .update({
-                    contestSubmissions: admin.firestore.FieldValue.arrayUnion(
-                      ...submissions
-                    )
-                  });
-              } else {
-                console.log("Document not found");
-                admin
-                  .firestore()
-                  .collection("progress")
-                  .doc(doc.id)
-                  .set({
-                    contestSubmissions: admin.firestore.FieldValue.arrayUnion.apply(
-                      null,
-                      submissions
-                    )
-                  });
-              }
+              console.log("Document exists for", cfhandle, doc.id);
+              admin
+                .firestore()
+                .collection("progress")
+                .doc(doc.id)
+                .update({
+                  contestSubmissions: admin.firestore.FieldValue.arrayUnion(
+                    ...submissions
+                  )
+                });
             });
+          })
+          .catch(err => {
+            console.log(err);
           });
         return cfhandle;
       });
@@ -118,12 +90,12 @@ exports.scrapStatus = functions.https.onRequest((request, response) => {
           response.json("Done");
         })
         .catch(err => {
-          console.log("You fucked up", err.toString());
+          console.log("You messed up", err.toString());
           response.json("Error");
         });
     })
     .catch(err => {
       console.log(err);
-      response.json(err);
+      response.status(500).json(err);
     });
 });

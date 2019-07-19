@@ -35,7 +35,7 @@
         <q-separator class="col-12" />
         <q-item v-for="(item, index) in shownSheets" :key="index" clickable @click="go(item)">
           <q-item-section thumbnail>
-            <img :src="item.coverPhoto" />
+            <img :src="item.coverPhoto||'statics/covers/online_rounds.png'" />
           </q-item-section>
           <q-item-section>
             <q-item-label>{{item.name}}</q-item-label>

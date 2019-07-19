@@ -35,8 +35,7 @@ export function loadProgress(context) {
         db.collection("progress")
           .doc(user.uid)
           .set({
-            progress: DefaultProgress.progress,
-            successfullSubmissions: DefaultProgress.successfullSubmissions,
+            ...DefaultProgress,
             joinTimeSeconds: new Date().valueOf()
           })
           .then(() => {
@@ -46,6 +45,7 @@ export function loadProgress(context) {
             });
             db.collection("progress")
               .doc(user.uid)
+              .get()
               .then(r => {
                 progress = r.data();
                 context.commit("setProgress", progress.progress);
@@ -78,6 +78,21 @@ export function getSuccessSubmissions(context, payload) {
         context.commit("setSubmissions", profile.successfullSubmissions);
       }
     });
+}
+export function getContestSuccessSubmissions(context) {
+  let uid = firebase.auth().currentUser;
+  if (uid) {
+    uid = uid.uid;
+    db.collection("progress")
+      .doc(uid)
+      .get()
+      .then(snapshot => {
+        if (snapshot.exists) {
+          const profile = snapshot.data();
+          context.commit("setContestSubmissions", profile.contestSubmissions);
+        }
+      });
+  }
 }
 /**
  * Checkes previous stored submissions and match with
@@ -219,7 +234,9 @@ export function updateMyAchievements(context) {
         if (snap.exists) {
           let snapshot = snap.data();
           progress = snapshot.progress;
-          problemsCount = snapshot.successfullSubmissions.length;
+          problemsCount =
+            snapshot.successfullSubmissions.length +
+            (snapshot.contestSubmissions || []).length;
           lessonsCount = progress.level.lessons.length;
           contestsCount = progress.contestStandings.length;
           candidateAchievements = achievement.filterAchievements(

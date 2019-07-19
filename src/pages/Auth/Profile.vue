@@ -127,7 +127,7 @@
           <ranking-view isknob />
         </div>
       </div>
-      <div class="full-width text-h3 row">
+      <div class="full-width text-h5 row">
         <span>Sheets, Contests and Online Rounds</span>
         <q-space />
         <q-btn
@@ -155,7 +155,7 @@
                 v-for="(submission, index) in contestSuccessfullSubmissionsGetter"
                 :key="index"
                 clickable
-                @click="goTo(submission.problemLink)"
+                @click="goTo(submission.submissionLink)"
                 v-ripple
               >
                 <q-item-section>
@@ -167,7 +167,7 @@
                   </q-item-label>
                   <q-item-label caption>
                     <q-icon name="check_circle" color="yellow-8" />
-                    {{$moment(submission.creationTimeSeconds).format("MMM/DD HH:MM")}}
+                    {{submission.creationTimeSeconds}}
                   </q-item-label>
                 </q-item-section>
               </q-item>
@@ -175,7 +175,7 @@
           </q-pull-to-refresh>
         </div>
       </div>
-      <div class="full-width text-h3 row">
+      <div class="full-width text-h5 row">
         <span>Personal Training History</span>
         <q-space />
         <q-btn
@@ -264,8 +264,8 @@ export default {
   mounted() {
     this.loadData();
     this.linkWithCodeForces();
-    this.refresh(() => {});
     this.codeforcesHandle = this.progressGetter.codeforcesHandle || "";
+    this.refresh(() => {});
   },
   data() {
     return {
@@ -303,7 +303,8 @@ export default {
       updateMySuccessfulSubmissions:
         "progressStore/updateMySuccessfulSubmissions",
       loadProgress: "progressStore/loadProgress",
-      refreshUserCredentials: "authStore/refreshUserCredentials"
+      refreshUserCredentials: "authStore/refreshUserCredentials",
+      getContestSuccessSubmissions: "progressStore/getContestSuccessSubmissions"
     }),
     uploadFile(e) {
       var user = this.$firebase.auth().currentUser;
@@ -360,6 +361,7 @@ export default {
       };
       setTimeout(() => {
         this.updateMySuccessfulSubmissions(myProfile);
+        this.getContestSuccessSubmissions();
         this.refreshing = false;
         done();
       }, 1000);

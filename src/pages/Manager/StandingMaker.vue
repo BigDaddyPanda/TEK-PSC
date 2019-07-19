@@ -41,7 +41,7 @@ to do so:</span></pre>
       </div>
       <q-table
         :loading="!standingsLoaded"
-        title="Standings"
+        :title="'Standings for '+contestToPreview.name"
         :data="data"
         :columns="standingsColumns"
         row-key="name"
@@ -68,7 +68,7 @@ to do so:</span></pre>
 import { mapGetters } from "vuex";
 import BeautifulStanding from "../../components/WeekActivity/BeautifulStanding";
 export default {
-  name: "FinalStandings",
+  name: "FinalStandingsMaker",
   components: {
     BeautifulStanding
   },
@@ -148,7 +148,42 @@ export default {
         .set({
           ...this.unChangedData
         })
-        .then(() => {
+        .then(async () => {
+          let PROM = [];
+          let qw = await this.unChangedData.map(async e => {
+            let contestRank = {
+              contestLink: this.contestToPreview.link,
+              contestName: this.contestToPreview.name,
+              ...e
+            };
+            console.log("Posting", contestRank);
+
+            let c = await this.$db
+              .collection("progress")
+              .where("progress.codeforcesHandle", "==", e["101|Contestant"])
+              .get()
+              .then(async snaps => {
+                let aw = await snaps.forEach(async doc => {
+                  console.log("adding standings to", doc.id);
+
+                  let dw = await this.$db
+                    .collection("progress")
+                    .doc(doc.id)
+                    .update({
+                      "progress.contestStandings": this.$firebase.firestore.FieldValue.arrayUnion(
+                        contestRank
+                      )
+                    });
+                  PROM.push(dw);
+                });
+                PROM.push(aw);
+              });
+            PROM.push(c);
+          });
+          PROM.push(qw);
+          return Promise.all(PROM);
+        })
+        .then(e => {
           this.$faxios("scrapStatus?link=" + this.contestToPreview.link).then(
             rep => {
               console.log(rep);

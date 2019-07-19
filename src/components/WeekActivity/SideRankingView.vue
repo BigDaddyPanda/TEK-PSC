@@ -30,8 +30,15 @@
         </q-card-section>
       </q-card>
     </q-dialog>
-    <div class="fit row items-center justify-around" v-if="isknob&&!$_.isEmpty(this.mySubmissions)">
-      <div style="left:-10vh" v-if="isknob&&dataReady" class="col-xs-12 col-md-4 text-center">
+    <div
+      class="fit row items-center justify-around"
+      v-if="isknob&&(!$_.isEmpty(this.mySubmissions)||!$_.isEmpty(this.mainProgLang))"
+    >
+      <div
+        style="left:-10vh"
+        v-if="isknob&&dataReady&&!$_.isEmpty(this.mySubmissions)"
+        class="col-xs-12 col-md-4 text-center"
+      >
         <span
           style="left:5vh!important;top:5vh!important;position:relative;"
           class="text-caption q-mb-none"
@@ -44,8 +51,10 @@
           :series="seriesSkills"
         ></apexchart>
       </div>
-
-      <div v-if="isknob&&dataReady" class="col-xs-12 col-md-4 row text-primary text-center">
+      <div
+        v-if="isknob&&dataReady&&!$_.isEmpty(this.mainProgLang)"
+        class="col-xs-12 col-md-4 row text-primary text-center"
+      >
         <span class="text-caption col-12 q-mb-none">Your Main Programming Language</span>
         <h3 class="col-12 q-my-md text-secondary">{{mainProgLang.lang}}</h3>
         <span class="text-caption col-12 q-mb-none">Used to solve</span>
@@ -63,7 +72,10 @@
         <q-spinner-gears size="50px" color="primary" />
       </q-inner-loading>
     </div>
-    <div class="fit row items-center justify-around" v-if="isknob&&$_.isEmpty(this.mySubmissions)">
+    <div
+      class="fit row items-center justify-around"
+      v-if="isknob&&$_.isEmpty(this.mySubmissions)&&$_.isEmpty(this.mainProgLang)"
+    >
       <h2 class="text-orange-4 full-width text-center">No Data could be retreived...</h2>
       <q-list dense padding class="rounded-borders">
         <q-item title class="q-pb-none">Possible Reasons:</q-item>
@@ -85,7 +97,7 @@
 
 <script>
 import _ from "lodash";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "RankingView",
   props: {
@@ -93,10 +105,20 @@ export default {
   },
   computed: {
     ...mapGetters({
-      mySubmissions: "progressStore/successfullSubmissionsGetter"
+      myProgress: "progressStore/progressGetter",
+      mySubmissions: "progressStore/successfullSubmissionsGetter",
+      myContestsSubmissions: "progressStore/contestSuccessfullSubmissionsGetter"
     })
   },
   mounted() {
+    var user = this.$firebase.auth().currentUser;
+    this.refreshing = true;
+    let myProfile = {
+      codeforcesHandle: this.myProgress.codeforcesHandle,
+      uid: user.uid
+    };
+    this.getContestSuccessSubmissions();
+    // this.updateMySuccessfulSubmissions(myProfile);
     this.computeMyData();
   },
   data() {
@@ -109,6 +131,12 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      getContestSuccessSubmissions:
+        "progressStore/getContestSuccessSubmissions",
+      updateMySuccessfulSubmissions:
+        "progressStore/updateMySuccessfulSubmissions"
+    }),
     duplicateProblemForTags: function(pb) {
       return pb.problem.tags.map(e => ({
         ...pb,
@@ -123,66 +151,71 @@ export default {
      */
     computeMyData() {
       this.dataReady = false;
-      if (_.isEmpty(this.mySubmissions)) {
+      if (_.isEmpty(_.concat(this.mySubmissions, this.myContestsSubmissions))) {
         this.dataReady = true;
         return;
       }
       setTimeout(() => {
         let mainpl = _.sortBy(
-          _.groupBy(this.mySubmissions, "programmingLanguage"),
+          _.groupBy(
+            _.concat(this.mySubmissions, this.myContestsSubmissions),
+            "programmingLanguage"
+          ),
           "length"
         ).reverse()[0];
         this.mainProgLang = {
           lang: mainpl[0].programmingLanguage,
           problems: mainpl.length
         };
-        let bee = _.groupBy(
-          _.flatMap(this.mySubmissions, this.duplicateProblemForTags),
-          pb => pb.problem.tags
-        );
-        let fore = _.map(_.sortBy(bee, x => x.length), e => ({
-          tag: e[0].problem.tags,
-          freq: e.length
-        }));
-        let before = _.reverse(fore).slice(0, 5);
-        this.optionsSkill = {
-          plotOptions: {
-            radar: {
-              size: undefined,
-              offsetX: 0,
-              offsetY: 0,
-              polygons: {
-                strokeColors: "#e8e8e8",
-                connectorColors: "#e8e8e8"
-              }
-            }
-          },
-          chart: {
-            toolbar: {
-              show: false
-            }
-          },
-          responsive: [
-            {
-              breakpoint: 550,
-              options: {
-                chart: {
-                  width: 350
+        if (!_.isEmpty(_.concat(this.mySubmissions))) {
+          let bee = _.groupBy(
+            _.flatMap(this.mySubmissions, this.duplicateProblemForTags),
+            pb => pb.problem.tags
+          );
+          let fore = _.map(_.sortBy(bee, x => x.length), e => ({
+            tag: e[0].problem.tags,
+            freq: e.length
+          }));
+          let before = _.reverse(fore).slice(0, 5);
+          this.optionsSkill = {
+            plotOptions: {
+              radar: {
+                size: undefined,
+                offsetX: 0,
+                offsetY: 0,
+                polygons: {
+                  strokeColors: "#e8e8e8",
+                  connectorColors: "#e8e8e8"
                 }
               }
+            },
+            chart: {
+              toolbar: {
+                show: false
+              }
+            },
+            responsive: [
+              {
+                breakpoint: 550,
+                options: {
+                  chart: {
+                    width: 350
+                  }
+                }
+              }
+            ],
+            labels: _.map(before, "tag")
+          };
+          this.seriesSkills = [
+            {
+              name: "Skillset",
+              data: _.map(before, "freq")
             }
-          ],
-          labels: _.map(before, "tag")
-        };
-        this.seriesSkills = [
-          {
-            name: "Skillset",
-            data: _.map(before, "freq")
-          }
-        ];
+          ];
 
-        this.scaleClass = false;
-        // this.$refs.numberOfProblems.play();
+          this.scaleClass = false;
+          // this.$refs.numberOfProblems.play();
+        }
         this.dataReady = true;
       }, 1500);
     }

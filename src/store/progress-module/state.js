@@ -43,5 +43,19 @@ export default {
     //   verdict: "",
     //   programmingLanguage: ""
     // }
+  ],
+  contestSubmissions: [
+    // {
+    //   Contestant: "Heythemos",
+    //   Memory: "700 KB",
+    //   Problem: "F - Delete from the Left",
+    //   Time: "62 ms",
+    //   creationTimeSeconds: "Jul/18/2019 17:14",
+    //   programmingLanguage: "GNU C++14",
+    //   submissionId: "57284987",
+    //   submissionLink:
+    //     "https://codeforces.com/group/Bm8uz7ooRI/contest/248254/submission/57284987",
+    //   verdict: "Accepted"
+    // }
   ]
 };
