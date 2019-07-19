@@ -10,6 +10,9 @@ export function progressGetter(state) {
 export function successfullSubmissionsGetter(state) {
   return _.sortBy(state.successfullSubmissions).reverse();
 }
+export function contestSuccessfullSubmissionsGetter(state) {
+  return _.sortBy(state.successfullSubmissions).reverse();
+}
 export function levelGetter(state) {
   return levelData.calculateLevel(state.progress.level.totalXP);
 }

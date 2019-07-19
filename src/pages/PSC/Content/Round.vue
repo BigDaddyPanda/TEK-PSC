@@ -18,6 +18,32 @@
           </div>
         </span>
         <h5 class="q-mb-xs col-12">Sheet Content</h5>
+        <q-list class="q-mb-xs col-12" v-if="sheetModel.fromCodeForces">
+          <q-item
+            v-for="(problem,pindex) in sheetModel.includedProblems"
+            :key="pindex"
+            class="q-mb-sm"
+            clickable
+            v-ripple
+            @click="goTo(problem.link)"
+          >
+            <q-item-section avatar>
+              <q-avatar color="teal-7" text-color="white">{{ (problem.index) }}</q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>{{ problem.name }}</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-btn
+                round
+                flat
+                :color="pindex>5?'secondary':'grey'"
+                :icon="pindex>5?'star':'star_outline'"
+              />
+            </q-item-section>
+          </q-item>
+        </q-list>
         <div class="q-mb-xs col-12 text-center" v-if="sheetModel.fromCodeForces">
           This Contest is Hosted on Codef Forces, here is the link
           <br />
@@ -75,6 +101,8 @@ export default {
       window.open(prb, "_blank");
     },
     reload() {
+      this.$q.loading.show();
+
       let sheetId = this.$route.params.id;
       db.collection("sheets")
         .where("sheetId", "==", sheetId)
@@ -82,6 +110,7 @@ export default {
         .then(snapshot =>
           snapshot.forEach(doc => {
             this.sheetModel = doc.data();
+            this.$q.loading.hide();
           })
         );
     }

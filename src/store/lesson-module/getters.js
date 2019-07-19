@@ -1,6 +1,9 @@
 /*
  */
 import _ from "lodash";
+export function adminLessonsGetter(state) {
+  return state.lessons;
+}
 export function LessonsGetter(state) {
   return state.lessons.filter(e => e.isPublic);
 }

@@ -128,7 +128,55 @@
         </div>
       </div>
       <div class="full-width text-h3 row">
-        <span>History</span>
+        <span>Sheets, Contests and Online Rounds</span>
+        <q-space />
+        <q-btn
+          icon="refresh"
+          :loading="refreshing"
+          round
+          size="lg"
+          flat
+          outline
+          @click="refresh(()=>{})"
+        />
+      </div>
+      <div class="full-width row justify-center">
+        <div
+          class="q-pa-md col-xs-12 col-md-9 justify-center scroll bg-grey-3"
+          style="min-height:40vh"
+        >
+          <q-pull-to-refresh @refresh="refresh" class="full-height">
+            <q-list
+              v-if="!$_.isEmpty(contestSuccessfullSubmissionsGetter)"
+              padding
+              class="rounded-borders"
+            >
+              <q-item
+                v-for="(submission, index) in contestSuccessfullSubmissionsGetter"
+                :key="index"
+                clickable
+                @click="goTo(submission.problemLink)"
+                v-ripple
+              >
+                <q-item-section>
+                  <q-item-label class="text-italic text-capitalize text-bold">{{submission.Problem}}</q-item-label>
+                </q-item-section>
+                <q-item-section side top>
+                  <q-item-label caption>
+                    <q-badge :label="submission.programmingLanguage" />
+                  </q-item-label>
+                  <q-item-label caption>
+                    <q-icon name="check_circle" color="yellow-8" />
+                    {{$moment(submission.creationTimeSeconds).format("MMM/DD HH:MM")}}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-pull-to-refresh>
+        </div>
+      </div>
+      <div class="full-width text-h3 row">
+        <span>Personal Training History</span>
         <q-space />
         <q-btn
           icon="refresh"
@@ -238,6 +286,8 @@ export default {
   computed: {
     ...mapGetters({
       progressGetter: "progressStore/progressGetter",
+      contestSuccessfullSubmissionsGetter:
+        "progressStore/contestSuccessfullSubmissionsGetter",
       successfullSubmissionsGetter: "progressStore/successfullSubmissionsGetter"
     }),
     safeToSubmit() {

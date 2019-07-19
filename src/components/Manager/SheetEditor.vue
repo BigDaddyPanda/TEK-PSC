@@ -5,7 +5,7 @@
         <div class="q-pa-md col-12">Sheet Details</div>
         <q-input
           dense
-          class="col-xs-12 col-md-6 q-pl-xs q-pr-xs"
+          class="col-xs-12 col-md-4 q-pl-xs q-pr-xs"
           filled
           v-model="sheetModel.name"
           label="Name"
@@ -14,7 +14,7 @@
         />
         <q-input
           dense
-          class="col-xs-12 col-md-6 q-pl-xs q-pr-xs"
+          class="col-xs-12 col-md-4 q-pl-xs q-pr-xs"
           filled
           autogrow
           v-model="sheetModel.description"
@@ -24,7 +24,7 @@
         />
         <q-input
           dense
-          class="col-xs-12 col-md-6 q-pl-xs q-pr-xs"
+          class="col-xs-12 col-md-4 q-pl-xs q-pr-xs"
           filled
           v-model="sheetModel.author"
           label="Author"
@@ -34,7 +34,7 @@
 
         <q-input
           dense
-          class="col-xs-12 col-md-6 q-pl-xs q-pr-xs"
+          class="col-xs-12 col-md-4 q-pl-xs q-pr-xs"
           filled
           v-model="sheetModel.level"
           label="Level"
@@ -42,7 +42,7 @@
           :rules="[ val => val && val.length > 0 || 'Please type something']"
         />
         <q-input
-          class="col-xs-12 col-md-6 q-pl-xs q-pr-xs"
+          class="col-xs-12 col-md-4 q-pl-xs q-pr-xs"
           dense
           label="Added Date"
           filled
@@ -67,11 +67,11 @@
           :options="tags"
           use-chips
           label="Sheet Tags"
-          class="col-xs-12 col-md-6 q-pl-xs q-pr-xs q-mb-lg"
+          class="col-xs-12 col-md-4 q-pl-xs q-pr-xs q-mb-lg"
         />
         <q-input
           dense
-          class="col-xs-12 col-md-6 q-pl-xs q-pr-xs"
+          class="col-xs-12 col-md-4 q-pl-xs q-pr-xs"
           filled
           v-model="sheetModel.coverPhoto"
           label="Cover Photo"
@@ -82,7 +82,7 @@
         <q-input
           v-if="sheetModel.fromCodeForces"
           dense
-          class="col-xs-12 col-md-6 q-pl-xs q-pr-xs"
+          class="col-xs-12 col-md-4 q-pl-xs q-pr-xs"
           filled
           v-model="sheetModel.link"
           label="Link"
@@ -178,6 +178,41 @@
             </q-item>
           </q-list>
         </div>
+        <div v-else class="col-12 row">
+          <q-space />
+          <q-btn
+            label="Parse Problems"
+            :loading="isParsing"
+            color="primary"
+            @click="parseProblemsFromCodeforces()"
+          />
+          <q-space />
+          <div v-if="!$_.isEmpty(sheetModel.includedProblems)" class="col-12">
+            <q-scroll-area style="height:35vh">
+              <q-list dense bordered separator>
+                <q-item v-for="(pb, i) in sheetModel.includedProblems" :key="i" v-ripple>
+                  <q-item-section>
+                    <span>
+                      <span class="text-bold">{{pb.name}} -</span>
+                      <q-space />
+                      <span class="text-caption text-weight-light">{{pb.link}}</span>
+                    </span>
+                  </q-item-section>
+                  <q-item-section side>
+                    <q-btn
+                      color="blue"
+                      round
+                      dense
+                      size="sm"
+                      icon="delete"
+                      @click="sheetModel.includedProblems.splice(i,1)"
+                    />
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-scroll-area>
+          </div>
+        </div>
       </div>
     </div>
     <q-card-actions align="right" class="text-primary">
@@ -237,6 +272,7 @@ export default {
       newProblemObject: {},
       newProblemXP: 10,
       problemSet,
+      isParsing: false,
       options: [],
       tags
     };
@@ -256,9 +292,9 @@ export default {
           value = val;
         }
         model = {
-          contestId: "000",
-          index: "X",
-          name: "Unknown Problem",
+          contestId: val,
+          index: val,
+          name: val,
           type: "PROGRAMMING",
           points: 1000,
           rating: 1000,
@@ -320,6 +356,31 @@ export default {
       });
     },
 
+    parseProblemsFromCodeforces() {
+      this.isParsing = true;
+      if (_.isEmpty(this.sheetModel.link)) {
+        this.$negative("Could not parse such link");
+        this.isParsing = false;
+      } else {
+        let link = this.sheetModel.link.match(/group\/.+\/contest\/\w+\/?/);
+        if (!link) {
+          this.$negative("Could not parse such link");
+          this.isParsing = false;
+        } else {
+          this.$faxios("/scrapProblems?link=" + this.sheetModel.link)
+            .then(r => {
+              this.sheetModel.includedProblems = r.data;
+              this.$positive(`Successfully parsed ${r.data.length} Problem(s)`);
+              this.isParsing = false;
+              console.log(this.sheetModel.includedProblems);
+            })
+            .catch(err => {
+              this.$negative(err.toString());
+              this.isParsing = false;
+            });
+        }
+      }
+    },
     save() {
       if (this.sheetModel.sheetId) {
         this.updateSheet(this.sheetModel);

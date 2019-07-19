@@ -44,6 +44,11 @@ const routes = [
         component: () => import("pages/Manager/Sheets.vue")
       },
       {
+        path: "finalize/:id",
+        meta: { title: "TEK PS-Standings" },
+        component: () => import("pages/Manager/StandingMaker.vue")
+      },
+      {
         path: "admin-chatbox",
         meta: { title: "TEK PS-Admin Chatbox" },
         component: () => import("pages/Manager/ChatBox.vue")

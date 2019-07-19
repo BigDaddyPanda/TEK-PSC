@@ -1,14 +1,20 @@
 <template>
-  <div class="fit justify-center items-center content-center text-center">
-    <span v-if="t=='#'">
+  <div class="fit">
+    <span v-if="gtt(t)=='Rank'">
       <q-badge :label="c" />
     </span>
-    <div v-else-if="t=='Who'">{{c}}</div>
-    <div v-else-if="t=='Penalty'">{{c}}</div>
-    <div v-else-if="t=='='">{{c}}</div>
+    <div v-else-if="gtt(t)=='Contestant'">{{c}}</div>
+    <div v-else-if="gtt(t)=='Penalty'">{{c}}</div>
+    <div v-else-if="gtt(t)=='Solved'">{{c}}</div>
     <div v-else class="fit">
-      <q-icon color="secondary" size="2rem" name="star" v-if="isFirstToSolve" />
-      <q-badge class="q-mt-sm self-center" :color="gtc(c).col" v-else :label="gtc(c).txt"></q-badge>
+      <q-icon
+        color="green-13"
+        style="margin-left: -8%;"
+        size="2rem"
+        name="whatshot"
+        v-if="isFirstToSolve"
+      />
+      <q-badge class="q-mt-sm" :color="gtc(c).col" v-else :label="gtc(c).txt"></q-badge>
       <q-tooltip>
         {{gtc(c).sol}}
         <div v-if="gtc(c).txt!='-'&&gtc(c).col!='grey'">{{gtc(c).sec}}"</div>
@@ -19,7 +25,7 @@
 </template>
 
 <script>
-const mycolors = ["green", "light-blue-7", "deep-orange", "red-6"];
+const mycolors = ["green", "teal-8", "teal-5", "teal-2"];
 export default {
   name: "BeautifulStanding",
   props: {
@@ -35,6 +41,9 @@ export default {
     }
   },
   methods: {
+    gtt(t) {
+      return t.split("|")[1];
+    },
     gtc(v) {
       let col = "black";
       let sol = "No Try";
@@ -49,7 +58,7 @@ export default {
         } else {
           if (c !== "") {
             if (c[0] === "-") {
-              col = "grey";
+              col = "red-7";
               sol = "No Successful Try";
             } else {
               let d = Number(c.slice(1)) || 3;

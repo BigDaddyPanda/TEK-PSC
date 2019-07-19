@@ -19,8 +19,7 @@
               replace
               class="full-width"
               type="a"
-              to="https://discord.gg/VeYhgje"
-              target="_blank"
+              @click="$goto('https://discord.gg/VeYhgje')"
               outline
               label="Join us!"
             />

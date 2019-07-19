@@ -99,7 +99,7 @@ export default {
   name: "LessonManager",
   computed: {
     ...mapGetters({
-      LessonsGetter: "lessonStore/LessonsGetter"
+      LessonsGetter: "lessonStore/adminLessonsGetter"
     })
   },
   components: {

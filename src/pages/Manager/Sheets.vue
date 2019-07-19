@@ -6,7 +6,6 @@
         <q-item-label header class="row items-center">
           Sheets
           <q-space />
-          <q-btn round color="primary" icon="add" @click="addSheet()" />
         </q-item-label>
 
         <q-item v-for="(sheet, index) in allSheets" :key="index">
@@ -75,7 +74,7 @@
       <sheet-editor :dismissModal="dismissModal" :sheet="demandedSheet" />
     </div>-->
     <q-dialog v-model="sheetView" persistent>
-      <q-card style="min-width: 400px">
+      <q-card style="min-width: 75vw">
         <sheet-editor :dismissModal="dismissModal" :sheet="demandedSheet" />
       </q-card>
     </q-dialog>
@@ -92,6 +91,9 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-page-sticky position="bottom-left" :offset="[18, 18]">
+      <q-btn round color="primary" icon="add" @click="addSheet()" />
+    </q-page-sticky>
   </q-page>
 </template>
 

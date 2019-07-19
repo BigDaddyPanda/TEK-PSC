@@ -29,6 +29,14 @@
               size="sm"
               round
               class="q-mx-xs"
+              icon="flag"
+              color="blue-8"
+              @click="$router.push('/manager/finalize/' + contest.contestId)"
+            />
+            <q-btn
+              size="sm"
+              round
+              class="q-mx-xs"
               icon="web"
               color="blue-8"
               @click="$goto(contest.link)"
