@@ -49,7 +49,7 @@ export default {
               providerData: user.providerData
             });
             if (this.$route.path.includes("landing")) {
-              this.$router.push("/psc");
+              this.$router.push(this.$myHistory.path || "/psc");
               this.$q.notify({
                 message: `Welcome Back ${user.displayName || user.email}`
               });

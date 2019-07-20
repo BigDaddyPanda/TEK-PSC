@@ -156,7 +156,7 @@ export default {
               contestName: this.contestToPreview.name,
               ...e
             };
-            console.log("Posting", contestRank);
+            // console.log("Posting", contestRank);
 
             let c = await this.$db
               .collection("progress")
@@ -164,7 +164,7 @@ export default {
               .get()
               .then(async snaps => {
                 let aw = await snaps.forEach(async doc => {
-                  console.log("adding standings to", doc.id);
+                  // console.log("adding standings to", doc.id);
 
                   let dw = await this.$db
                     .collection("progress")
@@ -186,7 +186,7 @@ export default {
         .then(e => {
           this.$faxios("scrapStatus?link=" + this.contestToPreview.link).then(
             rep => {
-              console.log(rep);
+              // console.log(rep);
               this.savingData = false;
               this.$q.notify({
                 color: "positive",

@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     getOne(order, lesInd) {
-      console.log(order, lesInd);
+      // console.log(order, lesInd);
       if (order) return order;
       return lesInd;
     }

@@ -17,7 +17,7 @@
           <div>{{AboutUS.tek_up}}</div>
         </q-timeline-entry>
 
-        <q-timeline-entry title="ACM TEK-UP" subtitle="Hosting Club" icon="thumbs_up_down">
+        <q-timeline-entry title="TEK-PS Bootcamp" subtitle="Hosting Club" icon="thumbs_up_down">
           <div v-html="AboutUS.tek_ps"></div>
         </q-timeline-entry>
 
@@ -36,18 +36,6 @@
           subtitle="OK, but..."
         >
           <div>{{AboutUS.goal_after}}</div>
-        </q-timeline-entry>
-
-        <q-timeline-entry title="I want to roll" subtitle="How to join TEK-PS">
-          <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-        </q-timeline-entry>
-
-        <q-timeline-entry title="Event Title" subtitle="February 22, 1986">
-          <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-        </q-timeline-entry>
-
-        <q-timeline-entry title="Event Title" subtitle="February 22, 1986">
-          <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
         </q-timeline-entry>
       </q-timeline>
     </div>

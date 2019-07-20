@@ -7,9 +7,13 @@ skills and the know-how needed to be a successful Engineer in the near future`,
 TEK-UP Problem Solving Bootcamp is a whole month of competitive programming training starting July 22nd at TEK-UP University.
 
 The bootcamp is divided into 3 levels:
-- Beginner (0)
-- Intermediate (1) 
-- Advanced (2)
+<ul>
+
+<li>Beginner (0)</li>
+<li>Intermediate (1)</li>
+<li>Advanced (2)</li>
+
+</ul>
 
 Each day, we will be discussing a certain topic and solving some problems. Each night, there will be an online contest based on that topic.
 
