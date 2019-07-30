@@ -1,245 +1,256 @@
 <template>
   <div class="row justify-center">
-    <q-img
-      @mouseenter="showLayer=true"
-      @mouseleave="showLayer=false"
-      :src="userCredentials.coverPhoto||'statics/brand-modern-alt-w-b-bg.png'"
-    ></q-img>
-    <div style="top:-25vh;position:relative" class="fit row q-mr-xl q-ml-xl">
-      <q-space />
-      <q-btn
-        v-if="changingData"
-        @click="changingPassword=!changingPassword"
-        color="secondary"
-        :label="(changingPassword?'Dismiss Changing':'Change')+' Password'"
-        icon="vpn_key"
-      />
-      <q-btn
-        v-if="!changingData"
-        @click="changingData=true"
-        color="secondary"
-        label="Edit Profile"
-        icon="settings"
-      />
-      <q-btn v-else color="positive" @click="saveChanges" label="Save changes" />
-    </div>
-    <div style="top:-25vh;position:relative" class="fit row bg-grey-1 q-mx-xl q-px-xl">
-      <div class="col-xs-12 col-sm-6 col-md-2 q-py-md q-pr-md">
-        <q-avatar size="150px">
-          <q-img :src="userCredentials.photoURL||'statics/transparent-bg.png'">
-            <div v-if="changingData" class="absolute-full text-subtitle2 flex flex-center">
-              <input type="file" ref="file" style="display: none" @change="uploadFile" />
-              <q-btn @click="$refs.file.click()" label="upload" flat />
-            </div>
-          </q-img>
-        </q-avatar>
+    <q-img style="max-height:75vh;" :src="coverPhoto||'statics/brand-modern-alt-w-b-bg.png'">
+      <div v-if="changingData" class="absolute-right transparent">
+        <my-uploader
+          :inlineLink="false"
+          :className="['fit']"
+          buttonColor="white"
+          photoCollection="profileCover"
+          :coverPhoto="coverPhoto"
+          @input="v=>coverPhoto=v"
+        />
       </div>
-      <div class="col-xs-12 col-sm-6 col-md-10 row">
-        <q-input
-          :borderless="!changingData"
-          class="col-md-4 col-xs-12 q-px-md"
-          v-model="userCredentials.displayName"
-          :readonly="!changingData"
-          label="Display Name"
+    </q-img>
+    <div
+      :style="[$q.screen.lt.lg?{top:'-5vh'}:{top:'-45vh'},{position:'relative'}]"
+      class="fit row"
+    >
+      <div class="fit row q-mr-xl q-ml-xl">
+        <q-space />
+        <q-btn
+          v-if="changingData"
+          @click="changingPassword=!changingPassword"
+          color="secondary"
+          :label="(changingPassword?'Dismiss Changing':'Change')+' Password'"
+          icon="vpn_key"
         />
-        <q-input
-          :borderless="!changingData"
-          class="col-md-4 col-xs-12 q-px-md"
-          v-model="userCredentials.email"
-          :readonly="!changingData"
-          label="Email"
+        <q-btn
+          v-if="!changingData"
+          @click="changingData=true"
+          color="secondary"
+          label="Edit Profile"
+          icon="settings"
         />
-        <!-- <q-input
+        <q-btn v-else color="positive" @click="saveChanges" label="Save changes" />
+      </div>
+      <div class="fit row bg-grey-1 q-mx-xl q-px-xl">
+        <div class="col-xs-12 col-sm-6 col-md-2 q-py-md q-pr-md">
+          <q-avatar size="150px">
+            <q-img :src="userCredentials.photoURL||'statics/transparent-bg.png'">
+              <div v-if="changingData" class="absolute-full text-subtitle2 flex flex-center">
+                <input type="file" ref="file" style="display: none" @change="uploadFile" />
+                <q-btn @click="$refs.file.click()" label="upload" flat />
+              </div>
+            </q-img>
+          </q-avatar>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-10 row">
+          <q-input
+            :borderless="!changingData"
+            class="col-md-4 col-xs-12 q-px-md"
+            v-model="userCredentials.displayName"
+            :readonly="!changingData"
+            label="Display Name"
+          />
+          <q-input
+            :borderless="!changingData"
+            class="col-md-4 col-xs-12 q-px-md"
+            v-model="userCredentials.email"
+            :readonly="!changingData"
+            label="Email"
+          />
+          <!-- <q-input
           v-if="changingData"
           class="col-6 q-px-md"
           v-model="codeforcesHandle"
           label="Display Name"
-        />-->
-        <q-input
-          :borderless="!changingData"
-          class="col-md-4 col-xs-12 q-px-md"
-          v-model="codeforcesHandle"
-          debounce="1000"
-          @input="linkWithCodeForces"
-          :readonly="!changingData"
-          label="CodeForces Handler"
-        />
-        <q-input
-          v-if="changingData&&changingPassword"
-          class="col-6 q-px-md"
-          v-model="password"
-          label="Password"
-          :rules="[ val => !!val || 'New Password is required']"
-        />
-        <q-input
-          v-if="changingData&&changingPassword"
-          class="col-6 q-px-md"
-          v-model="confirmPassword"
-          label="Confirm Password"
-          :rules="[(val => (val===password) || 'Password do not match'),val => !!val || 'Field is required']"
-        />
+          />-->
+          <q-input
+            :borderless="!changingData"
+            class="col-md-4 col-xs-12 q-px-md"
+            v-model="codeforcesHandle"
+            debounce="1000"
+            @input="linkWithCodeForces"
+            :readonly="!changingData"
+            label="CodeForces Handler"
+          />
+          <q-input
+            v-if="changingData&&changingPassword"
+            class="col-6 q-px-md"
+            v-model="password"
+            label="Password"
+            :rules="[ val => !!val || 'New Password is required']"
+          />
+          <q-input
+            v-if="changingData&&changingPassword"
+            class="col-6 q-px-md"
+            v-model="confirmPassword"
+            label="Confirm Password"
+            :rules="[(val => (val===password) || 'Password do not match'),val => !!val || 'Field is required']"
+          />
+        </div>
       </div>
-    </div>
-    <div
-      style="top:-25vh;position:relative"
-      class="fit row rounded-borders bg-grey-1 q-mx-xl q-pa-xl"
-    >
-      <div class="full-width text-h3">Profile</div>
-      <div v-if="!userCredentials.emailVerified" class="col-12 row justify-center q-gutter-md">
-        <q-btn
-          @click="confirmMyEmail()"
-          color="warning"
-          label="Please consider Confirming your Email"
-        />
-      </div>
-      <div v-if="changingData" class="col-12 row justify-center q-gutter-md">
-        <q-btn
-          label="Link With Facebook"
-          color="blue-7"
-          icon="fab fa-facebook-f"
-          @click="authentificateWithPlatform('facebook')"
-        />
-        <q-btn
-          label="Link With GitHub"
-          color="grey-7"
-          icon="fab fa-github"
-          @click="authentificateWithPlatform('github')"
-        />
-        <q-btn
-          label="Link With Google"
-          color="red-7"
-          icon="fab fa-google"
-          @click="authentificateWithPlatform('google')"
-        />
-      </div>
+      <div class="fit row rounded-borders bg-grey-1 q-mx-xl q-pa-xl">
+        <div class="full-width text-h3">Profile</div>
+        <div v-if="!userCredentials.emailVerified" class="col-12 row justify-center q-gutter-md">
+          <q-btn
+            @click="confirmMyEmail()"
+            color="warning"
+            label="Please consider Confirming your Email"
+          />
+        </div>
+        <div v-if="changingData" class="col-12 row justify-center q-gutter-md">
+          <q-btn
+            label="Link With Facebook"
+            color="blue-7"
+            icon="fab fa-facebook-f"
+            @click="authentificateWithPlatform('facebook')"
+          />
+          <q-btn
+            label="Link With GitHub"
+            color="grey-7"
+            icon="fab fa-github"
+            @click="authentificateWithPlatform('github')"
+          />
+          <q-btn
+            label="Link With Google"
+            color="red-7"
+            icon="fab fa-google"
+            @click="authentificateWithPlatform('google')"
+          />
+        </div>
 
-      <div class="row q-pa-md justify-around flex flex-center full-width">
-        <div class="col-xs-12 col-md-4">
-          <h5 class="q-my-none text-center">Level</h5>
-          <level-summuary isknob />
+        <div class="row q-pa-md justify-around flex flex-center full-width">
+          <div class="col-xs-12 col-md-4">
+            <h5 class="q-my-none text-center">Level</h5>
+            <level-summuary isknob />
+          </div>
+          <div class="col-xs-12 col-md-4">
+            <h5 class="q-my-none text-center">Achievements</h5>
+            <achievement-summuary isknob />
+          </div>
+          <div class="col-xs-12">
+            <h5 class="q-my-none text-center">Skills and Ranking</h5>
+            <ranking-view isknob />
+          </div>
         </div>
-        <div class="col-xs-12 col-md-4">
-          <h5 class="q-my-none text-center">Achievements</h5>
-          <achievement-summuary isknob />
+        <div class="full-width text-h5 row">
+          <span>Sheets, Contests and Online Rounds</span>
+          <q-space />
+          <q-btn
+            icon="refresh"
+            :loading="refreshing"
+            round
+            size="lg"
+            flat
+            outline
+            @click="refresh(()=>{})"
+          />
         </div>
-        <div class="col-xs-12">
-          <h5 class="q-my-none text-center">Skills and Ranking</h5>
-          <ranking-view isknob />
-        </div>
-      </div>
-      <div class="full-width text-h5 row">
-        <span>Sheets, Contests and Online Rounds</span>
-        <q-space />
-        <q-btn
-          icon="refresh"
-          :loading="refreshing"
-          round
-          size="lg"
-          flat
-          outline
-          @click="refresh(()=>{})"
-        />
-      </div>
-      <div class="full-width row justify-center">
-        <div
-          class="q-pa-md col-xs-12 col-md-9 justify-center scroll bg-grey-3"
-          style="min-height:40vh"
-        >
-          <q-pull-to-refresh @refresh="refresh" class="full-height">
-            <q-list
-              v-if="!$_.isEmpty(contestSuccessfullSubmissionsGetter)"
-              padding
-              class="rounded-borders"
-            >
-              <q-item
-                v-for="(submission, index) in contestSuccessfullSubmissionsGetter"
-                :key="index"
-                clickable
-                @click="goTo(submission.submissionLink)"
-                v-ripple
+        <div class="full-width row justify-center">
+          <div
+            class="q-pa-md col-xs-12 col-md-9 justify-center scroll bg-grey-3"
+            style="min-height:40vh"
+          >
+            <q-pull-to-refresh @refresh="refresh" class="full-height">
+              <q-list
+                v-if="!$_.isEmpty(contestSuccessfullSubmissionsGetter)"
+                padding
+                class="rounded-borders"
               >
-                <q-item-section>
-                  <q-item-label class="text-italic text-capitalize text-bold">{{submission.Problem}}</q-item-label>
-                </q-item-section>
-                <q-item-section side top>
-                  <q-item-label caption>
-                    <q-badge :label="submission.programmingLanguage" />
-                  </q-item-label>
-                  <q-item-label caption>
-                    <q-icon name="check_circle" color="yellow-8" />
-                    {{submission.creationTimeSeconds}}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-pull-to-refresh>
+                <q-item
+                  v-for="(submission, index) in contestSuccessfullSubmissionsGetter"
+                  :key="index"
+                  clickable
+                  @click="goTo(submission.submissionLink)"
+                  v-ripple
+                >
+                  <q-item-section>
+                    <q-item-label
+                      class="text-italic text-capitalize text-bold"
+                    >{{submission.Problem}}</q-item-label>
+                  </q-item-section>
+                  <q-item-section side top>
+                    <q-item-label caption>
+                      <q-badge :label="submission.programmingLanguage" />
+                    </q-item-label>
+                    <q-item-label caption>
+                      <q-icon name="check_circle" color="yellow-8" />
+                      {{submission.creationTimeSeconds}}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-pull-to-refresh>
+          </div>
         </div>
-      </div>
-      <div class="full-width text-h5 row">
-        <span>Personal Training History</span>
-        <q-space />
-        <q-btn
-          icon="refresh"
-          :loading="refreshing"
-          round
-          size="lg"
-          flat
-          outline
-          @click="refresh(()=>{})"
-        />
-      </div>
-      <div class="full-width row justify-center">
-        <div
-          class="q-pa-md col-xs-12 col-md-9 justify-center scroll bg-grey-3"
-          style="min-height:40vh"
-        >
-          <q-pull-to-refresh @refresh="refresh" class="full-height">
-            <q-list
-              v-if="!$_.isEmpty(successfullSubmissionsGetter)"
-              padding
-              class="rounded-borders"
-            >
-              <q-item
-                v-for="(submission, index) in successfullSubmissionsGetter"
-                :key="index"
-                clickable
-                @click="goTo(submission.problemLink)"
-                v-ripple
+        <div class="full-width text-h5 row">
+          <span>Personal Training History</span>
+          <q-space />
+          <q-btn
+            icon="refresh"
+            :loading="refreshing"
+            round
+            size="lg"
+            flat
+            outline
+            @click="refresh(()=>{})"
+          />
+        </div>
+        <div class="full-width row justify-center">
+          <div
+            class="q-pa-md col-xs-12 col-md-9 justify-center scroll bg-grey-3"
+            style="min-height:40vh"
+          >
+            <q-pull-to-refresh @refresh="refresh" class="full-height">
+              <q-list
+                v-if="!$_.isEmpty(successfullSubmissionsGetter)"
+                padding
+                class="rounded-borders"
               >
-                <q-item-section>
-                  <q-item-label
-                    class="text-italic text-capitalize text-bold"
-                  >{{submission.problem.name}}</q-item-label>
-                  <q-item-label caption>
-                    tags:
-                    <q-badge
-                      v-for="(tgSb,key) in submission.problem.tags"
-                      :key="key"
-                      :label="tgSb"
-                      class="q-ml-xs"
-                      color="teal-7"
-                    />
-                  </q-item-label>
-                </q-item-section>
-                <q-item-section side top>
-                  <q-item-label caption>
-                    <q-badge :label="submission.programmingLanguage" />
-                  </q-item-label>
-                  <q-item-label caption>
-                    <q-icon name="check_circle" color="yellow-8" />
-                    {{$moment(submission.creationTimeSeconds).fromNow()}}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-            <div v-else class="text-center text-bold text-secondary text-h5 row">
-              <span class="full-width">No recent Submissions</span>
-              <span
-                class="full-width disable-selection"
-                v-if="!codeforcesHandle"
-              >Please consider assigning your codeforces handler</span>
-            </div>
-          </q-pull-to-refresh>
+                <q-item
+                  v-for="(submission, index) in successfullSubmissionsGetter"
+                  :key="index"
+                  clickable
+                  @click="goTo(submission.problemLink)"
+                  v-ripple
+                >
+                  <q-item-section>
+                    <q-item-label
+                      class="text-italic text-capitalize text-bold"
+                    >{{submission.problem.name}}</q-item-label>
+                    <q-item-label caption>
+                      tags:
+                      <q-badge
+                        v-for="(tgSb,key) in submission.problem.tags"
+                        :key="key"
+                        :label="tgSb"
+                        class="q-ml-xs"
+                        color="teal-7"
+                      />
+                    </q-item-label>
+                  </q-item-section>
+                  <q-item-section side top>
+                    <q-item-label caption>
+                      <q-badge :label="submission.programmingLanguage" />
+                    </q-item-label>
+                    <q-item-label caption>
+                      <q-icon name="check_circle" color="yellow-8" />
+                      {{$moment(submission.creationTimeSeconds).fromNow()}}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+              <div v-else class="text-center text-bold text-secondary text-h5 row">
+                <span class="full-width">No recent Submissions</span>
+                <span
+                  class="full-width disable-selection"
+                  v-if="!codeforcesHandle"
+                >Please consider assigning your codeforces handler</span>
+              </div>
+            </q-pull-to-refresh>
+          </div>
         </div>
       </div>
     </div>
@@ -248,6 +259,7 @@
 
 <script>
 import LevelSummuary from "components/WeekActivity/LevelSummuary";
+import MyUploader from "components/Utils/MyUploader.vue";
 import RankingView from "components/WeekActivity/SideRankingView";
 import AchievementSummuary from "components/WeekActivity/AchievementSummuary";
 import { db } from "boot/firebase";
@@ -259,7 +271,8 @@ export default {
   components: {
     LevelSummuary,
     AchievementSummuary,
-    RankingView
+    RankingView,
+    MyUploader
   },
   mounted() {
     this.loadData();
@@ -270,11 +283,11 @@ export default {
   data() {
     return {
       refreshing: false,
-      showLayer: false,
       changingData: false,
       changingPassword: false,
       userCredentials: {},
       codeforcesHandle: "",
+      coverPhoto: "",
       password: "",
       confirmPassword: "",
       resp: false,
@@ -413,16 +426,21 @@ export default {
               });
             });
         }
-        if (this.codeforcesHandle !== this.progressGetter.codeforcesHandle) {
+        if (
+          this.coverPhoto !== this.progressGetter.coverPhoto ||
+          this.codeforcesHandle !== this.progressGetter.codeforcesHandle
+        ) {
           db.collection("progress")
             .doc(user.uid)
             .update({
               "progress.codeforcesHandle": this.codeforcesHandle,
+              "progress.coverPhoto": this.coverPhoto,
               "progress.userId": user.uid
             })
             .then(() => {
               let myProfile = {
                 codeforcesHandle: this.codeforcesHandle,
+                coverPhoto: this.coverPhoto,
                 uid: user.uid
               };
               this.updateMySuccessfulSubmissions(myProfile);
@@ -479,6 +497,7 @@ export default {
             "Photo URL": profile.photoURL
           }))
         };
+        this.coverPhoto = this.progressGetter.coverPhoto;
       }
     },
     authentificateWithPlatform(platform) {

@@ -6,7 +6,12 @@ export default ({ router, store, Vue }) => {
     Vue.prototype.$myHistory = {};
   }
   router.beforeEach((to, from, next) => {
-    document.title = to.meta.title;
+    let { title } = to.meta;
+    if (to.params.handle) {
+      title += " - " + to.params.handle + " Profile";
+    }
+    document.title = title;
+
     let authed = store.state.authStore.user;
     if (to.matched.some(record => record.meta.private) && !authed) {
       Vue.prototype.$myHistory = to;

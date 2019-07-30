@@ -6,6 +6,20 @@
         <q-item-label header class="row items-center">
           Sheets
           <q-space />
+          <q-input
+            dense
+            debounce="500"
+            v-model="filterName"
+            label="Search Contests, Rounds, Sheets by any Criteria"
+            class="q-pr-md col-6"
+          >
+            <template v-slot:prepend>
+              <q-icon name="search" />
+            </template>
+            <template v-if="filterName!=''" v-slot:append>
+              <q-icon name="close" @click="filterName = ''" class="cursor-pointer" />
+            </template>
+          </q-input>
         </q-item-label>
 
         <q-item v-for="(sheet, index) in allSheets" :key="index">
@@ -103,17 +117,43 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "ManageSheets",
   components: { SheetEditor },
+  mounted() {
+    this.loadSheets();
+  },
   computed: {
     ...mapGetters({
-      allSheets: "sheetStore/getAllSheets"
+      als: "sheetStore/getAllSheets"
     })
+  },
+  watch: {
+    filterName: function(newVal) {
+      if (newVal !== "") {
+        this.allSheets = this.als.filter(e =>
+          this.$_.values(e)
+            .toString()
+            .toLowerCase()
+            .includes(newVal.toLowerCase())
+        );
+      } else {
+        if (this.$_.isEmpty(this.als)) {
+          this.allSheets = [];
+        } else {
+          this.allSheets = this.als;
+        }
+      }
+    }
   },
   methods: {
     ...mapActions({
       togglePublic: "sheetStore/togglePublic",
-      loadSheets: "sheetStore/bindSheetsRef",
+      loc_loadSheets: "sheetStore/bindSheetsRef",
       removeSheet: "sheetStore/removeSheet"
     }),
+    loadSheets() {
+      this.loc_loadSheets().then(r => {
+        this.allSheets = this.als;
+      });
+    },
     deleteSheet(sh) {
       this.demandedSheet = sh;
       this.confirmDelete = true;
@@ -164,7 +204,9 @@ export default {
     return {
       demandedSheet: {},
       sheetView: false,
-      confirmDelete: false
+      confirmDelete: false,
+      allSheets: [],
+      filterName: ""
     };
   }
 };

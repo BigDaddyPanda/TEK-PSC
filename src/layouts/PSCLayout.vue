@@ -1,5 +1,5 @@
  <template>
-  <q-layout view="hHh lpR fff">
+  <q-layout :view="isAdmin?'hHh lpR fFf':'hHh lpR fff'">
     <!-- Be sure to play with the Layout demo on docs -->
 
     <!-- (Optional) The Header -->
@@ -169,29 +169,40 @@
     <q-footer>
       <q-toolbar>
         <!-- <q-btn flat round dense icon="menu" @click="rightDrawer = !rightDrawer" /> -->
-        <q-toolbar-title class="text-h6">&#0169; TEK-UP</q-toolbar-title>
+        <q-toolbar-title class="text-caption text-weight-light no-wrap">&#0169;TEK-UP</q-toolbar-title>
         <q-space />
         <template v-if="isAdmin">
           <q-btn
             stretch
             flat
+            to="/manager/profile"
+            :class="'text-'+getActive('/manager/profile')"
+            :label="$q.screen.lt.md?'':'Manage profile'"
+            :icon="$q.screen.lt.md?'group':''"
+          />
+          <q-btn
+            stretch
+            flat
             to="/manager/lesson"
             :class="'text-'+getActive('/manager/lesson')"
-            label="Manage lesson"
+            :label="$q.screen.lt.md?'':'Manage lesson'"
+            :icon="$q.screen.lt.md?'school':''"
           />
           <q-btn
             stretch
             flat
             to="/manager/contest"
             :class="'text-'+getActive('/manager/contest')"
-            label="Manage contest"
+            :label="$q.screen.lt.md?'':'Manage contest'"
+            :icon="$q.screen.lt.md?'whatshot':''"
           />
           <q-btn
             stretch
             flat
             to="/manager/sheet"
             :class="'text-'+getActive('/manager/sheet')"
-            label="Manage sheet"
+            :label="$q.screen.lt.md?'':'Manage sheet'"
+            :icon="$q.screen.lt.md?'ballot':''"
           />
         </template>
       </q-toolbar>

@@ -9,9 +9,9 @@
           <q-parallax :src="weekActivity.coverPhoto">
             <template v-slot:content="scope">
               <div class="full-width full-height q-pa-xl">
-                <br />
-                <br />
-                <h1 class="q-mb-sm text-secondary text-bold">{{weekActivity.name}}</h1>
+                <h1 class="gt-sm q-mb-sm text-white text-bold">{{weekActivity.name}}</h1>
+                <h4 class="lt-md q-mb-sm text-secondary text-bold">{{weekActivity.name}}</h4>
+
                 <q-btn
                   color="secondary text-black"
                   size="lg"

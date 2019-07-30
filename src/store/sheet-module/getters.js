@@ -2,6 +2,7 @@
 export function someGetter (state) {
 }
 */
+import _ from 'lodash';
 export function getAllSheets(state) {
-  return state.sheets;
+  return _.reverse(_.sortBy(state.sheets, ["addedDate", "name"]));
 }

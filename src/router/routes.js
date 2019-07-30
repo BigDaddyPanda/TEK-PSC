@@ -29,6 +29,11 @@ const routes = [
     component: () => import("layouts/PSCLayout.vue"),
     children: [
       {
+        path: "profile",
+        meta: { title: "TEK PS- Profiles" },
+        component: () => import("pages/Manager/ProfileVerifier.vue")
+      },
+      {
         path: "lesson",
         meta: { title: "TEK PS- Lesson" },
         component: () => import("pages/Manager/Lesson.vue")
@@ -70,6 +75,11 @@ const routes = [
         path: "profile",
         meta: { title: "TEK PS-Profile" },
         component: () => import("pages/Auth/Profile.vue")
+      },
+      {
+        path: "visit/:handle",
+        meta: { title: "TEK PS" },
+        component: () => import("pages/Auth/Visitor.vue")
       },
       {
         path: "week-activity-overview",

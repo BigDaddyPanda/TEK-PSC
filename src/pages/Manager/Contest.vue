@@ -1,7 +1,23 @@
 <template>
   <q-page class="row justify-center text-weight-regular">
-    <q-list v-if="!$_.isEmpty(retrievedContests)" padding style="width:80vw">
-      <h6 class="col-12 text-center">Contest Manager</h6>
+    <q-list v-if="!$_.isEmpty(retr)" padding style="width:80vw">
+      <h6 class="col-12 q-mb-none text-center">Contest Manager</h6>
+      <q-item title>
+        <q-input
+          dense
+          debounce="500"
+          v-model="filterName"
+          label="Search Contests, Rounds, Sheets by any Criteria"
+          class="q-pr-md col-6"
+        >
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+          <template v-if="filterName!=''" v-slot:append>
+            <q-icon name="close" @click="filterName = ''" class="cursor-pointer" />
+          </template>
+        </q-input>
+      </q-item>
       <q-item
         v-for="contest in retrievedContests"
         :key="contest.contestId"
@@ -105,19 +121,42 @@ export default {
   components: {
     ContestEditor
   },
+  watch: {
+    filterName: function(newVal) {
+      if (newVal !== "") {
+        this.retrievedContests = this.retr.filter(e =>
+          this.$_.values(e)
+            .toString()
+            .toLowerCase()
+            .includes(newVal.toLowerCase())
+        );
+      } else {
+        if (this.$_.isEmpty(this.retr)) {
+          this.retrievedContests = [];
+        } else {
+          this.retrievedContests = this.retr;
+        }
+      }
+    }
+  },
   mounted() {
     this.loadContests();
   },
   computed: {
     ...mapGetters({
-      retrievedContests: "contestStore/allContestsGetter"
+      retr: "contestStore/allContestsGetter"
     })
   },
   methods: {
     ...mapActions({
-      loadContests: "contestStore/bindContestsRef",
+      loc_loadContests: "contestStore/bindContestsRef",
       removeContest: "contestStore/removeContest"
     }),
+    loadContests: async function(params) {
+      this.loc_loadContests().then(r => {
+        this.retrievedContests = this.retr;
+      });
+    },
     setToDelete: async function(contest) {
       this.selectedContest = this.$_.cloneDeep(contest);
       setTimeout(() => {
@@ -151,6 +190,8 @@ export default {
   },
   data() {
     return {
+      retrievedContests: [],
+      filterName: "",
       viewContest: false,
       selectedContest: {},
       confirmDelete: false

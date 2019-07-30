@@ -13,6 +13,7 @@ const _ = require("lodash");
 module.exports = async contestUrl => {
   let allProblemsAsObjects = [];
   const html = await rp(contestUrl).catch(error => {
+    console.log("error parsing", error);
     return [];
   });
   $ = cheerio.load(html);
@@ -26,7 +27,7 @@ module.exports = async contestUrl => {
         ..._.zipObject(
           keyz,
           e.map(v => {
-            if (typeof v == typeof "String") {
+            if (typeof v === typeof "String") {
               return v.split("\n")[0];
             } else {
               return v;

@@ -44,12 +44,16 @@
             </q-item-section>
           </q-item>
         </q-list>
-        <div class="q-mb-xs col-12 text-center" v-if="sheetModel.fromCodeForces">
-          This Contest is Hosted on Codef Forces, here is the link
+        <div class="row q-mb-xs col-12 text-center justify-center" v-if="sheetModel.fromCodeForces">
+          <span>This Contest is Hosted on Codef Forces.</span>
           <br />
-          <a :href="sheetModel.link" target="_blank">
-            <q-btn flat outline label="GO" />
-          </a>
+          <a
+            :href="sheetModel.link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="full-width text-grey"
+          >{{sheetModel.link}}</a>
+          <q-btn color="blue-5" @click="$goto(sheetModel.link)" flat outline label="GO" />
         </div>
 
         <q-list class="q-mb-xs col-12" v-else>

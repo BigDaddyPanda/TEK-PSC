@@ -38,12 +38,10 @@
               filled
               v-model="lessonModel.editor"
             />
-            <q-input
-              class="col-xs-6 col-md-3 q-pa-md"
-              dense
-              label="Cover Photo URL"
-              filled
-              v-model="lessonModel.coverPhoto"
+            <my-uploader
+              photoCollection="lessons"
+              :coverPhoto="lessonModel.coverPhoto"
+              @input="v=>lessonModel.coverPhoto=v"
             />
             <q-space />
             <q-input
@@ -196,6 +194,7 @@
 </template>
 
 <script>
+import MyUploader from "../Utils/MyUploader";
 import editorOptions from "../../utils/editor";
 import { mapGetters, mapActions } from "vuex";
 import tags from "../../utils/tags.json";
@@ -205,6 +204,9 @@ export default {
     maximizedToggle: Boolean,
     toggleMaximizedToggle: Function,
     dismissModal: Function
+  },
+  components: {
+    MyUploader
   },
   computed: {
     ...mapGetters({

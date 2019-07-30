@@ -3,7 +3,9 @@
     <span v-if="gtt(t)=='Rank'">
       <q-badge :label="c" />
     </span>
-    <div v-else-if="gtt(t)=='Contestant'">{{c}}</div>
+    <div class="cursor-pointer" v-else-if="gtt(t)=='Contestant'">
+      <q-btn flat no-caps :to="'/psc/visit/'+c" :label="c" />
+    </div>
     <div v-else-if="gtt(t)=='Penalty'">{{c}}</div>
     <div v-else-if="gtt(t)=='Solved'">{{c}}</div>
     <div v-else class="fit">
@@ -12,7 +14,7 @@
         style="margin-left: -8%;"
         size="2rem"
         name="whatshot"
-        v-if="isFirstToSolve"
+        v-if="isFirstToSolve&&gtc(c).sol!='No Try'&&gtc(c).sol!='No Successful Try'"
       />
       <q-badge class="q-mt-sm" :color="gtc(c).col" v-else :label="gtc(c).txt"></q-badge>
       <q-tooltip>

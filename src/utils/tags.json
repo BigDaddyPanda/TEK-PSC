@@ -1,5 +1,9 @@
 [
     {
+        "label": "Generalities",
+        "value": "generalities"
+    },
+    {
         "label": "Implementation",
         "value": "implementation"
     },

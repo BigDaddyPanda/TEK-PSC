@@ -69,16 +69,21 @@
           label="Sheet Tags"
           class="col-xs-12 col-md-4 q-pl-xs q-pr-xs q-mb-lg"
         />
-        <q-input
-          dense
-          class="col-xs-12 col-md-4 q-pl-xs q-pr-xs"
-          filled
-          v-model="sheetModel.coverPhoto"
-          label="Cover Photo"
-          lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+        <my-uploader
+          photoCollection="sheets"
+          :className="['col-xs-6 col-md-4 q-pa-md row']"
+          :coverPhoto="sheetModel.coverPhoto"
+          @input="v=>sheetModel.coverPhoto=v"
         />
-
+        <q-select
+          filled
+          dense
+          v-model="sheetModel.nature"
+          :options="['Online Round','Daily Sheet','Local Contest']"
+          use-chips
+          label="Type"
+          class="col-xs-12 col-md-4 q-pl-xs q-pr-xs q-mb-lg"
+        />
         <q-input
           v-if="sheetModel.fromCodeForces"
           dense
@@ -228,6 +233,7 @@
 </template>
 
 <script>
+import MyUploader from "../Utils/MyUploader";
 import tags from "../../utils/tags.json";
 import problemSet from "../../utils/problems.json";
 import _ from "lodash";
@@ -253,6 +259,9 @@ export default {
         includedProblems: []
       })
     }
+  },
+  components: {
+    MyUploader
   },
   computed: {
     fromCodeForces() {
@@ -372,7 +381,7 @@ export default {
               this.sheetModel.includedProblems = r.data;
               this.$positive(`Successfully parsed ${r.data.length} Problem(s)`);
               this.isParsing = false;
-              console.log(this.sheetModel.includedProblems);
+              // console.log(this.sheetModel.includedProblems);
             })
             .catch(err => {
               this.$negative(err.toString());
