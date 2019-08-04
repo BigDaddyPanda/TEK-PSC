@@ -4,6 +4,10 @@ const getContestProblems = require("./cfProblems");
 const functions = require("firebase-functions");
 const _ = require("lodash");
 const admin = require("firebase-admin");
+var schedule = require('node-schedule');
+
+
+
 admin.initializeApp({ credential: admin.credential.applicationDefault() });
 // // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -11,6 +15,9 @@ admin.initializeApp({ credential: admin.credential.applicationDefault() });
 exports.helloWorld = functions.https.onRequest((request, response) => {
   response.set("Access-Control-Allow-Origin", "*");
   response.send("Hello from Firebase!");
+  var j = schedule.scheduleJob('* * * * *', function () {
+    console.log('The answer to life, the universe, and everything!');
+  });
 });
 
 exports.scrapStandings = functions.https.onRequest((request, response) => {
