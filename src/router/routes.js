@@ -72,6 +72,11 @@ const routes = [
         component: () => import("pages/PSC/RulesDesclaimer.vue")
       },
       {
+        path: "code/:script_id?",
+        meta: { title: "TEK PS-Code it Online" },
+        component: () => import("pages/PSC/Content/CodeItOnline.vue")
+      },
+      {
         path: "profile",
         meta: { title: "TEK PS-Profile" },
         component: () => import("pages/Auth/Profile.vue")

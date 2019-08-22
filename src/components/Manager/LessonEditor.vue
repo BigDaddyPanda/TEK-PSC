@@ -93,6 +93,35 @@
               <q-toggle color="primary" v-model="lessonModel.isPublic" />
               {{lessonModel.isPublic?"":"Don't"}} Make it public!
             </div>
+            <div class="col-xs-12 q-pa-md text-primary justify-around row content-center">
+              <h5 class="col-12 text-center q-ma-none">How do you like the content?</h5>
+              <div
+                @click="lessonModel.isModern=true"
+                :class="[lessonModel.isModern?'shadow-2 bg-grey-2':'','cursor-pointer row justify-center']"
+              >
+                <q-avatar size="25vh" :square="true">
+                  <q-img src="statics/Util Icons/lesson_modern.png"></q-img>
+                </q-avatar>
+                <div class="col-12 text-subtitle1 text-center q-pa-xs">
+                  Modern Content
+                  <div class="text-subtitle2 text-center">Various Media and Content</div>
+                </div>
+              </div>
+
+              <div
+                @click="lessonModel.isModern=false"
+                :class="[!lessonModel.isModern?'shadow-2 bg-grey-2':'','cursor-pointer row justify-center']"
+              >
+                <q-avatar size="25vh" :square="true">
+                  <q-img src="statics/Util Icons/lesson_standard.png"></q-img>
+                </q-avatar>
+
+                <div class="col-12 text-subtitle1 text-center q-pa-xs">
+                  Simple Content
+                  <div class="text-subtitle2 text-center">Single Course with Quizz</div>
+                </div>
+              </div>
+            </div>
           </div>
         </q-card-section>
         <q-stepper-navigation>
@@ -105,7 +134,11 @@
           <div class="text-h6">Lesson Content</div>
         </q-card-section>
         <q-card-section>
+          <modern-lesson :lessonModel="lessonModel" v-if="lessonModel.isModern" />
           <q-editor
+            v-else
+            @paste.native="evt => pasteCapture(evt)"
+            @drop.native="evt => dropCapture(evt)"
             v-model="lessonModel.content"
             class="text-black"
             :dense="$q.screen.lt.md"
@@ -195,6 +228,7 @@
 
 <script>
 import MyUploader from "../Utils/MyUploader";
+import ModernLesson from "./ModernLesson";
 import editorOptions from "../../utils/editor";
 import { mapGetters, mapActions } from "vuex";
 import tags from "../../utils/tags.json";
@@ -206,13 +240,30 @@ export default {
     dismissModal: Function
   },
   components: {
+    ModernLesson,
     MyUploader
+  },
+  watch: {
+    watchModer(newV) {
+      if (newV) {
+        if (typeof this.lessonModel.content !== typeof []) {
+          this.lessonModel.content = [];
+        }
+      } else {
+        if (typeof this.lessonModel.content !== typeof "z") {
+          this.lessonModel.content = "";
+        }
+      }
+    }
   },
   computed: {
     ...mapGetters({
       lessonPreview: "lessonStore/lessonPreview",
       allLessons: "lessonStore/AllLessonsGetter"
-    })
+    }),
+    watchModer() {
+      return this.lessonModel.isModern;
+    }
   },
   mounted() {
     this.lessonModel = this.$_.cloneDeep(this.lessonPreview);
@@ -234,6 +285,27 @@ export default {
     };
   },
   methods: {
+    pasteCapture: evt => {},
+    dropCapture(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      var files = e.dataTransfer.files;
+      this.createFile(files[0]);
+    },
+    createFile(file) {
+      if (!file.type.match("image.*")) {
+        alert("Select an image");
+        return;
+      }
+      var img = new Image();
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = function(e) {
+        vm.lessonModel.content += `<img :src="${e.target.result}"/>`;
+      };
+      reader.readAsDataURL(file);
+    },
     addQuizz() {
       this.lessonModel.quiz.push({
         question: "",
@@ -272,5 +344,5 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 </style>

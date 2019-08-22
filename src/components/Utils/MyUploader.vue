@@ -3,6 +3,7 @@
     <input type="file" ref="file" style="display: none" @change="uploadFile" />
     <q-btn
       :loading="isUpdating"
+      :percentage="percentile"
       :color="buttonColor"
       class="col-3"
       @click="$refs.file.click()"
@@ -49,13 +50,15 @@ export default {
   },
   data() {
     return {
-      isUpdating: false
+      isUpdating: false,
+      percentile: 0
     };
   },
   methods: {
     uploadFile(e) {
       this.isUpdating = true;
       const file = e.target.files[0];
+      this.percentile = 0;
       this.$storage
         .ref(this.photoCollection + "/" + nanoid(3))
         .put(file)
@@ -66,8 +69,9 @@ export default {
               this.$positive(
                 `Successfully uploaded the ${this.$_.startCase(
                   this.photoCollection
-                )} Photo`
+                )} Media`
               );
+              this.percentile = 100;
               this.$emit("input", downloadURL);
               this.isUpdating = false;
             })

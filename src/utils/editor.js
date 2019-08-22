@@ -16,8 +16,8 @@ module.exports = $q => ({
       }
     ],
     ["bold", "italic", "strike", "underline", "subscript", "superscript"],
-    ["token", "hr", "link", "custom_btn"],
-    ["print", "fullscreen"],
+    ["hr", "hr", "link"],
+    ["print", "fullscreen", "image"],
     [
       {
         label: $q.lang.editor.formatting,

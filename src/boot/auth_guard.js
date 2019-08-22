@@ -22,10 +22,14 @@ export default ({ router, store, Vue }) => {
         to.matched.some(record => record.meta.requiresAdminShip) &&
         !isAdmin
       ) {
-        Notify.create({
-          message: "You cannont access as non Admin",
-          color: "negative"
-        });
+        // if (Vue.prototype.$myHistory) {
+        //   Vue.prototype.$myHistory = {};
+        // } else
+        //   Vue.prototype.$myHistory = to;
+        // Notify.create({
+        //   message: "You cannont access as non Admin",
+        //   color: "negative"
+        // });
         next(from);
       } else {
         next();

@@ -204,6 +204,15 @@
             :label="$q.screen.lt.md?'':'Manage sheet'"
             :icon="$q.screen.lt.md?'ballot':''"
           />
+          <q-btn
+            stretch
+            flat
+            v-if="authStore.loggedIn "
+            :icon="rightDrawer?'close':'question_answer'"
+            @click="rightDrawer = !rightDrawer"
+            color="white"
+          />
+          <q-btn stretch flat v-if="authStore.loggedIn " icon="code" to="/psc/code" color="white" />
         </template>
       </q-toolbar>
     </q-footer>
@@ -226,21 +235,36 @@
     <q-page-container>
       <!-- This is where pages get injected -->
       <router-view />
-      <q-page-sticky v-if="authStore.loggedIn" position="bottom-right" :offset="[18, 18]">
-        <q-btn
-          size="md"
-          round
-          :icon="rightDrawer?'close':'question_answer'"
-          @click="rightDrawer = !rightDrawer"
-          color="accent"
-        />
+      <q-page-sticky
+        v-if="authStore.loggedIn&&enableCodeItOnline"
+        position="bottom-right"
+        :offset="[18, 18]"
+      >
+        <q-btn size="md" round icon="code" @click="openCOI=true" color="accent" />
       </q-page-sticky>
     </q-page-container>
+    <q-dialog v-model="openCOI" full-width>
+      <q-layout view="Lhh lpR fff" container class="bg-white">
+        <q-header class="bg-primary q-ma-none">
+          <q-toolbar>
+            <q-space />
+            <q-btn flat v-close-popup round dense icon="close" />
+          </q-toolbar>
+        </q-header>
+
+        <q-page-container>
+          <keep-alive>
+            <code-it-online />
+          </keep-alive>
+        </q-page-container>
+      </q-layout>
+    </q-dialog>
   </q-layout>
 </template>
 
 <script>
 import ChatRooms from "../components/ChatRooms";
+import CodeItOnline from "../pages/PSC/Content/CodeItOnline.vue";
 import Login from "../pages/Auth/Login";
 import { mapState, mapGetters } from "vuex";
 export default {
@@ -250,10 +274,14 @@ export default {
     }),
     ...mapGetters({
       isAdmin: "authStore/isAdmin"
-    })
+    }),
+    enableCodeItOnline() {
+      return this.$route.path.includes("psc/lesson");
+    }
   },
   components: {
     Login,
+    CodeItOnline,
     ChatRooms
   },
   methods: {
@@ -281,6 +309,7 @@ export default {
   },
   data() {
     return {
+      openCOI: false,
       rightDrawer: false,
       mobileData: false,
       bluetooth: false,

@@ -9,6 +9,7 @@ const newLesson = {
   isWeekActivity: false,
   addedDate: "",
   coverPhoto: "",
+  isModern: false,
   isPublic: true,
   tags: [],
   quiz: [
@@ -25,13 +26,13 @@ export const bindLessonsRef = firestoreAction(context => {
   return context.bindFirestoreRef("lessons", db.collection("lessons"));
 });
 
-export const addNewLesson = function(context) {
+export const addNewLesson = function (context) {
   context.commit("setLesson", newLesson);
 };
-export const dismissLesson = function(context) {
+export const dismissLesson = function (context) {
   context.commit("setLesson", {});
 };
-export const openLesson = function(context, payload) {
+export const openLesson = function (context, payload) {
   context.commit("setLesson", payload);
 };
 

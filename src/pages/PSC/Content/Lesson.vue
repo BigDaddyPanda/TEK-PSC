@@ -6,7 +6,61 @@
         <div class="q-pt-md row">
           <h3 class="q-mb-xs col-12">{{lessonModel.name}}</h3>
           <h5 class="q-mb-xs col-12">Content</h5>
-          <div class="col-12" v-html="lessonModel.content"></div>
+          <div class="col-12 fit" v-if="lessonModel.isModern">
+            <q-stepper ref="stepper" header-nav v-model="step" vertical color="primary" animated>
+              <q-step
+                v-for="(part,k) in lessonModel.content"
+                :key="part.id"
+                :name="part.id"
+                :title="`Part ${part.id+1}${part.header?(': '+part.header):''}`"
+                icon="settings"
+              >
+                <div class="q-ma-none" v-html="'Section Header'" />
+                <h5 class="q-ma-none" v-html="lessonModel.content[k].header" />
+                <div class="q-ma-none" v-html="'Section Description'" />
+                <h6 class="q-ma-none" v-html="lessonModel.content[k].description" />
+                <div class="fit row">
+                  <div class="col-xs-12 col-md-6">
+                    <media
+                      v-if="Boolean(part.mediaType&&part.mediaLink)"
+                      :mediaType="part.mediaType"
+                      :mediaLink="part.mediaLink"
+                    />
+                    <div v-else class="fit row text-center">No Preview is available</div>
+                  </div>
+                </div>
+                <div class="q-ma-none" v-html="'Media Title'" />
+                <h3 class="q-ma-none" v-html="lessonModel.content[k].mediaTitle" />
+                <div class="q-ma-none">Media Description</div>
+                <h3 class="q-ma-none" v-html="lessonModel.content[k].mediaDescription" />
+
+                <q-stepper-navigation>
+                  <q-btn
+                    v-if="step+1 < lessonModel.content.length "
+                    @click="$refs.stepper.next()"
+                    color="primary"
+                    label="Continue"
+                  />
+                  <q-btn
+                    v-if="step > 1"
+                    flat
+                    color="primary"
+                    @click="$refs.stepper.previous()"
+                    label="Back"
+                    class="q-ml-sm"
+                  />
+                </q-stepper-navigation>
+              </q-step>
+
+              <div
+                v-if="lessonModel.content.length==0"
+                class="full-width text-center text-grey-3 justify-center row"
+              >
+                <h3>No Content available yet.</h3>
+              </div>
+            </q-stepper>
+          </div>
+          <div class="col-12" v-else v-html="lessonModel.content"></div>
           <div class="col-12" v-if="!$_.isEmpty(lessonModel.quiz)">
             <fire-works style="z-index:10;height:100%;width:100%;" v-if="fullyCorrect" />
             <h5 class="q-mb-xs">Quizz</h5>
@@ -84,12 +138,14 @@
 import { db } from "boot/firebase";
 import FireWorks from "components/FireWorks.vue";
 import lessonModel from "../../../utils/lesson.json";
+import media from "components/Utils/MediaPreview.vue";
 import _ from "lodash";
 import { mapActions } from "vuex";
 export default {
   name: "LessonPreview",
   components: {
-    FireWorks
+    FireWorks,
+    media
   },
   methods: {
     retry() {
@@ -176,6 +232,7 @@ export default {
   },
   data() {
     return {
+      step: 0,
       loaded: false,
       userSubmitted: false,
       visibleReload: false,
